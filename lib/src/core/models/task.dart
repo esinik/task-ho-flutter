@@ -7,7 +7,8 @@ part 'task.g.dart';
 class Task with _$Task {
   const factory Task({
     String? id,
-    required String tab,
+    required String tab, // view category (inbox/today/week/month/...)
+    required String status, // idle,inprogress,later,waiting,done
     required String customer,
     required String title,
     required String type,

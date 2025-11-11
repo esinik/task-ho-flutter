@@ -21,7 +21,10 @@ Task _$TaskFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Task {
   String? get id => throw _privateConstructorUsedError;
-  String get tab => throw _privateConstructorUsedError;
+  String get tab =>
+      throw _privateConstructorUsedError; // view category (inbox/today/week/month/...)
+  String get status =>
+      throw _privateConstructorUsedError; // idle,inprogress,later,waiting,done
   String get customer => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
@@ -46,6 +49,7 @@ abstract class $TaskCopyWith<$Res> {
   $Res call(
       {String? id,
       String tab,
+      String status,
       String customer,
       String title,
       String type,
@@ -71,6 +75,7 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
   $Res call({
     Object? id = freezed,
     Object? tab = null,
+    Object? status = null,
     Object? customer = null,
     Object? title = null,
     Object? type = null,
@@ -86,6 +91,10 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
       tab: null == tab
           ? _value.tab
           : tab // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
       customer: null == customer
           ? _value.customer
@@ -125,6 +134,7 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
   $Res call(
       {String? id,
       String tab,
+      String status,
       String customer,
       String title,
       String type,
@@ -147,6 +157,7 @@ class __$$TaskImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? tab = null,
+    Object? status = null,
     Object? customer = null,
     Object? title = null,
     Object? type = null,
@@ -162,6 +173,10 @@ class __$$TaskImplCopyWithImpl<$Res>
       tab: null == tab
           ? _value.tab
           : tab // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
       customer: null == customer
           ? _value.customer
@@ -197,6 +212,7 @@ class _$TaskImpl implements _Task {
   const _$TaskImpl(
       {this.id,
       required this.tab,
+      required this.status,
       required this.customer,
       required this.title,
       required this.type,
@@ -211,6 +227,10 @@ class _$TaskImpl implements _Task {
   final String? id;
   @override
   final String tab;
+// view category (inbox/today/week/month/...)
+  @override
+  final String status;
+// idle,inprogress,later,waiting,done
   @override
   final String customer;
   @override
@@ -229,7 +249,7 @@ class _$TaskImpl implements _Task {
 
   @override
   String toString() {
-    return 'Task(id: $id, tab: $tab, customer: $customer, title: $title, type: $type, due: $due, priority: $priority, notes: $notes)';
+    return 'Task(id: $id, tab: $tab, status: $status, customer: $customer, title: $title, type: $type, due: $due, priority: $priority, notes: $notes)';
   }
 
   @override
@@ -239,6 +259,7 @@ class _$TaskImpl implements _Task {
             other is _$TaskImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.tab, tab) || other.tab == tab) &&
+            (identical(other.status, status) || other.status == status) &&
             (identical(other.customer, customer) ||
                 other.customer == customer) &&
             (identical(other.title, title) || other.title == title) &&
@@ -251,8 +272,8 @@ class _$TaskImpl implements _Task {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, tab, customer, title, type, due, priority, notes);
+  int get hashCode => Object.hash(runtimeType, id, tab, status, customer, title,
+      type, due, priority, notes);
 
   /// Create a copy of Task
   /// with the given fields replaced by the non-null parameter values.
@@ -274,6 +295,7 @@ abstract class _Task implements Task {
   const factory _Task(
       {final String? id,
       required final String tab,
+      required final String status,
       required final String customer,
       required final String title,
       required final String type,
@@ -286,7 +308,9 @@ abstract class _Task implements Task {
   @override
   String? get id;
   @override
-  String get tab;
+  String get tab; // view category (inbox/today/week/month/...)
+  @override
+  String get status; // idle,inprogress,later,waiting,done
   @override
   String get customer;
   @override

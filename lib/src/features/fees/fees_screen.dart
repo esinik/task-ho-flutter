@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/repo/fees.dart';
 import '../../core/models/fee.dart';
 
@@ -23,7 +24,16 @@ class FeesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final fees = ref.watch(feeListProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('TaskHo — Muhasebe Ücretleri')),
+      appBar: AppBar(
+        title: const Text('TaskHo — Muhasebe Ücretleri'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.go('/settings'),
+            tooltip: 'Ayarlar',
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Padding(

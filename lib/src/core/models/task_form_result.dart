@@ -13,7 +13,7 @@ class TaskFormResult with _$TaskFormResult {
     DateTime? dueDate,
     required TaskPriority priority,
     String? notes,
-    @Default(false) bool isCompleted,
+    @Default(TaskStatus.idle) TaskStatus status,
   }) = _TaskFormResult;
 
   factory TaskFormResult.fromJson(Map<String, dynamic> json) => _$TaskFormResultFromJson(json);

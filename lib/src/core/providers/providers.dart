@@ -50,6 +50,8 @@ final customerListProvider = FutureProvider.autoDispose<List<Customer>>((ref) as
 final lastCountProvider = StateProvider<int>((ref) => 0);
 final todayCountProvider = StateProvider<int>((ref) => 0);
 final thisWeekCountProvider = StateProvider<int>((ref) => 0);
+final thisMonthCountProvider = StateProvider<int>((ref) => 0);
+final prevMonthsCountProvider = StateProvider<int>((ref) => 0);
 final laterCountProvider = StateProvider<int>((ref) => 0);
 final waitingCountProvider = StateProvider<int>((ref) => 0);
 final doneCountProvider = StateProvider<int>((ref) => 0);

@@ -35,7 +35,7 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
 
   DateTime? _dueDate;
   TaskPriority _priority = TaskPriority.medium;
-  bool _isCompleted = false;
+  TaskStatus _status = TaskStatus.idle;
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
     _notesController = TextEditingController(text: i?.notes ?? '');
     _dueDate = i?.dueDate;
     _priority = i?.priority ?? TaskPriority.medium;
-    _isCompleted = i?.isCompleted ?? false;
+    _status = i?.status ?? TaskStatus.idle;
   }
 
   @override
@@ -79,7 +79,7 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
       dueDate: _dueDate,
       priority: _priority,
       notes: _notesController.text.trim().isEmpty ? null : _notesController.text.trim(),
-      isCompleted: _isCompleted,
+      status: _status,
     );
 
     Navigator.of(context).pop(result);
@@ -231,16 +231,22 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
                       ),
                       const SizedBox(height: 16),
 
-                      // Tamamlandı
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: _isCompleted,
-                            onChanged: (v) => setState(() => _isCompleted = v ?? false),
-                          ),
-                          const Text('Tamamlandı'),
+                      // Durum Seçimi
+                      const Text('Durum'),
+                      const SizedBox(height: 4),
+                      DropdownButtonFormField<TaskStatus>(
+                        initialValue: _status,
+                        decoration: const InputDecoration(border: OutlineInputBorder()),
+                        items: const [
+                          DropdownMenuItem(value: TaskStatus.idle, child: Text('Idle')),
+                          DropdownMenuItem(value: TaskStatus.inprogress, child: Text('In Progress')),
+                          DropdownMenuItem(value: TaskStatus.later, child: Text('Later')),
+                          DropdownMenuItem(value: TaskStatus.waiting, child: Text('Waiting')),
+                          DropdownMenuItem(value: TaskStatus.done, child: Text('Done')),
                         ],
+                        onChanged: (v) => setState(() => _status = v ?? TaskStatus.idle),
                       ),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),

@@ -26,7 +26,7 @@ mixin _$TaskFormResult {
   DateTime? get dueDate => throw _privateConstructorUsedError;
   TaskPriority get priority => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
-  bool get isCompleted => throw _privateConstructorUsedError;
+  TaskStatus get status => throw _privateConstructorUsedError;
 
   /// Serializes this TaskFormResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +51,7 @@ abstract class $TaskFormResultCopyWith<$Res> {
       DateTime? dueDate,
       TaskPriority priority,
       String? notes,
-      bool isCompleted});
+      TaskStatus status});
 }
 
 /// @nodoc
@@ -75,7 +75,7 @@ class _$TaskFormResultCopyWithImpl<$Res, $Val extends TaskFormResult>
     Object? dueDate = freezed,
     Object? priority = null,
     Object? notes = freezed,
-    Object? isCompleted = null,
+    Object? status = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -102,10 +102,10 @@ class _$TaskFormResultCopyWithImpl<$Res, $Val extends TaskFormResult>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
-      isCompleted: null == isCompleted
-          ? _value.isCompleted
-          : isCompleted // ignore: cast_nullable_to_non_nullable
-              as bool,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as TaskStatus,
     ) as $Val);
   }
 }
@@ -125,7 +125,7 @@ abstract class _$$TaskFormResultImplCopyWith<$Res>
       DateTime? dueDate,
       TaskPriority priority,
       String? notes,
-      bool isCompleted});
+      TaskStatus status});
 }
 
 /// @nodoc
@@ -147,7 +147,7 @@ class __$$TaskFormResultImplCopyWithImpl<$Res>
     Object? dueDate = freezed,
     Object? priority = null,
     Object? notes = freezed,
-    Object? isCompleted = null,
+    Object? status = null,
   }) {
     return _then(_$TaskFormResultImpl(
       id: freezed == id
@@ -174,10 +174,10 @@ class __$$TaskFormResultImplCopyWithImpl<$Res>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
-      isCompleted: null == isCompleted
-          ? _value.isCompleted
-          : isCompleted // ignore: cast_nullable_to_non_nullable
-              as bool,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as TaskStatus,
     ));
   }
 }
@@ -192,7 +192,7 @@ class _$TaskFormResultImpl implements _TaskFormResult {
       this.dueDate,
       required this.priority,
       this.notes,
-      this.isCompleted = false});
+      this.status = TaskStatus.idle});
 
   factory _$TaskFormResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskFormResultImplFromJson(json);
@@ -211,11 +211,11 @@ class _$TaskFormResultImpl implements _TaskFormResult {
   final String? notes;
   @override
   @JsonKey()
-  final bool isCompleted;
+  final TaskStatus status;
 
   @override
   String toString() {
-    return 'TaskFormResult(id: $id, customer: $customer, title: $title, dueDate: $dueDate, priority: $priority, notes: $notes, isCompleted: $isCompleted)';
+    return 'TaskFormResult(id: $id, customer: $customer, title: $title, dueDate: $dueDate, priority: $priority, notes: $notes, status: $status)';
   }
 
   @override
@@ -231,14 +231,13 @@ class _$TaskFormResultImpl implements _TaskFormResult {
             (identical(other.priority, priority) ||
                 other.priority == priority) &&
             (identical(other.notes, notes) || other.notes == notes) &&
-            (identical(other.isCompleted, isCompleted) ||
-                other.isCompleted == isCompleted));
+            (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, customer, title, dueDate, priority, notes, isCompleted);
+      runtimeType, id, customer, title, dueDate, priority, notes, status);
 
   /// Create a copy of TaskFormResult
   /// with the given fields replaced by the non-null parameter values.
@@ -265,7 +264,7 @@ abstract class _TaskFormResult implements TaskFormResult {
       final DateTime? dueDate,
       required final TaskPriority priority,
       final String? notes,
-      final bool isCompleted}) = _$TaskFormResultImpl;
+      final TaskStatus status}) = _$TaskFormResultImpl;
 
   factory _TaskFormResult.fromJson(Map<String, dynamic> json) =
       _$TaskFormResultImpl.fromJson;
@@ -283,7 +282,7 @@ abstract class _TaskFormResult implements TaskFormResult {
   @override
   String? get notes;
   @override
-  bool get isCompleted;
+  TaskStatus get status;
 
   /// Create a copy of TaskFormResult
   /// with the given fields replaced by the non-null parameter values.

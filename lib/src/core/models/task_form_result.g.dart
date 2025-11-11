@@ -16,7 +16,8 @@ _$TaskFormResultImpl _$$TaskFormResultImplFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['dueDate'] as String),
       priority: $enumDecode(_$TaskPriorityEnumMap, json['priority']),
       notes: json['notes'] as String?,
-      isCompleted: json['isCompleted'] as bool? ?? false,
+      status: $enumDecodeNullable(_$TaskStatusEnumMap, json['status']) ??
+          TaskStatus.idle,
     );
 
 Map<String, dynamic> _$$TaskFormResultImplToJson(
@@ -28,11 +29,19 @@ Map<String, dynamic> _$$TaskFormResultImplToJson(
       'dueDate': instance.dueDate?.toIso8601String(),
       'priority': _$TaskPriorityEnumMap[instance.priority]!,
       'notes': instance.notes,
-      'isCompleted': instance.isCompleted,
+      'status': _$TaskStatusEnumMap[instance.status]!,
     };
 
 const _$TaskPriorityEnumMap = {
   TaskPriority.low: 'low',
   TaskPriority.medium: 'medium',
   TaskPriority.high: 'high',
+};
+
+const _$TaskStatusEnumMap = {
+  TaskStatus.idle: 'idle',
+  TaskStatus.inprogress: 'inprogress',
+  TaskStatus.later: 'later',
+  TaskStatus.waiting: 'waiting',
+  TaskStatus.done: 'done',
 };

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:taskho/src/core/enums/enums.dart';
 import 'package:taskho/src/core/providers/providers.dart';
 import 'package:taskho/src/features/tasks/widgets/customer_manager_dialog.dart';
@@ -9,8 +10,9 @@ import 'package:taskho/src/features/tasks/widgets/title_and_logo.dart';
 import 'package:taskho/src/features/tasks/widgets/tools_button_list.dart';
 import 'package:taskho/src/features/tasks/widgets/task_detail_dialog.dart';
 import '../../core/models/task.dart';
+import 'package:taskho/src/core/repo/tasks.dart';
 
-const _tabs = ['inbox', 'today', 'week', 'later', 'waiting', 'done'];
+const _tabs = ['inbox', 'today', 'week', 'month', 'later', 'waiting', 'done'];
 
 class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
   const TaskListScreen({super.key});
@@ -56,9 +58,15 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
                       icon: Icon(Icons.inbox_outlined),
                       label: Text('Inbox: $totalCount'),
                     ),
-                    NavigationRailDestination(icon: Icon(Icons.today_outlined), label: Text('Today :$todayCount')),
+                    NavigationRailDestination(icon: Icon(Icons.today_outlined), label: Text('Today: $todayCount')),
                     NavigationRailDestination(
                         icon: Icon(Icons.view_week_outlined), label: Text('This Week: $thisWeekCount')),
+                    NavigationRailDestination(
+                        icon: Icon(Icons.calendar_month_outlined),
+                        label: Text('This Month: ${ref.watch(thisMonthCountProvider)}')),
+                    NavigationRailDestination(
+                        icon: Icon(Icons.calendar_month_outlined),
+                        label: Text('Prev Months: ${ref.watch(prevMonthsCountProvider)}')),
                     NavigationRailDestination(icon: Icon(Icons.schedule_outlined), label: Text('Later: $laterCount')),
                     NavigationRailDestination(
                         icon: Icon(Icons.hourglass_top_outlined), label: Text('Waiting: $waitingCount')),
@@ -88,6 +96,8 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
             ref.read(todayCountProvider.notifier).state = count;
           case 'week':
             ref.read(thisWeekCountProvider.notifier).state = count;
+          case 'month':
+            ref.read(thisMonthCountProvider.notifier).state = count;
           case 'later':
             ref.read(laterCountProvider.notifier).state = count;
           case 'waiting':
@@ -107,6 +117,12 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
       children: [
         TitleAndLogoWidget(),
         Spacer(),
+        IconButton(
+          icon: const Icon(Icons.settings_outlined),
+          onPressed: () => context.go('/settings'),
+          tooltip: 'Ayarlar',
+        ),
+        const SizedBox(width: 8),
         ToolsButtonsWidget(delegate: this),
       ],
     );
@@ -145,10 +161,43 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
   Future<void> onAddTask(WidgetRef ref) async {
     final result = await TaskDetailDialog.show(ref.context);
     if (result == null) return;
-    // TODO: Burada result verisini backend servisinizle entegre edin.
-    // Örnek:
-    // await ref.read(taskApiProvider).createTask(result.toJson());
-    // ref.invalidate(taskListProvider);
+    // Task oluşturma: form verisinden backend modeline dönüştür.
+    String tab = 'inbox';
+    final dueDate = result.dueDate;
+    if (dueDate != null) {
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+      final dueDay = DateTime(dueDate.year, dueDate.month, dueDate.day);
+      final diff = dueDay.difference(today).inDays;
+      if (diff == 0) {
+        tab = 'today';
+      } else if (diff >= 0 && diff <= 7) {
+        tab = 'week';
+      } else if (dueDate.month == now.month && dueDate.year == now.year) {
+        tab = 'month';
+      } else if (diff > 7) {
+        tab = 'later';
+      }
+    }
+
+    final isoDue = dueDate != null
+        ? '${dueDate.year.toString().padLeft(4, '0')}-${dueDate.month.toString().padLeft(2, '0')}-${dueDate.day.toString().padLeft(2, '0')}'
+        : DateTime.now().toIso8601String();
+
+    final task = Task(
+      tab: tab,
+      status: result.status.value,
+      customer: result.customer ?? '',
+      title: result.title,
+      type: 'Rapor',
+      due: isoDue,
+      priority: _priorityToString(result.priority),
+      notes: result.notes ?? '',
+    );
+
+    final repo = ref.read(taskRepositoryProvider);
+    await repo.create(task);
+    ref.invalidate(taskListProvider);
   }
 
   @override
@@ -159,5 +208,16 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
   @override
   void onShowAccountantFees(ref) {
     ref.read(screenTypeProvider.notifier).state = ScreenType.fees;
+  }
+}
+
+String _priorityToString(TaskPriority p) {
+  switch (p) {
+    case TaskPriority.low:
+      return 'Low';
+    case TaskPriority.medium:
+      return 'Medium';
+    case TaskPriority.high:
+      return 'High';
   }
 }

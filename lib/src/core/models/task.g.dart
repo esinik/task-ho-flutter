@@ -9,6 +9,7 @@ part of 'task.dart';
 _$TaskImpl _$$TaskImplFromJson(Map<String, dynamic> json) => _$TaskImpl(
       id: json['id'] as String?,
       tab: json['tab'] as String,
+      status: json['status'] as String,
       customer: json['customer'] as String,
       title: json['title'] as String,
       type: json['type'] as String,
@@ -21,6 +22,7 @@ Map<String, dynamic> _$$TaskImplToJson(_$TaskImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'tab': instance.tab,
+      'status': instance.status,
       'customer': instance.customer,
       'title': instance.title,
       'type': instance.type,
