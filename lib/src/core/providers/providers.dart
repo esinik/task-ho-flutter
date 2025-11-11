@@ -41,6 +41,11 @@ final customerOptionsProvider = FutureProvider.autoDispose<List<String>>((ref) a
   return list;
 });
 
+final customerListProvider = FutureProvider.autoDispose<List<Customer>>((ref) async {
+  final repo = ref.read(customerRepositoryProvider);
+  return repo.list();
+});
+
 // State providers to hold last-known counts for various tabs
 final lastCountProvider = StateProvider<int>((ref) => 0);
 final todayCountProvider = StateProvider<int>((ref) => 0);

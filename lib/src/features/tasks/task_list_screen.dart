@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskho/src/core/enums/enums.dart';
 import 'package:taskho/src/core/providers/providers.dart';
+import 'package:taskho/src/features/tasks/widgets/customer_manager_dialog.dart';
 import 'package:taskho/src/features/tasks/widgets/filter_bar.dart';
 import 'package:taskho/src/features/tasks/widgets/task_table.dart';
 import 'package:taskho/src/features/tasks/widgets/title_and_logo.dart';
 import 'package:taskho/src/features/tasks/widgets/tools_button_list.dart';
+import 'package:taskho/src/features/tasks/widgets/task_detail_dialog.dart';
 import '../../core/models/task.dart';
 
 const _tabs = ['inbox', 'today', 'week', 'later', 'waiting', 'done'];
@@ -140,23 +142,18 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
   }
 
   @override
-  void onAddTask(ref) {
-    // TODO: implement onAddTask
+  Future<void> onAddTask(WidgetRef ref) async {
+    final result = await TaskDetailDialog.show(ref.context);
+    if (result == null) return;
+    // TODO: Burada result verisini backend servisinizle entegre edin.
+    // Örnek:
+    // await ref.read(taskApiProvider).createTask(result.toJson());
+    // ref.invalidate(taskListProvider);
   }
 
   @override
-  void onExportCsv(ref) {
-    // TODO: implement onExportCsv
-  }
-
-  @override
-  void onExportPdf(ref) {
-    // TODO: implement onExportPdf
-  }
-
-  @override
-  void onSelectCustomer(ref) {
-    // TODO: implement onSelectCustomer
+  Future<void> onAddOrEditCustomer(WidgetRef ref) async {
+    await CustomerManageDialog.show(ref.context);
   }
 
   @override

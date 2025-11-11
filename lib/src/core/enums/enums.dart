@@ -3,3 +3,9 @@ enum ScreenType {
   fees,
   other,
 }
+
+enum TaskPriority {
+  low,
+  medium,
+  high,
+}
