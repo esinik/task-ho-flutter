@@ -20,8 +20,12 @@ class CustomerRepository {
     return data.map(Customer.fromJson).toList();
   }
 
-  Future<Customer> create(String name) async {
-    final res = await _dio.post('/customers', data: {'name': name});
+  Future<Customer> create(String name, {bool isPaid = false, double fee = 0}) async {
+    final res = await _dio.post('/customers', data: {
+      'name': name,
+      'isPaid': isPaid,
+      'fee': fee,
+    });
     return Customer.fromJson(res.data);
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/providers/auth_provider.dart';
+import '../../core/enums/router_enums.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -18,6 +19,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go(AppRoutes.tasks);
+            }
+          },
+          tooltip: 'Geri',
+        ),
         title: const Text('Ayarlar'),
       ),
       body: user == null
@@ -289,7 +301,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             onPressed: () async {
               await ref.read(authNotifierProvider.notifier).logout();
               if (context.mounted) {
-                context.go('/login');
+                context.go(AppRoutes.login);
               }
             },
             child: const Text('Çıkış Yap'),

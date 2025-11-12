@@ -7,8 +7,15 @@ import 'package:taskho/src/core/providers/providers.dart';
 class CustomerChange {
   final String? id;
   final String name;
+  final bool isPaid;
+  final double fee;
 
-  const CustomerChange({this.id, required this.name});
+  const CustomerChange({
+    this.id,
+    required this.name,
+    this.isPaid = false,
+    this.fee = 0,
+  });
 }
 
 class CustomerManageResult {
@@ -179,6 +186,8 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                         // Varsayılan alan isimleri:
                         final id = _getId(c);
                         final name = _getName(c);
+                        final isPaid = _getIsPaid(c);
+                        final fee = _getFee(c);
 
                         if (_deletedIds.contains(id)) continue;
 
@@ -191,18 +200,22 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                           _UiCustomer(
                             id: id,
                             name: updated?.name ?? name,
+                            isPaid: updated?.isPaid ?? isPaid,
+                            fee: updated?.fee ?? fee,
                             isEdited: updated != null,
                           ),
                         );
                       }
 
-                      // Yeni eklenen local kayıtlar (henüz backend’de olmayan)
+                      // Yeni eklenen local kayıtlar (henüz backend'de olmayan)
                       for (final created in _created) {
                         if (query.isNotEmpty && !created.name.toLowerCase().contains(query)) continue;
                         visible.add(
                           _UiCustomer(
                             id: created.id ?? created.name,
                             name: created.name,
+                            isPaid: created.isPaid,
+                            fee: created.fee,
                             isNew: true,
                           ),
                         );
@@ -243,12 +256,34 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    item.name,
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: const Color(0xFF111827),
-                                    ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.name,
+                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: const Color(0xFF111827),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            item.isPaid ? Icons.check_circle : Icons.cancel,
+                                            size: 14,
+                                            color: item.isPaid ? Colors.green : Colors.grey,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            item.isPaid ? 'Ücretli (₺${item.fee.toStringAsFixed(0)}/ay)' : 'Ücretsiz',
+                                            style: theme.textTheme.bodySmall?.copyWith(
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 if (item.isNew || item.isEdited)
@@ -338,23 +373,36 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
     return (c.name ?? c.title ?? c.toString()) as String;
   }
 
+  bool _getIsPaid(dynamic c) {
+    // ignore: avoid_dynamic_calls
+    return (c.isPaid ?? false) as bool;
+  }
+
+  double _getFee(dynamic c) {
+    // ignore: avoid_dynamic_calls
+    final feeValue = c.fee ?? 0;
+    if (feeValue is int) return feeValue.toDouble();
+    return (feeValue as num).toDouble();
+  }
+
   void _onAddNewCustomer() async {
-    final name = await _openNameDialog(
+    final result = await _openCustomerDialog(
       title: 'Yeni Müşteri',
-      hint: 'Örn. ACME LLC',
     );
-    if (name == null || name.trim().isEmpty) return;
+    if (result == null) return;
     setState(() {
-      _created.add(CustomerChange(name: name.trim()));
+      _created.add(result);
     });
   }
 
   void _onRename(_UiCustomer item) async {
-    final name = await _openNameDialog(
-      title: 'Müşteri Adını Düzenle',
-      initialValue: item.name,
+    final result = await _openCustomerDialog(
+      title: 'Müşteri Düzenle',
+      initialName: item.name,
+      initialIsPaid: item.isPaid,
+      initialFee: item.fee,
     );
-    if (name == null || name.trim().isEmpty || name == item.name) return;
+    if (result == null) return;
 
     setState(() {
       // Yeni eklenmişse direkt _created içinde güncelle
@@ -362,9 +410,19 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
         (c) => (c.id ?? c.name) == item.id && !(_deletedIds.contains(item.id)),
       );
       if (createdIndex != -1) {
-        _created[createdIndex] = CustomerChange(id: _created[createdIndex].id, name: name.trim());
+        _created[createdIndex] = CustomerChange(
+          id: _created[createdIndex].id,
+          name: result.name,
+          isPaid: result.isPaid,
+          fee: result.fee,
+        );
       } else {
-        _updatedById[item.id] = CustomerChange(id: item.id, name: name.trim());
+        _updatedById[item.id] = CustomerChange(
+          id: item.id,
+          name: result.name,
+          isPaid: result.isPaid,
+          fee: result.fee,
+        );
       }
     });
   }
@@ -406,41 +464,99 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
     });
   }
 
-  Future<String?> _openNameDialog({
+  Future<CustomerChange?> _openCustomerDialog({
     required String title,
-    String? initialValue,
-    String? hint,
+    String? initialName,
+    bool? initialIsPaid,
+    double? initialFee,
   }) async {
-    final controller = TextEditingController(text: initialValue ?? '');
-    final result = await showDialog<String>(
+    final nameController = TextEditingController(text: initialName ?? '');
+    bool isPaid = initialIsPaid ?? false;
+    final feeController = TextEditingController(
+      text: initialFee != null && initialFee > 0 ? initialFee.toStringAsFixed(0) : '',
+    );
+
+    final result = await showDialog<CustomerChange>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => AlertDialog(
-        title: Text(title),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: hint ?? 'Müşteri adı',
+      builder: (_) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: Text(title),
+          content: SizedBox(
+            width: 400,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Müşteri Adı'),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: nameController,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    hintText: 'Örn. ACME LLC',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                CheckboxListTile(
+                  title: const Text('Ücretli Müşteri'),
+                  value: isPaid,
+                  onChanged: (value) {
+                    setState(() => isPaid = value ?? false);
+                  },
+                  contentPadding: EdgeInsets.zero,
+                  controlAffinity: ListTileControlAffinity.leading,
+                ),
+                if (isPaid) ...[
+                  const SizedBox(height: 8),
+                  const Text('Aylık Ücret (₺)'),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: feeController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      hintText: '0',
+                      border: OutlineInputBorder(),
+                      prefixText: '₺ ',
+                    ),
+                  ),
+                ],
+              ],
+            ),
           ),
-          onSubmitted: (v) => Navigator.of(context).pop(v.trim().isEmpty ? null : v.trim()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(null),
+              child: const Text('İptal'),
+            ),
+            TextButton(
+              onPressed: () {
+                final name = nameController.text.trim();
+                if (name.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Müşteri adı boş olamaz')),
+                  );
+                  return;
+                }
+                final feeValue = isPaid ? (double.tryParse(feeController.text.trim()) ?? 0.0) : 0.0;
+                Navigator.of(context).pop(
+                  CustomerChange(
+                    name: name,
+                    isPaid: isPaid,
+                    fee: feeValue,
+                  ),
+                );
+              },
+              child: const Text('Kaydet'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(null),
-            child: const Text('İptal'),
-          ),
-          TextButton(
-            onPressed: () {
-              final v = controller.text.trim();
-              Navigator.of(context).pop(v.isEmpty ? null : v);
-            },
-            child: const Text('Kaydet'),
-          ),
-        ],
       ),
     );
-    controller.dispose();
+
+    nameController.dispose();
+    feeController.dispose();
     return result;
   }
 
@@ -460,12 +576,16 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
 class _UiCustomer {
   final String id;
   final String name;
+  final bool isPaid;
+  final double fee;
   final bool isNew;
   final bool isEdited;
 
   _UiCustomer({
     required this.id,
     required this.name,
+    this.isPaid = false,
+    this.fee = 0,
     this.isNew = false,
     this.isEdited = false,
   });

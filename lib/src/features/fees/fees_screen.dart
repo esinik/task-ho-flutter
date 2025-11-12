@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/repo/fees.dart';
 import '../../core/models/fee.dart';
+import '../../core/enums/router_enums.dart';
 
 final feeFilterCustomer = StateProvider<String?>((_) => null);
 final feeFilterMonth = StateProvider<String?>((_) => null);
@@ -29,7 +30,7 @@ class FeesScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings_outlined),
-            onPressed: () => context.go('/settings'),
+            onPressed: () => context.go(AppRoutes.settings),
             tooltip: 'Ayarlar',
           ),
         ],

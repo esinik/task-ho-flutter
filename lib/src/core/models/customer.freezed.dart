@@ -22,6 +22,8 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) {
 mixin _$Customer {
   String? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  bool get isPaid => throw _privateConstructorUsedError;
+  double get fee => throw _privateConstructorUsedError;
 
   /// Serializes this Customer to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +40,7 @@ abstract class $CustomerCopyWith<$Res> {
   factory $CustomerCopyWith(Customer value, $Res Function(Customer) then) =
       _$CustomerCopyWithImpl<$Res, Customer>;
   @useResult
-  $Res call({String? id, String name});
+  $Res call({String? id, String name, bool isPaid, double fee});
 }
 
 /// @nodoc
@@ -58,6 +60,8 @@ class _$CustomerCopyWithImpl<$Res, $Val extends Customer>
   $Res call({
     Object? id = freezed,
     Object? name = null,
+    Object? isPaid = null,
+    Object? fee = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -68,6 +72,14 @@ class _$CustomerCopyWithImpl<$Res, $Val extends Customer>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      isPaid: null == isPaid
+          ? _value.isPaid
+          : isPaid // ignore: cast_nullable_to_non_nullable
+              as bool,
+      fee: null == fee
+          ? _value.fee
+          : fee // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -80,7 +92,7 @@ abstract class _$$CustomerImplCopyWith<$Res>
       __$$CustomerImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? id, String name});
+  $Res call({String? id, String name, bool isPaid, double fee});
 }
 
 /// @nodoc
@@ -98,6 +110,8 @@ class __$$CustomerImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? name = null,
+    Object? isPaid = null,
+    Object? fee = null,
   }) {
     return _then(_$CustomerImpl(
       id: freezed == id
@@ -108,6 +122,14 @@ class __$$CustomerImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      isPaid: null == isPaid
+          ? _value.isPaid
+          : isPaid // ignore: cast_nullable_to_non_nullable
+              as bool,
+      fee: null == fee
+          ? _value.fee
+          : fee // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -115,7 +137,8 @@ class __$$CustomerImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CustomerImpl implements _Customer {
-  const _$CustomerImpl({this.id, required this.name});
+  const _$CustomerImpl(
+      {this.id, required this.name, this.isPaid = false, this.fee = 0});
 
   factory _$CustomerImpl.fromJson(Map<String, dynamic> json) =>
       _$$CustomerImplFromJson(json);
@@ -124,10 +147,16 @@ class _$CustomerImpl implements _Customer {
   final String? id;
   @override
   final String name;
+  @override
+  @JsonKey()
+  final bool isPaid;
+  @override
+  @JsonKey()
+  final double fee;
 
   @override
   String toString() {
-    return 'Customer(id: $id, name: $name)';
+    return 'Customer(id: $id, name: $name, isPaid: $isPaid, fee: $fee)';
   }
 
   @override
@@ -136,12 +165,14 @@ class _$CustomerImpl implements _Customer {
         (other.runtimeType == runtimeType &&
             other is _$CustomerImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.isPaid, isPaid) || other.isPaid == isPaid) &&
+            (identical(other.fee, fee) || other.fee == fee));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode => Object.hash(runtimeType, id, name, isPaid, fee);
 
   /// Create a copy of Customer
   /// with the given fields replaced by the non-null parameter values.
@@ -160,8 +191,11 @@ class _$CustomerImpl implements _Customer {
 }
 
 abstract class _Customer implements Customer {
-  const factory _Customer({final String? id, required final String name}) =
-      _$CustomerImpl;
+  const factory _Customer(
+      {final String? id,
+      required final String name,
+      final bool isPaid,
+      final double fee}) = _$CustomerImpl;
 
   factory _Customer.fromJson(Map<String, dynamic> json) =
       _$CustomerImpl.fromJson;
@@ -170,6 +204,10 @@ abstract class _Customer implements Customer {
   String? get id;
   @override
   String get name;
+  @override
+  bool get isPaid;
+  @override
+  double get fee;
 
   /// Create a copy of Customer
   /// with the given fields replaced by the non-null parameter values.

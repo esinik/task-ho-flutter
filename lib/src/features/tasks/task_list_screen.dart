@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taskho/src/core/enums/enums.dart';
+import 'package:taskho/src/core/enums/router_enums.dart';
 import 'package:taskho/src/core/providers/providers.dart';
 import 'package:taskho/src/features/tasks/widgets/customer_manager_dialog.dart';
 import 'package:taskho/src/features/tasks/widgets/filter_bar.dart';
@@ -11,6 +12,7 @@ import 'package:taskho/src/features/tasks/widgets/tools_button_list.dart';
 import 'package:taskho/src/features/tasks/widgets/task_detail_dialog.dart';
 import '../../core/models/task.dart';
 import 'package:taskho/src/core/repo/tasks.dart';
+import 'package:taskho/src/core/repo/customers.dart';
 
 const _tabs = ['inbox', 'today', 'week', 'month', 'later', 'waiting', 'done'];
 
@@ -22,7 +24,24 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
     final tab = ref.watch(currentTabProvider);
     final tasks = ref.watch(taskListProvider);
 
+    // Fetch all tab counts on initial load
+    final allCounts = ref.watch(allTabCountsProvider);
+
     initProviderListeners(ref);
+
+    // Update all counts when allCounts loads
+    allCounts.whenData((counts) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(lastCountProvider.notifier).state = counts['inbox'] ?? 0;
+        ref.read(todayCountProvider.notifier).state = counts['today'] ?? 0;
+        ref.read(thisWeekCountProvider.notifier).state = counts['week'] ?? 0;
+        ref.read(thisMonthCountProvider.notifier).state = counts['month'] ?? 0;
+        ref.read(laterCountProvider.notifier).state = counts['later'] ?? 0;
+        ref.read(waitingCountProvider.notifier).state = counts['waiting'] ?? 0;
+        ref.read(doneCountProvider.notifier).state = counts['done'] ?? 0;
+      });
+    });
+
     final totalCount = ref.watch(lastCountProvider);
     final todayCount = ref.watch(todayCountProvider);
     final thisWeekCount = ref.watch(thisWeekCountProvider);
@@ -64,9 +83,6 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
                     NavigationRailDestination(
                         icon: Icon(Icons.calendar_month_outlined),
                         label: Text('This Month: ${ref.watch(thisMonthCountProvider)}')),
-                    NavigationRailDestination(
-                        icon: Icon(Icons.calendar_month_outlined),
-                        label: Text('Prev Months: ${ref.watch(prevMonthsCountProvider)}')),
                     NavigationRailDestination(icon: Icon(Icons.schedule_outlined), label: Text('Later: $laterCount')),
                     NavigationRailDestination(
                         icon: Icon(Icons.hourglass_top_outlined), label: Text('Waiting: $waitingCount')),
@@ -119,7 +135,7 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
         Spacer(),
         IconButton(
           icon: const Icon(Icons.settings_outlined),
-          onPressed: () => context.go('/settings'),
+          onPressed: () => context.push(AppRoutes.settings),
           tooltip: 'Ayarlar',
         ),
         const SizedBox(width: 8),
@@ -202,7 +218,39 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
 
   @override
   Future<void> onAddOrEditCustomer(WidgetRef ref) async {
-    await CustomerManageDialog.show(ref.context);
+    final result = await CustomerManageDialog.show(ref.context);
+    if (result == null || !result.hasChanges) return;
+
+    final repo = ref.read(customerRepositoryProvider);
+
+    // Yeni müşterileri oluştur
+    for (final customer in result.created) {
+      await repo.create(
+        customer.name,
+        isPaid: customer.isPaid,
+        fee: customer.fee,
+      );
+    }
+
+    // Güncellenmiş müşteriler için de create çağrılıyor (backend'de aynı name varsa update ediyor)
+    for (final customer in result.updated) {
+      await repo.create(
+        customer.name,
+        isPaid: customer.isPaid,
+        fee: customer.fee,
+      );
+    }
+
+    // Silme işlemleri için şu an backend endpoint yok, gerekirse eklenebilir
+    // for (final customer in result.deleted) {
+    //   if (customer.id != null) {
+    //     await repo.delete(customer.id!);
+    //   }
+    // }
+
+    // Müşteri listesini yenile
+    ref.invalidate(customerListProvider);
+    ref.invalidate(customerOptionsProvider);
   }
 
   @override

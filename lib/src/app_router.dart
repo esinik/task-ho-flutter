@@ -7,12 +7,13 @@ import 'features/auth/register_screen.dart';
 import 'features/auth/settings_screen.dart';
 import 'features/auth/reset_password_screen.dart';
 import 'core/providers/auth_provider.dart';
+import 'core/enums/router_enums.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authNotifierProvider);
 
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: AppRoutes.login,
     redirect: (context, state) {
       final isLoggedIn = authState.when(
         data: (user) => user != null,
@@ -20,45 +21,45 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         error: (_, __) => false,
       );
 
-      final isLoggingIn = state.matchedLocation == '/login' ||
-          state.matchedLocation == '/register' ||
-          state.matchedLocation == '/reset-password';
+      final isLoggingIn = state.matchedLocation == AppRoutes.login ||
+          state.matchedLocation == AppRoutes.register ||
+          state.matchedLocation == AppRoutes.resetPassword;
 
       // If not logged in and not on auth pages, redirect to login
       if (!isLoggedIn && !isLoggingIn) {
-        return '/login';
+        return AppRoutes.login;
       }
 
       // If logged in and on auth pages, redirect to tasks
       if (isLoggedIn && isLoggingIn) {
-        return '/tasks';
+        return AppRoutes.tasks;
       }
 
       return null;
     },
     routes: [
       GoRoute(
-        path: '/login',
+        path: AppRoutes.login,
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
-        path: '/register',
+        path: AppRoutes.register,
         builder: (context, state) => const RegisterScreen(),
       ),
       GoRoute(
-        path: '/reset-password',
+        path: AppRoutes.resetPassword,
         builder: (context, state) => const ResetPasswordScreen(),
       ),
       GoRoute(
-        path: '/tasks',
+        path: AppRoutes.tasks,
         builder: (context, state) => const TaskListScreen(),
       ),
       GoRoute(
-        path: '/fees',
+        path: AppRoutes.fees,
         builder: (context, state) => const FeesScreen(),
       ),
       GoRoute(
-        path: '/settings',
+        path: AppRoutes.settings,
         builder: (context, state) => const SettingsScreen(),
       ),
     ],
@@ -67,30 +68,30 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
 // Keep the old appRouter for backward compatibility
 final appRouter = GoRouter(
-  initialLocation: '/login',
+  initialLocation: AppRoutes.login,
   routes: [
     GoRoute(
-      path: '/login',
+      path: AppRoutes.login,
       builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
-      path: '/register',
+      path: AppRoutes.register,
       builder: (context, state) => const RegisterScreen(),
     ),
     GoRoute(
-      path: '/reset-password',
+      path: AppRoutes.resetPassword,
       builder: (context, state) => const ResetPasswordScreen(),
     ),
     GoRoute(
-      path: '/tasks',
+      path: AppRoutes.tasks,
       builder: (context, state) => const TaskListScreen(),
     ),
     GoRoute(
-      path: '/fees',
+      path: AppRoutes.fees,
       builder: (context, state) => const FeesScreen(),
     ),
     GoRoute(
-      path: '/settings',
+      path: AppRoutes.settings,
       builder: (context, state) => const SettingsScreen(),
     ),
   ],

@@ -19,22 +19,11 @@ final taskListProvider = FutureProvider.autoDispose<List<Task>>((ref) async {
 
 // Distinct customer options derived from the full customer list in DB
 final customerOptionsProvider = FutureProvider.autoDispose<List<String>>((ref) async {
-  final customers = await ref
-      .read(customerRepositoryProvider)
-      .list()
-      .then((list) => list.map((c) => Customer(name: c.name)).toList());
+  final customers = await ref.read(customerRepositoryProvider).list();
 
   final set = <String>{};
   for (final c in customers) {
-    // handle either String list or model objects with a `name` field
-    String name;
-    try {
-      // ignore: avoid_dynamic_calls
-      name = c.name.toString();
-    } catch (_) {
-      name = c.toString();
-    }
-    name = name.trim();
+    final name = c.name.trim();
     if (name.isNotEmpty) set.add(name);
   }
   final list = set.toList()..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
@@ -57,3 +46,30 @@ final waitingCountProvider = StateProvider<int>((ref) => 0);
 final doneCountProvider = StateProvider<int>((ref) => 0);
 
 final screenTypeProvider = StateProvider<ScreenType>((ref) => ScreenType.tasks);
+
+// Provider that fetches all tab counts at once
+final allTabCountsProvider = FutureProvider.autoDispose<Map<String, int>>((ref) async {
+  final repo = ref.read(taskRepositoryProvider);
+  final counts = <String, int>{};
+
+  // Fetch counts for all tabs in parallel
+  final results = await Future.wait([
+    repo.list(tab: 'inbox'),
+    repo.list(tab: 'today'),
+    repo.list(tab: 'week'),
+    repo.list(tab: 'month'),
+    repo.list(tab: 'later'),
+    repo.list(tab: 'waiting'),
+    repo.list(tab: 'done'),
+  ]);
+
+  counts['inbox'] = results[0].length;
+  counts['today'] = results[1].length;
+  counts['week'] = results[2].length;
+  counts['month'] = results[3].length;
+  counts['later'] = results[4].length;
+  counts['waiting'] = results[5].length;
+  counts['done'] = results[6].length;
+
+  return counts;
+});

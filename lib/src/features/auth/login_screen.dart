@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/providers/auth_provider.dart';
+import '../../core/enums/router_enums.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -38,7 +39,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           );
 
       if (mounted) {
-        context.go('/tasks');
+        context.go(AppRoutes.tasks);
       }
     } catch (e) {
       if (mounted) {
@@ -174,7 +175,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         const Spacer(),
                         TextButton(
                           onPressed: () {
-                            context.push('/reset-password');
+                            context.push(AppRoutes.resetPassword);
                           },
                           child: Text(
                             'Şifremi unuttum',
@@ -225,7 +226,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            context.push('/register');
+                            context.push(AppRoutes.register);
                           },
                           child: Text(
                             'Kayıt olun',
