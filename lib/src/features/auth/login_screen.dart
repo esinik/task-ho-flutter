@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../core/enums/router_enums.dart';
 
@@ -45,7 +46,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Giriş başarısız: ${e.toString()}'),
+            content: Text('${AppLocalizations.of(context)!.loginFailed}: ${e.toString()}'),
             backgroundColor: Colors.red,
           ),
         );
@@ -60,6 +61,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: Center(
@@ -84,7 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'TaskHo',
+                      l10n.appTitle,
                       textAlign: TextAlign.center,
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
@@ -93,7 +95,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Organize your work, own your time',
+                      l10n.appSubtitle,
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
@@ -106,7 +108,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        labelText: 'E-posta',
+                        labelText: l10n.email,
                         prefixIcon: const Icon(Icons.email_outlined),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -114,10 +116,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'E-posta gerekli';
+                          return l10n.errorRequired;
                         }
                         if (!value.contains('@')) {
-                          return 'Geçerli bir e-posta girin';
+                          return l10n.errorEmail;
                         }
                         return null;
                       },
@@ -129,7 +131,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       controller: _passwordController,
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
-                        labelText: 'Şifre',
+                        labelText: l10n.password,
                         prefixIcon: const Icon(Icons.lock_outlined),
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -147,10 +149,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Şifre gerekli';
+                          return l10n.errorRequired;
                         }
                         if (value.length < 6) {
-                          return 'Şifre en az 6 karakter olmalı';
+                          return l10n.errorPasswordLength;
                         }
                         return null;
                       },
@@ -169,7 +171,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           },
                         ),
                         Text(
-                          'Beni hatırla',
+                          l10n.rememberMe,
                           style: theme.textTheme.bodyMedium,
                         ),
                         const Spacer(),
@@ -178,7 +180,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             context.push(AppRoutes.resetPassword);
                           },
                           child: Text(
-                            'Şifremi unuttum',
+                            l10n.forgotPassword,
                             style: TextStyle(
                               color: theme.colorScheme.primary,
                             ),
@@ -206,9 +208,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 color: Colors.white,
                               ),
                             )
-                          : const Text(
-                              'Giriş Yap',
-                              style: TextStyle(
+                          : Text(
+                              l10n.login,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -221,7 +223,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Hesabınız yok mu? ',
+                          l10n.dontHaveAccount,
                           style: theme.textTheme.bodyMedium,
                         ),
                         TextButton(
@@ -229,7 +231,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             context.push(AppRoutes.register);
                           },
                           child: Text(
-                            'Kayıt olun',
+                            l10n.signUp,
                             style: TextStyle(
                               color: theme.colorScheme.primary,
                               fontWeight: FontWeight.bold,

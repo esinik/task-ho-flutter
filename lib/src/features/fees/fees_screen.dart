@@ -155,7 +155,7 @@ class _TextFilter extends ConsumerWidget {
 }
 
 class _FeeDialog extends ConsumerStatefulWidget {
-  const _FeeDialog({Key? key}) : super(key: key);
+  const _FeeDialog();
 
   @override
   ConsumerState<_FeeDialog> createState() => _FeeDialogState();
@@ -204,7 +204,7 @@ class _FeeDialogState extends ConsumerState<_FeeDialog> {
                 amount: amt,
                 status: status.text.trim(),
                 note: note.text.trim()));
-            if (mounted) Navigator.pop(context, true);
+            if (context.mounted) Navigator.pop(context, true);
           },
           child: const Text('Kaydet'),
         ),

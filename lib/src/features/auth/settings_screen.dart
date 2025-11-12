@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../l10n/app_localizations.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import '../../core/providers/auth_provider.dart';
+import '../../core/providers/locale_provider.dart';
 import '../../core/enums/router_enums.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -16,6 +19,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Widget build(BuildContext context) {
     final user = ref.watch(currentUserProvider);
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -28,9 +32,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               context.go(AppRoutes.tasks);
             }
           },
-          tooltip: 'Geri',
+          tooltip: l10n.back,
         ),
-        title: const Text('Ayarlar'),
+        title: Text(l10n.settings),
       ),
       body: user == null
           ? const Center(child: CircularProgressIndicator())
@@ -71,7 +75,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         OutlinedButton.icon(
                           onPressed: () => _showEditProfileDialog(context, user),
                           icon: const Icon(Icons.edit_outlined),
-                          label: const Text('Profili Düzenle'),
+                          label: Text(l10n.editProfile),
                         ),
                       ],
                     ),
@@ -84,8 +88,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   child: Column(
                     children: [
                       ListTile(
+                        leading: const Icon(Icons.language),
+                        title: Text(l10n.language),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () => _showLanguageDialog(context),
+                      ),
+                      const Divider(height: 1),
+                      ListTile(
                         leading: const Icon(Icons.lock_outline),
-                        title: const Text('Şifre Değiştir'),
+                        title: Text(l10n.changePassword),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () => _showChangePasswordDialog(context),
                       ),
@@ -102,7 +113,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       ListTile(
                         leading: Icon(Icons.logout, color: theme.colorScheme.error),
                         title: Text(
-                          'Çıkış Yap',
+                          l10n.logout,
                           style: TextStyle(color: theme.colorScheme.error),
                         ),
                         trailing: const Icon(Icons.chevron_right),
@@ -117,29 +128,30 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _showEditProfileDialog(BuildContext context, user) {
+    final l10n = AppLocalizations.of(context)!;
     final nameController = TextEditingController(text: user.name);
     final emailController = TextEditingController(text: user.email);
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Profili Düzenle'),
+        title: Text(l10n.editProfile),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: nameController,
-              decoration: const InputDecoration(
-                labelText: 'Ad Soyad',
-                prefixIcon: Icon(Icons.person_outlined),
+              decoration: InputDecoration(
+                labelText: l10n.name,
+                prefixIcon: const Icon(Icons.person_outlined),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: emailController,
-              decoration: const InputDecoration(
-                labelText: 'E-posta',
-                prefixIcon: Icon(Icons.email_outlined),
+              decoration: InputDecoration(
+                labelText: l10n.email,
+                prefixIcon: const Icon(Icons.email_outlined),
               ),
             ),
           ],
@@ -147,7 +159,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('İptal'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -159,21 +171,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 if (context.mounted) {
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Profil güncellendi')),
+                    SnackBar(content: Text(l10n.profileUpdated)),
                   );
                 }
               } catch (e) {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Hata: ${e.toString()}'),
+                      content: Text('${l10n.error}: ${e.toString()}'),
                       backgroundColor: Colors.red,
                     ),
                   );
                 }
               }
             },
-            child: const Text('Kaydet'),
+            child: Text(l10n.save),
           ),
         ],
       ),
@@ -181,6 +193,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _showChangePasswordDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final formKey = GlobalKey<FormState>();
     final currentPasswordController = TextEditingController();
     final newPasswordController = TextEditingController();
@@ -189,7 +202,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Şifre Değiştir'),
+        title: Text(l10n.changePassword),
         content: Form(
           key: formKey,
           child: Column(
@@ -198,13 +211,13 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               TextFormField(
                 controller: currentPasswordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Mevcut Şifre',
-                  prefixIcon: Icon(Icons.lock_outlined),
+                decoration: InputDecoration(
+                  labelText: l10n.currentPassword,
+                  prefixIcon: const Icon(Icons.lock_outlined),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Mevcut şifre gerekli';
+                    return l10n.errorCurrentPasswordRequired;
                   }
                   return null;
                 },
@@ -213,16 +226,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               TextFormField(
                 controller: newPasswordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Yeni Şifre',
-                  prefixIcon: Icon(Icons.lock_outlined),
+                decoration: InputDecoration(
+                  labelText: l10n.newPassword,
+                  prefixIcon: const Icon(Icons.lock_outlined),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Yeni şifre gerekli';
+                    return l10n.errorNewPasswordRequired;
                   }
                   if (value.length < 6) {
-                    return 'Şifre en az 6 karakter olmalı';
+                    return l10n.errorPasswordLength;
                   }
                   return null;
                 },
@@ -231,16 +244,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               TextFormField(
                 controller: confirmPasswordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Yeni Şifre Tekrar',
-                  prefixIcon: Icon(Icons.lock_outlined),
+                decoration: InputDecoration(
+                  labelText: l10n.confirmPassword,
+                  prefixIcon: const Icon(Icons.lock_outlined),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Şifre tekrar gerekli';
+                    return l10n.confirmPasswordRequired;
                   }
                   if (value != newPasswordController.text) {
-                    return 'Şifreler eşleşmiyor';
+                    return l10n.errorPasswordMismatch;
                   }
                   return null;
                 },
@@ -251,7 +264,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('İptal'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -265,37 +278,91 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 if (context.mounted) {
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Şifre değiştirildi')),
+                    SnackBar(content: Text(l10n.passwordChanged)),
                   );
                 }
               } catch (e) {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Hata: ${e.toString()}'),
+                      content: Text('${l10n.error}: ${e.toString()}'),
                       backgroundColor: Colors.red,
                     ),
                   );
                 }
               }
             },
-            child: const Text('Değiştir'),
+            child: Text(l10n.change),
           ),
         ],
       ),
     );
   }
 
+  void _showLanguageDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final currentLocale = ref.read(localeProvider);
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => Consumer(
+        builder: (context, ref, child) {
+          return AlertDialog(
+            title: Text(l10n.languageSelection),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  title: const Text('English'),
+                  trailing: currentLocale.languageCode == 'en' ? const Icon(Icons.check, color: Colors.blue) : null,
+                  onTap: () async {
+                    await ref.read(localeProvider.notifier).setLocale(const Locale('en'));
+                    if (dialogContext.mounted) Phoenix.rebirth(dialogContext);
+                  },
+                ),
+                ListTile(
+                  title: const Text('Türkçe'),
+                  trailing: currentLocale.languageCode == 'tr' ? const Icon(Icons.check, color: Colors.blue) : null,
+                  onTap: () async {
+                    await ref.read(localeProvider.notifier).setLocale(const Locale('tr'));
+                    if (dialogContext.mounted) Phoenix.rebirth(dialogContext);
+                  },
+                ),
+                ListTile(
+                  title: const Text('Shqip'),
+                  trailing: currentLocale.languageCode == 'sq' ? const Icon(Icons.check, color: Colors.blue) : null,
+                  onTap: () async {
+                    await ref.read(localeProvider.notifier).setLocale(const Locale('sq'));
+                    if (dialogContext.mounted) Phoenix.rebirth(dialogContext);
+                  },
+                ),
+                ListTile(
+                  title: const Text('Српски'),
+                  trailing: currentLocale.languageCode == 'sr' ? const Icon(Icons.check, color: Colors.blue) : null,
+                  onTap: () async {
+                    await ref.read(localeProvider.notifier).setLocale(const Locale('sr'));
+                    if (dialogContext.mounted) Phoenix.rebirth(dialogContext);
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   void _showLogoutDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Çıkış Yap'),
-        content: const Text('Çıkış yapmak istediğinize emin misiniz?'),
+        title: Text(l10n.logout),
+        content: Text(l10n.confirmLogout),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('İptal'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             onPressed: () async {
@@ -304,7 +371,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 context.go(AppRoutes.login);
               }
             },
-            child: const Text('Çıkış Yap'),
+            child: Text(l10n.logout),
           ),
         ],
       ),

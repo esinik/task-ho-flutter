@@ -5,7 +5,7 @@ import 'package:taskho/src/core/repo/tasks.dart';
 
 class EditTaskDialog extends ConsumerStatefulWidget {
   final Task task;
-  const EditTaskDialog({required this.task});
+  const EditTaskDialog({super.key, required this.task});
 
   @override
   ConsumerState<EditTaskDialog> createState() => _EditTaskDialogState();
@@ -67,7 +67,7 @@ class _EditTaskDialogState extends ConsumerState<EditTaskDialog> {
               'due': due.text.trim(),
               'priority': priority,
             });
-            if (mounted) Navigator.pop(context);
+            if (context.mounted) Navigator.pop(context);
           },
           child: const Text('Kaydet'),
         ),

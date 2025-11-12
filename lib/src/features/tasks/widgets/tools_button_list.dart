@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../l10n/app_localizations.dart';
 
 /// Swift protocol benzeri bir delege yapısı.
 /// Bu interface'i implement eden sınıflar, buton aksiyonlarını zorunlu olarak sağlar.
@@ -22,12 +23,13 @@ class ToolsButtonsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       children: [
         FilledButton.icon(
           onPressed: () => delegate.onAddTask(ref),
           icon: const Icon(Icons.add),
-          label: const Text('Görev Ekle'),
+          label: Text(l10n.addTask),
         ),
         const SizedBox(width: 8),
         FilledButton.icon(
@@ -36,13 +38,13 @@ class ToolsButtonsWidget extends ConsumerWidget {
           ),
           onPressed: () => delegate.onShowAccountantFees(ref),
           icon: const Icon(Icons.account_balance),
-          label: const Text('Muhasebe Ücretleri'),
+          label: Text(l10n.fees),
         ),
         const SizedBox(width: 8),
         TextButton.icon(
           onPressed: () => delegate.onAddOrEditCustomer(ref),
           icon: const Icon(Icons.person_add_alt_1_outlined),
-          label: const Text('Müşteri Ekle/Düzenle'),
+          label: Text(l10n.addEditCustomer),
           style: TextButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.0),

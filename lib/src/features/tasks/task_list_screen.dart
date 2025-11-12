@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taskho/src/core/enums/enums.dart';
+import '../../../l10n/app_localizations.dart';
 import 'package:taskho/src/core/enums/router_enums.dart';
 import 'package:taskho/src/core/providers/providers.dart';
 import 'package:taskho/src/features/tasks/widgets/customer_manager_dialog.dart';
@@ -49,10 +50,11 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
     final waitingCount = ref.watch(waitingCountProvider);
     final doneCount = ref.watch(doneCountProvider);
 
+    final l10n = AppLocalizations.of(context)!;
     final filteredTasks = tasks.when(
       data: (rows) => TaskTable(rows: rows),
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, st) => Center(child: Text('Error: $e')),
+      error: (e, st) => Center(child: Text('${l10n.error}: $e')),
     );
 
     return Scaffold(
@@ -60,7 +62,7 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
       body: Column(
         children: [
           headerBar(context),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Expanded(
             child: Row(
               children: [
@@ -74,19 +76,23 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
                   labelType: NavigationRailLabelType.all,
                   destinations: [
                     NavigationRailDestination(
-                      icon: Icon(Icons.inbox_outlined),
-                      label: Text('Inbox: $totalCount'),
+                      icon: const Icon(Icons.inbox_outlined),
+                      label: Text('${l10n.tabInbox}: $totalCount'),
                     ),
-                    NavigationRailDestination(icon: Icon(Icons.today_outlined), label: Text('Today: $todayCount')),
                     NavigationRailDestination(
-                        icon: Icon(Icons.view_week_outlined), label: Text('This Week: $thisWeekCount')),
+                        icon: const Icon(Icons.today_outlined), label: Text('${l10n.tabToday}: $todayCount')),
                     NavigationRailDestination(
-                        icon: Icon(Icons.calendar_month_outlined),
-                        label: Text('This Month: ${ref.watch(thisMonthCountProvider)}')),
-                    NavigationRailDestination(icon: Icon(Icons.schedule_outlined), label: Text('Later: $laterCount')),
+                        icon: const Icon(Icons.view_week_outlined), label: Text('${l10n.tabWeek}: $thisWeekCount')),
                     NavigationRailDestination(
-                        icon: Icon(Icons.hourglass_top_outlined), label: Text('Waiting: $waitingCount')),
-                    NavigationRailDestination(icon: Icon(Icons.check_circle_outline), label: Text('Done: $doneCount')),
+                        icon: const Icon(Icons.calendar_month_outlined),
+                        label: Text('${l10n.tabMonth}: ${ref.watch(thisMonthCountProvider)}')),
+                    NavigationRailDestination(
+                        icon: const Icon(Icons.schedule_outlined), label: Text('${l10n.tabLater}: $laterCount')),
+                    NavigationRailDestination(
+                        icon: const Icon(Icons.hourglass_top_outlined),
+                        label: Text('${l10n.tabWaiting}: $waitingCount')),
+                    NavigationRailDestination(
+                        icon: const Icon(Icons.check_circle_outline), label: Text('${l10n.tabDone}: $doneCount')),
                   ],
                 ),
                 const VerticalDivider(width: 1),
@@ -129,14 +135,15 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
   }
 
   headerBar(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       children: [
-        TitleAndLogoWidget(),
-        Spacer(),
+        const TitleAndLogoWidget(),
+        const Spacer(),
         IconButton(
           icon: const Icon(Icons.settings_outlined),
           onPressed: () => context.push(AppRoutes.settings),
-          tooltip: 'Ayarlar',
+          tooltip: l10n.settings,
         ),
         const SizedBox(width: 8),
         ToolsButtonsWidget(delegate: this),
@@ -145,10 +152,11 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
   }
 
   rightSide(int totalCount, String tab, Widget filteredTasks, WidgetRef ref) {
+    final l10n = AppLocalizations.of(ref.context)!;
     final screenType = ref.watch(screenTypeProvider);
 
     return screenType == ScreenType.fees
-        ? SizedBox.shrink()
+        ? const SizedBox.shrink()
         : Expanded(
             child: Column(
               children: [
@@ -160,13 +168,13 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(tab.toUpperCase()),
-                        Text("$totalCount Kayıt"),
+                        Text(_localizedTabTitle(l10n, tab)),
+                        Text(l10n.recordsCount(totalCount)),
                       ],
                     ),
                   ),
                 ),
-                FiltersBar(),
+                const FiltersBar(),
                 Expanded(child: filteredTasks),
               ],
             ),
@@ -267,5 +275,26 @@ String _priorityToString(TaskPriority p) {
       return 'Medium';
     case TaskPriority.high:
       return 'High';
+  }
+}
+
+String _localizedTabTitle(AppLocalizations l10n, String tab) {
+  switch (tab) {
+    case 'inbox':
+      return l10n.tabInbox;
+    case 'today':
+      return l10n.tabToday;
+    case 'week':
+      return l10n.tabWeek;
+    case 'month':
+      return l10n.tabMonth;
+    case 'later':
+      return l10n.tabLater;
+    case 'waiting':
+      return l10n.tabWaiting;
+    case 'done':
+      return l10n.tabDone;
+    default:
+      return tab.toUpperCase();
   }
 }

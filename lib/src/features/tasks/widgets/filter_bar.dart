@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskho/src/core/providers/providers.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class FiltersBar extends ConsumerWidget {
+  const FiltersBar({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final customer = ref.watch(filterCustomerProvider);
     final typ = ref.watch(filterTypeProvider);
 
-    List<String> _customerList = ref.watch(customerOptionsProvider).when(
+    List<String> customerList = ref.watch(customerOptionsProvider).when(
           data: (list) => list,
           loading: () => [],
           error: (_, __) => [],
         );
+
+    final l10n = AppLocalizations.of(context)!;
 
     return Material(
       color: Theme.of(context).colorScheme.surface,
@@ -25,16 +30,16 @@ class FiltersBar extends ConsumerWidget {
                 isDense: true,
                 initialValue: customer,
                 items: [
-                  const DropdownMenuItem(value: null, child: Text('Müşteri (tümü)')),
-                  for (final c in _customerList) DropdownMenuItem(value: c, child: Text(c)),
+                  DropdownMenuItem(value: null, child: Text('${l10n.filterCustomer} (${l10n.all})')),
+                  for (final c in customerList) DropdownMenuItem(value: c, child: Text(c)),
                 ],
                 onChanged: (v) {
                   ref.read(filterCustomerProvider.notifier).state = v;
                   ref.invalidate(taskListProvider);
                 },
-                decoration: const InputDecoration(
-                  labelText: 'Müşteri',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: l10n.filterCustomer,
+                  border: const OutlineInputBorder(),
                 ),
               ),
             ),
@@ -43,19 +48,28 @@ class FiltersBar extends ConsumerWidget {
               child: DropdownButtonFormField<String?>(
                 isDense: true,
                 initialValue: typ,
-                items: const [
-                  DropdownMenuItem(value: null, child: Text('Görev tipi (tümü)')),
-                  DropdownMenuItem(value: 'Fatura', child: Text('Fatura')),
-                  DropdownMenuItem(value: 'Rapor', child: Text('Rapor')),
-                  DropdownMenuItem(value: 'Ödeme', child: Text('Ödeme')),
-                ],
+                items: [
+                  DropdownMenuItem(value: null, child: Text('${l10n.filterTaskType} (${l10n.all})')),
+                  const DropdownMenuItem(value: 'Fatura', child: Text('')), // label set below
+                  const DropdownMenuItem(value: 'Rapor', child: Text('')),
+                  const DropdownMenuItem(value: 'Ödeme', child: Text('')),
+                ].map((item) {
+                  if (item.value == 'Fatura') {
+                    return DropdownMenuItem(value: item.value, child: Text(l10n.taskTypeInvoice));
+                  } else if (item.value == 'Rapor') {
+                    return DropdownMenuItem(value: item.value, child: Text(l10n.taskTypeReport));
+                  } else if (item.value == 'Ödeme') {
+                    return DropdownMenuItem(value: item.value, child: Text(l10n.taskTypePayment));
+                  }
+                  return item;
+                }).toList(),
                 onChanged: (v) {
                   ref.read(filterTypeProvider.notifier).state = v;
                   ref.invalidate(taskListProvider);
                 },
-                decoration: const InputDecoration(
-                  labelText: 'Görev tipi',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: l10n.filterTaskType,
+                  border: const OutlineInputBorder(),
                 ),
               ),
             ),
@@ -66,7 +80,7 @@ class FiltersBar extends ConsumerWidget {
                 ref.read(filterTypeProvider.notifier).state = null;
                 ref.invalidate(taskListProvider);
               },
-              child: const Text('Filtreyi Temizle'),
+              child: Text(l10n.clearFilter),
             ),
           ],
         ),

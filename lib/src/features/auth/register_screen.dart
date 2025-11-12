@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../core/enums/router_enums.dart';
 
@@ -51,7 +52,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Kayıt başarısız: ${e.toString()}'),
+            content: Text(AppLocalizations.of(context)!.registerFailed),
             backgroundColor: Colors.red,
           ),
         );
@@ -66,6 +67,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -91,7 +93,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     children: [
                       // Title
                       Text(
-                        'Hesap Oluştur',
+                        l10n.register,
                         textAlign: TextAlign.center,
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
@@ -104,7 +106,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       TextFormField(
                         controller: _nameController,
                         decoration: InputDecoration(
-                          labelText: 'Ad Soyad',
+                          labelText: l10n.name,
                           prefixIcon: const Icon(Icons.person_outlined),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -112,7 +114,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Ad soyad gerekli';
+                            return l10n.errorRequired;
                           }
                           return null;
                         },
@@ -124,7 +126,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                          labelText: 'E-posta',
+                          labelText: l10n.email,
                           prefixIcon: const Icon(Icons.email_outlined),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -132,10 +134,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'E-posta gerekli';
+                            return l10n.errorRequired;
                           }
                           if (!value.contains('@')) {
-                            return 'Geçerli bir e-posta girin';
+                            return l10n.errorEmail;
                           }
                           return null;
                         },
@@ -147,7 +149,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         controller: _passwordController,
                         obscureText: _obscurePassword,
                         decoration: InputDecoration(
-                          labelText: 'Şifre',
+                          labelText: l10n.password,
                           prefixIcon: const Icon(Icons.lock_outlined),
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -165,10 +167,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Şifre gerekli';
+                            return l10n.errorRequired;
                           }
                           if (value.length < 6) {
-                            return 'Şifre en az 6 karakter olmalı';
+                            return l10n.errorPasswordLength;
                           }
                           return null;
                         },
@@ -180,7 +182,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         controller: _confirmPasswordController,
                         obscureText: _obscureConfirmPassword,
                         decoration: InputDecoration(
-                          labelText: 'Şifre Tekrar',
+                          labelText: l10n.confirmPassword,
                           prefixIcon: const Icon(Icons.lock_outlined),
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -198,10 +200,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Şifre tekrar gerekli';
+                            return l10n.errorRequired;
                           }
                           if (value != _passwordController.text) {
-                            return 'Şifreler eşleşmiyor';
+                            return l10n.errorPasswordMismatch;
                           }
                           return null;
                         },
@@ -220,7 +222,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             },
                           ),
                           Text(
-                            'Beni hatırla',
+                            l10n.rememberMe,
                             style: theme.textTheme.bodyMedium,
                           ),
                         ],
@@ -245,9 +247,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   color: Colors.white,
                                 ),
                               )
-                            : const Text(
-                                'Kayıt Ol',
-                                style: TextStyle(
+                            : Text(
+                                l10n.register,
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -260,7 +262,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Zaten hesabınız var mı? ',
+                            l10n.alreadyHaveAccount,
                             style: theme.textTheme.bodyMedium,
                           ),
                           TextButton(
@@ -268,7 +270,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               context.pop();
                             },
                             child: Text(
-                              'Giriş yapın',
+                              l10n.signIn,
                               style: TextStyle(
                                 color: theme.colorScheme.primary,
                                 fontWeight: FontWeight.bold,

@@ -1,0 +1,444 @@
+{
+  "@@locale": "en",
+  "appTitle": "TaskHo",
+  "@appTitle": {
+    "description": "Localization for appTitle"
+  },
+  "appSubtitle": "Organize your work, own your time",
+  "@appSubtitle": {
+    "description": "Localization for appSubtitle"
+  },
+  "login": "Login",
+  "@login": {
+    "description": "Localization for login"
+  },
+  "register": "Register",
+  "@register": {
+    "description": "Localization for register"
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Localization for logout"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Localization for email"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Localization for password"
+  },
+  "name": "Full Name",
+  "@name": {
+    "description": "Localization for name"
+  },
+  "rememberMe": "Remember me",
+  "@rememberMe": {
+    "description": "Localization for rememberMe"
+  },
+  "forgotPassword": "Forgot password",
+  "@forgotPassword": {
+    "description": "Localization for forgotPassword"
+  },
+  "dontHaveAccount": "Don't have an account? ",
+  "@dontHaveAccount": {
+    "description": "Localization for dontHaveAccount"
+  },
+  "alreadyHaveAccount": "Already have an account? ",
+  "@alreadyHaveAccount": {
+    "description": "Localization for alreadyHaveAccount"
+  },
+  "signUp": "Sign up",
+  "@signUp": {
+    "description": "Localization for signUp"
+  },
+  "signIn": "Sign in",
+  "@signIn": {
+    "description": "Localization for signIn"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Localization for settings"
+  },
+  "editProfile": "Edit Profile",
+  "@editProfile": {
+    "description": "Localization for editProfile"
+  },
+  "changePassword": "Change Password",
+  "@changePassword": {
+    "description": "Localization for changePassword"
+  },
+  "confirmLogout": "Are you sure you want to logout?",
+  "@confirmLogout": {
+    "description": "Localization for confirmLogout"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Localization for cancel"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Localization for save"
+  },
+  "update": "Update",
+  "@update": {
+    "description": "Localization for update"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Localization for delete"
+  },
+  "change": "Change",
+  "@change": {
+    "description": "Localization for change"
+  },
+  "currentPassword": "Current Password",
+  "@currentPassword": {
+    "description": "Localization for currentPassword"
+  },
+  "newPassword": "New Password",
+  "@newPassword": {
+    "description": "Localization for newPassword"
+  },
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Localization for confirmPassword"
+  },
+  "passwordChanged": "Password changed",
+  "@passwordChanged": {
+    "description": "Localization for passwordChanged"
+  },
+  "profileUpdated": "Profile updated",
+  "@profileUpdated": {
+    "description": "Localization for profileUpdated"
+  },
+  "resetPassword": "Reset Password",
+  "@resetPassword": {
+    "description": "Localization for resetPassword"
+  },
+  "sendResetCode": "Send Reset Code",
+  "@sendResetCode": {
+    "description": "Localization for sendResetCode"
+  },
+  "resetCode": "Reset Code",
+  "@resetCode": {
+    "description": "Localization for resetCode"
+  },
+  "resetCodeSent": "Reset code sent to your email",
+  "@resetCodeSent": {
+    "description": "Localization for resetCodeSent"
+  },
+  "passwordResetSuccess": "Password reset successfully",
+  "@passwordResetSuccess": {
+    "description": "Localization for passwordResetSuccess"
+  },
+  "tasks": "Tasks",
+  "@tasks": {
+    "description": "Localization for tasks"
+  },
+  "fees": "Accounting Fees",
+  "@fees": {
+    "description": "Localization for fees"
+  },
+  "customers": "Customers",
+  "@customers": {
+    "description": "Localization for customers"
+  },
+  "newTask": "New Task",
+  "@newTask": {
+    "description": "Localization for newTask"
+  },
+  "newFee": "New Fee",
+  "@newFee": {
+    "description": "Localization for newFee"
+  },
+  "newCustomer": "New Customer",
+  "@newCustomer": {
+    "description": "Localization for newCustomer"
+  },
+  "editTask": "Edit Task",
+  "@editTask": {
+    "description": "Localization for editTask"
+  },
+  "editFee": "Edit Fee",
+  "@editFee": {
+    "description": "Localization for editFee"
+  },
+  "editCustomer": "Edit Customer",
+  "@editCustomer": {
+    "description": "Localization for editCustomer"
+  },
+  "customer": "Customer",
+  "@customer": {
+    "description": "Localization for customer"
+  },
+  "task": "Task",
+  "@task": {
+    "description": "Localization for task"
+  },
+  "title": "Title",
+  "@title": {
+    "description": "Localization for title"
+  },
+  "due": "Due Date",
+  "@due": {
+    "description": "Localization for due"
+  },
+  "priority": "Priority",
+  "@priority": {
+    "description": "Localization for priority"
+  },
+  "status": "Status",
+  "@status": {
+    "description": "Localization for status"
+  },
+  "notes": "Notes",
+  "@notes": {
+    "description": "Localization for notes"
+  },
+  "amount": "Amount",
+  "@amount": {
+    "description": "Localization for amount"
+  },
+  "month": "Month",
+  "@month": {
+    "description": "Localization for month"
+  },
+  "priorityHigh": "High",
+  "@priorityHigh": {
+    "description": "Localization for priorityHigh"
+  },
+  "priorityMedium": "Medium",
+  "@priorityMedium": {
+    "description": "Localization for priorityMedium"
+  },
+  "priorityLow": "Low",
+  "@priorityLow": {
+    "description": "Localization for priorityLow"
+  },
+  "statusIdle": "Idle",
+  "@statusIdle": {
+    "description": "Localization for statusIdle"
+  },
+  "statusInProgress": "In Progress",
+  "@statusInProgress": {
+    "description": "Localization for statusInProgress"
+  },
+  "statusLater": "Later",
+  "@statusLater": {
+    "description": "Localization for statusLater"
+  },
+  "statusWaiting": "Waiting",
+  "@statusWaiting": {
+    "description": "Localization for statusWaiting"
+  },
+  "statusDone": "Done",
+  "@statusDone": {
+    "description": "Localization for statusDone"
+  },
+  "tabInbox": "All",
+  "@tabInbox": {
+    "description": "Localization for tabInbox"
+  },
+  "tabToday": "Today",
+  "@tabToday": {
+    "description": "Localization for tabToday"
+  },
+  "tabWeek": "This Week",
+  "@tabWeek": {
+    "description": "Localization for tabWeek"
+  },
+  "tabMonth": "This Month",
+  "@tabMonth": {
+    "description": "Localization for tabMonth"
+  },
+  "tabLater": "Later",
+  "@tabLater": {
+    "description": "Localization for tabLater"
+  },
+  "tabWaiting": "Waiting",
+  "@tabWaiting": {
+    "description": "Localization for tabWaiting"
+  },
+  "tabDone": "Done",
+  "@tabDone": {
+    "description": "Localization for tabDone"
+  },
+  "filterCustomer": "Customer",
+  "@filterCustomer": {
+    "description": "Localization for filterCustomer"
+  },
+  "filterMonth": "Month (YYYY-MM)",
+  "@filterMonth": {
+    "description": "Localization for filterMonth"
+  },
+  "filterStatus": "Status (Open/Paid)",
+  "@filterStatus": {
+    "description": "Localization for filterStatus"
+  },
+  "clearFilter": "Clear Filter",
+  "@clearFilter": {
+    "description": "Localization for clearFilter"
+  },
+  "isPaid": "Paid",
+  "@isPaid": {
+    "description": "Localization for isPaid"
+  },
+  "isFree": "Free",
+  "@isFree": {
+    "description": "Localization for isFree"
+  },
+  "monthlyFee": "Monthly Fee",
+  "@monthlyFee": {
+    "description": "Localization for monthlyFee"
+  },
+  "feeAmount": "Fee (€)",
+  "@feeAmount": {
+    "description": "Localization for feeAmount"
+  },
+  "errorRequired": "This field is required",
+  "@errorRequired": {
+    "description": "Localization for errorRequired"
+  },
+  "errorEmail": "Enter a valid email",
+  "@errorEmail": {
+    "description": "Localization for errorEmail"
+  },
+  "errorPasswordLength": "Password must be at least 6 characters",
+  "@errorPasswordLength": {
+    "description": "Localization for errorPasswordLength"
+  },
+  "errorPasswordMismatch": "Passwords do not match",
+  "@errorPasswordMismatch": {
+    "description": "Localization for errorPasswordMismatch"
+  },
+  "errorTaskRequired": "Task name is required",
+  "@errorTaskRequired": {
+    "description": "Localization for errorTaskRequired"
+  },
+  "loginFailed": "Login failed",
+  "@loginFailed": {
+    "description": "Localization for loginFailed"
+  },
+  "registerFailed": "Registration failed",
+  "@registerFailed": {
+    "description": "Localization for registerFailed"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Localization for error"
+  },
+  "feeSaved": "Fee saved",
+  "@feeSaved": {
+    "description": "Localization for feeSaved"
+  },
+  "taskSaved": "Task saved",
+  "@taskSaved": {
+    "description": "Localization for taskSaved"
+  },
+  "customerSaved": "Customer saved",
+  "@customerSaved": {
+    "description": "Localization for customerSaved"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Localization for back"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Localization for language"
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "Localization for languageEnglish"
+  },
+  "languageTurkish": "Türkçe",
+  "@languageTurkish": {
+    "description": "Localization for languageTurkish"
+  },
+  "languageAlbanian": "Shqip",
+  "@languageAlbanian": {
+    "description": "Localization for languageAlbanian"
+  },
+  "languageSerbian": "Српски",
+  "@languageSerbian": {
+    "description": "Localization for languageSerbian"
+  },
+  "all": "All",
+  "@all": {
+    "description": "Generic label meaning all items"
+  },
+  "filterTaskType": "Task type",
+  "@filterTaskType": {
+    "description": "Filter label for task type"
+  },
+  "taskTypeInvoice": "Invoice",
+  "@taskTypeInvoice": {
+    "description": "Task type: Invoice"
+  },
+  "taskTypeReport": "Report",
+  "@taskTypeReport": {
+    "description": "Task type: Report"
+  },
+  "taskTypePayment": "Payment",
+  "@taskTypePayment": {
+    "description": "Task type: Payment"
+  },
+  "recordsCount": "{count, plural, =0 {# Records} one {# Record} other {# Records}}",
+  "@recordsCount": {
+    "description": "Label showing number of records",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addTask": "Add Task",
+  "@addTask": {
+    "description": "Button label for adding a new task"
+  },
+  "addEditCustomer": "Add/Edit Customer",
+  "@addEditCustomer": {
+    "description": "Button label for adding or editing a customer"
+  },
+  "columnNumber": "#",
+  "@columnNumber": {
+    "description": "Column header for row number"
+  },
+  "columnCustomer": "Customer",
+  "@columnCustomer": {
+    "description": "Column header for customer name"
+  },
+  "columnTask": "Task",
+  "@columnTask": {
+    "description": "Column header for task title"
+  },
+  "columnDue": "Due",
+  "@columnDue": {
+    "description": "Column header for due date"
+  },
+  "columnPriority": "Priority",
+  "@columnPriority": {
+    "description": "Column header for priority"
+  },
+  "languageSelection": "Select Language",
+  "@languageSelection": {
+    "description": "Title for language selection dialog"
+  },
+  "errorPasswordRequired": "Password is required",
+  "@errorPasswordRequired": {
+    "description": "Error message for required password field"
+  },
+  "errorCurrentPasswordRequired": "Current password is required",
+  "@errorCurrentPasswordRequired": {
+    "description": "Error message for required current password"
+  },
+  "errorNewPasswordRequired": "New password is required",
+  "@errorNewPasswordRequired": {
+    "description": "Error message for required new password"
+  },
+  "confirmPasswordRequired": "Password confirmation is required",
+  "@confirmPasswordRequired": {
+    "description": "Error message for required password confirmation"
+  }
+}

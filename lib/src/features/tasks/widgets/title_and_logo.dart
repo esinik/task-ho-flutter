@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TitleAndLogoWidget extends StatelessWidget {
+  const TitleAndLogoWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -8,12 +10,12 @@ class TitleAndLogoWidget extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(33)),
               color: Color(0xFF2563eb),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
+            child: const Padding(
+              padding: EdgeInsets.all(12.0),
               child: Text(
                 "TH",
                 style: TextStyle(color: Colors.white, fontSize: 23, fontWeight: FontWeight.bold),
@@ -21,10 +23,10 @@ class TitleAndLogoWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 15),
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
+            children: [
               Text(
                 'TaskHo',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

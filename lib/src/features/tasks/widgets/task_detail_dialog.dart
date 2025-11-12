@@ -16,8 +16,8 @@ class TaskDetailDialog extends ConsumerStatefulWidget {
     return showDialog<TaskFormResult>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => ProviderScope(
-        child: const TaskDetailDialog(),
+      builder: (_) => const ProviderScope(
+        child: TaskDetailDialog(),
       ),
     );
   }

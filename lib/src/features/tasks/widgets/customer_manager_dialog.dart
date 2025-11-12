@@ -70,7 +70,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final brand = const Color(0xFF2563EB);
+    const brand = Color(0xFF2563EB);
 
     final customersAsync = ref.watch(customerListProvider);
 
