@@ -301,10 +301,10 @@ class AppLocalizationsSr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '# Записа',
-      one: '# Запис',
+      other: 'Записа',
+      one: 'Запис',
     );
-    return '$_temp0';
+    return '$count $_temp0';
   }
 
   @override

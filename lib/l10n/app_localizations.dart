@@ -681,7 +681,7 @@ abstract class AppLocalizations {
   /// Label showing number of records
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =0 {# Records} one {# Record} other {# Records}}'**
+  /// **'{count} {count, plural, =0 {Records} one {Record} other {Records}}'**
   String recordsCount(int count);
 
   /// Button label for adding a new task

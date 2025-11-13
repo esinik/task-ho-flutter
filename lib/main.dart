@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:window_manager/window_manager.dart';
 import 'l10n/app_localizations.dart';
 import 'src/app_router.dart';
 import 'src/core/providers/auth_provider.dart';
@@ -12,6 +14,11 @@ import 'src/core/providers/locale_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Set window size for desktop platforms
+  if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+    await _setWindowSize();
+  }
 
   // Initialize SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -26,6 +33,39 @@ void main() async {
       ),
     ),
   );
+}
+
+Future<void> _setWindowSize() async {
+  try {
+    // Initialize window manager
+    await windowManager.ensureInitialized();
+
+    // Get screen size
+    final screenSize = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize /
+        WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
+
+    // Calculate window size with 50px padding on each side
+    final windowWidth = screenSize.width - 100; // 50px left + 50px right
+    final windowHeight = screenSize.height - 100; // 50px top + 50px bottom
+
+    // Set minimum size
+    const minWidth = 800.0;
+    const minHeight = 600.0;
+
+    final finalWidth = windowWidth < minWidth ? minWidth : windowWidth;
+    final finalHeight = windowHeight < minHeight ? minHeight : windowHeight;
+
+    log('🖥️ Screen size: ${screenSize.width.toStringAsFixed(0)}x${screenSize.height.toStringAsFixed(0)}');
+    log('📐 Window size: ${finalWidth.toStringAsFixed(0)}x${finalHeight.toStringAsFixed(0)}');
+
+    // Configure window
+    await windowManager.setSize(Size(finalWidth, finalHeight));
+    await windowManager.center();
+    await windowManager.setMinimumSize(const Size(minWidth, minHeight));
+    await windowManager.setTitle('TaskHo');
+  } catch (e) {
+    log('⚠️ Could not set window size: $e');
+  }
 }
 
 class TaskHoApp extends ConsumerWidget {

@@ -295,17 +295,17 @@ class AppLocalizationsSq extends AppLocalizations {
   String get taskTypeReport => 'Raport';
 
   @override
-  String get taskTypePayment => 'Pagesë';
+  String get taskTypePayment => 'Pagesa';
 
   @override
   String recordsCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '# Regjistrime',
-      one: '# Regjistrim',
+      other: 'Regjistrime',
+      one: 'Regjistrim',
     );
-    return '$_temp0';
+    return '$count $_temp0';
   }
 
   @override

@@ -96,7 +96,15 @@
   "taskTypeInvoice": "Фактура",
   "taskTypeReport": "Извештај",
   "taskTypePayment": "Плаћање",
-  "recordsCount": "{count, plural, one {# Запис} other {# Записа}}",
+  "recordsCount": "{count} {count, plural, one {Запис} other {Записа}}",
+  "@recordsCount": {
+    "description": "Label showing number of records",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "addTask": "Додај задатак",
   "addEditCustomer": "Додај/Измени клијента",
   "columnNumber": "#",

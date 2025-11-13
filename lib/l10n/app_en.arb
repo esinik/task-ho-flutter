@@ -384,7 +384,7 @@
   "@taskTypePayment": {
     "description": "Task type: Payment"
   },
-  "recordsCount": "{count, plural, =0 {# Records} one {# Record} other {# Records}}",
+  "recordsCount": "{count} {count, plural, =0 {Records} one {Record} other {Records}}",
   "@recordsCount": {
     "description": "Label showing number of records",
     "placeholders": {

@@ -95,8 +95,16 @@
   "filterTaskType": "Lloji i detyrës",
   "taskTypeInvoice": "Faturë",
   "taskTypeReport": "Raport",
-  "taskTypePayment": "Pagesë",
-  "recordsCount": "{count, plural, one {# Regjistrim} other {# Regjistrime}}",
+  "taskTypePayment": "Pagesa",
+  "recordsCount": "{count} {count, plural, one {Regjistrim} other {Regjistrime}}",
+  "@recordsCount": {
+    "description": "Label showing number of records",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "addTask": "Shto Detyrë",
   "addEditCustomer": "Shto/Ndrysho Klient",
   "columnNumber": "#",

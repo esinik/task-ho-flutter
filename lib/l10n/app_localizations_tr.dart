@@ -298,13 +298,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String recordsCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '# Kayıt',
-      one: '# Kayıt',
-    );
-    return '$_temp0';
+    return '$count Kayıt';
   }
 
   @override

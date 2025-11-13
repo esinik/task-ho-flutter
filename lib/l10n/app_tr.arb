@@ -96,7 +96,15 @@
   "taskTypeInvoice": "Fatura",
   "taskTypeReport": "Rapor",
   "taskTypePayment": "Ödeme",
-  "recordsCount": "{count, plural, one {# Kayıt} other {# Kayıt}}",
+  "recordsCount": "{count} Kayıt",
+  "@recordsCount": {
+    "description": "Label showing number of records",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "addTask": "Görev Ekle",
   "addEditCustomer": "Müşteri Ekle/Düzenle",
   "columnNumber": "#",
