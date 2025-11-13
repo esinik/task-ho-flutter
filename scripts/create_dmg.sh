@@ -12,8 +12,8 @@ VERSION_NUMBER=$(echo "$FULL_VERSION" | cut -d'+' -f1)
 BUILD_NUMBER=$(echo "$FULL_VERSION" | cut -d'+' -f2)
 
 # Configuration
-APP_NAME="taskho"
-APP_PATH="build/macos/Build/Products/Release/taskho.app"
+APP_NAME="TaskHo"
+APP_PATH="build/macos/Build/Products/Release/TaskHo.app"
 DMG_NAME="TaskHo-v${VERSION_NUMBER}-b${BUILD_NUMBER}"
 DMG_PATH="build/macos/Build/Products/Release/${DMG_NAME}.dmg"
 VOLUME_NAME="TaskHo ${VERSION_NUMBER}"
