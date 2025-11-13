@@ -7,6 +7,8 @@ import '../models/user.dart';
 import '../repo/auth.dart';
 import '../repo/common.dart';
 import '../services/auth_storage_service.dart';
+import '../services/remote_config_service.dart';
+import 'log_provider.dart';
 
 // Storage providers
 final secureStorageProvider = Provider<FlutterSecureStorage>((ref) {
@@ -56,6 +58,15 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
           final user = await repo.getCurrentUser();
           ref.read(currentUserProvider.notifier).state = user;
           state = AsyncValue.data(user);
+          // Refresh Remote Config after restoring a valid session
+          try {
+            final rc = RemoteConfigService();
+            await rc.initialize();
+            await rc.refresh(force: true);
+            // Invalidate email-based gates for this user
+            ref.invalidate(logExportEnabledProvider(user.email));
+            ref.invalidate(maintenanceEnabledProvider(user.email));
+          } catch (_) {}
         } catch (e) {
           // Token might be expired, clear it
           await storage.deleteToken();
@@ -92,6 +103,15 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       ref.read(currentUserProvider.notifier).state = response.user;
       state = AsyncValue.data(response.user);
       log('✅ User state updated: ${response.user.email}');
+
+      // After successful login, refresh Remote Config and invalidate gates
+      try {
+        final rc = RemoteConfigService();
+        await rc.initialize();
+        await rc.refresh(force: true);
+        ref.invalidate(logExportEnabledProvider(response.user.email));
+        ref.invalidate(maintenanceEnabledProvider(response.user.email));
+      } catch (_) {}
     } catch (e, stack) {
       log('❌ Login error: $e', stackTrace: stack);
       state = AsyncValue.error(e, stack);
@@ -136,6 +156,12 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       // Clear user
       ref.read(currentUserProvider.notifier).state = null;
       state = const AsyncValue.data(null);
+      // Invalidate any email-gated providers
+      try {
+        // Using an empty email to clear caches for any previous user
+        ref.invalidate(logExportEnabledProvider);
+        ref.invalidate(maintenanceEnabledProvider);
+      } catch (_) {}
     } catch (e, stack) {
       state = AsyncValue.error(e, stack);
     }

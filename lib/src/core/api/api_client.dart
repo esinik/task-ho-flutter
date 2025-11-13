@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import '../logging/app_logger.dart';
 
 class ApiClient {
   final Dio _dio;
@@ -13,6 +14,8 @@ class ApiClient {
           headers: {'Content-Type': 'application/json'},
         )) {
     log('🌐 ApiClient initialized with baseUrl: $baseUrl');
+    // Persist an info log about API base URL
+    AppLogger().logInfo('ApiClient initialized', metadata: {'baseUrl': baseUrl});
 
     _dio.interceptors.add(LogInterceptor(
       requestBody: true,
@@ -32,6 +35,13 @@ class ApiClient {
         } else {
           log('⚠️ No token available for request');
         }
+        // Persist API request log
+        AppLogger().logApiRequest(
+          options.method,
+          options.uri.toString(),
+          data: options.data is Map<String, dynamic> ? options.data as Map<String, dynamic> : null,
+          headers: options.headers.cast<String, dynamic>(),
+        );
         handler.next(options);
       },
       onError: (error, handler) {
@@ -40,10 +50,27 @@ class ApiClient {
         log('❌ Status: ${error.response?.statusCode}');
         log('❌ Message: ${error.message}');
         log('❌ Response: ${error.response?.data}');
+        // Persist API error log
+        AppLogger().logApiError(
+          error.requestOptions.method,
+          error.requestOptions.uri.toString(),
+          error.message ?? error.toString(),
+          metadata: {
+            'statusCode': error.response?.statusCode,
+            'data': error.response?.data,
+          },
+        );
         handler.next(error);
       },
       onResponse: (response, handler) {
         log('✅ Response: ${response.statusCode} ${response.requestOptions.uri}');
+        // Persist API response log
+        AppLogger().logApiResponse(
+          response.requestOptions.method,
+          response.requestOptions.uri.toString(),
+          response.statusCode ?? 0,
+          data: response.data,
+        );
         handler.next(response);
       },
     ));

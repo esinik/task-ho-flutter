@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../core/models/user.dart';
 import '../../core/enums/router_enums.dart';
+import '../../core/logging/app_logger.dart';
 
 class ResetPasswordScreen extends ConsumerStatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -119,6 +120,8 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Log screen view
+    AppLogger().logScreenView('ResetPassword');
     final theme = Theme.of(context);
 
     return Scaffold(

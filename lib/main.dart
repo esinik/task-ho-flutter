@@ -7,10 +7,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'l10n/app_localizations.dart';
 import 'src/app_router.dart';
 import 'src/core/providers/auth_provider.dart';
 import 'src/core/providers/locale_provider.dart';
+import 'src/core/services/remote_config_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +24,14 @@ void main() async {
 
   // Initialize SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
+
+  // Try to initialize Firebase and Remote Config (safe fallback if not configured)
+  try {
+    await Firebase.initializeApp();
+    await RemoteConfigService().initialize();
+  } catch (e) {
+    log('⚠️ Firebase/RemoteConfig init skipped or failed: $e');
+  }
 
   runApp(
     Phoenix(
@@ -45,12 +55,12 @@ Future<void> _setWindowSize() async {
         WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
 
     // Calculate window size with 50px padding on each side
-    final windowWidth = screenSize.width - 100; // 50px left + 50px right
-    final windowHeight = screenSize.height - 100; // 50px top + 50px bottom
+    final windowWidth = screenSize.width - 200; // 100px left + 100px right
+    final windowHeight = screenSize.height - 200; // 100px top + 100px bottom
 
     // Set minimum size
-    const minWidth = 800.0;
-    const minHeight = 600.0;
+    const minWidth = 1340.0; // 800.0;
+    const minHeight = 830.0; //600.0;
 
     final finalWidth = windowWidth < minWidth ? minWidth : windowWidth;
     final finalHeight = windowHeight < minHeight ? minHeight : windowHeight;
@@ -58,11 +68,23 @@ Future<void> _setWindowSize() async {
     log('🖥️ Screen size: ${screenSize.width.toStringAsFixed(0)}x${screenSize.height.toStringAsFixed(0)}');
     log('📐 Window size: ${finalWidth.toStringAsFixed(0)}x${finalHeight.toStringAsFixed(0)}');
 
-    // Configure window
-    await windowManager.setSize(Size(finalWidth, finalHeight));
-    await windowManager.center();
-    await windowManager.setMinimumSize(const Size(minWidth, minHeight));
-    await windowManager.setTitle('TaskHo');
+    // Configure window with waitUntilReadyToShow
+    WindowOptions windowOptions = WindowOptions(
+      size: Size(finalWidth, finalHeight),
+      minimumSize: const Size(minWidth, minHeight),
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.normal,
+      title: 'TaskHo',
+    );
+
+    await windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+
+    log('✅ Window configured: ${finalWidth.toStringAsFixed(0)}x${finalHeight.toStringAsFixed(0)}');
   } catch (e) {
     log('⚠️ Could not set window size: $e');
   }

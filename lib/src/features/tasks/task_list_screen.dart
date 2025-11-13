@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +15,7 @@ import 'package:taskho/src/features/tasks/widgets/tools_button_list.dart';
 import '../../core/models/task.dart';
 import 'package:taskho/src/core/repo/customers.dart';
 import '../fees/fees_screen.dart';
+import '../../core/logging/app_logger.dart';
 
 const _tabs = ['inbox', 'today', 'week', 'month', 'later', 'waiting', 'done'];
 
@@ -21,6 +24,8 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Log screen view
+    AppLogger().logScreenView('TaskList');
     final tab = ref.watch(currentTabProvider);
     final tasks = ref.watch(taskListProvider);
 
@@ -70,6 +75,9 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
                   onDestinationSelected: (i) {
                     ref.read(currentTabProvider.notifier).state = _tabs[i];
                     ref.invalidate(taskListProvider);
+                    AppLogger().logButtonClick('NavRail', 'TaskList', metadata: {
+                      'tab': _tabs[i],
+                    });
                   },
                   minWidth: 120,
                   labelType: NavigationRailLabelType.all,
@@ -141,7 +149,10 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
         const Spacer(),
         IconButton(
           icon: const Icon(Icons.settings_outlined),
-          onPressed: () => context.push(AppRoutes.settings),
+          onPressed: () {
+            AppLogger().logButtonClick('OpenSettings', 'TaskList');
+            context.push(AppRoutes.settings);
+          },
           tooltip: l10n.settings,
         ),
         const SizedBox(width: 8),
@@ -182,6 +193,7 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
 
   @override
   Future<void> onAddOrEditCustomer(WidgetRef ref) async {
+    AppLogger().logButtonClick('AddEditCustomer', 'TaskList');
     final result = await CustomerManageDialog.show(ref.context);
     if (result == null || !result.hasChanges) return;
 
@@ -223,6 +235,7 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
     // Sadece eğer tasks ekranı açık değilse değiştir
     if (currentType != ScreenType.tasks) {
       ref.read(screenTypeProvider.notifier).state = ScreenType.tasks;
+      AppLogger().logButtonClick('ShowTaskList', 'TaskList');
     }
   }
 
@@ -232,6 +245,7 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
     // Sadece eğer fees ekranı açık değilse değiştir
     if (currentType != ScreenType.fees) {
       ref.read(screenTypeProvider.notifier).state = ScreenType.fees;
+      AppLogger().logButtonClick('ShowFees', 'TaskList');
     }
   }
 }

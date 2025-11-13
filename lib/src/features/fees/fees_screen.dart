@@ -5,6 +5,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../core/repo/fees.dart';
 import '../../core/models/fee.dart';
 import '../../core/providers/providers.dart';
+import '../../core/logging/app_logger.dart';
 
 final feeFilterCustomer = StateProvider<String?>((_) => null);
 final feeFilterMonth = StateProvider<String?>((_) => null);
@@ -24,6 +25,8 @@ class FeesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Log screen view
+    AppLogger().logScreenView('Fees');
     final l10n = AppLocalizations.of(context)!;
     final fees = ref.watch(feeListProvider);
     final customerOptions = ref.watch(customerOptionsProvider);
@@ -86,6 +89,11 @@ class FeesScreen extends ConsumerWidget {
                       ],
                       onChanged: (value) {
                         ref.read(feeFilterCustomer.notifier).state = value;
+                        AppLogger().logButtonClick(
+                          'FeesFilterCustomer',
+                          'Fees',
+                          metadata: {'value': value ?? 'All'},
+                        );
                       },
                     );
                   },
@@ -132,6 +140,11 @@ class FeesScreen extends ConsumerWidget {
                   ],
                   onChanged: (value) {
                     ref.read(feeFilterStatus.notifier).state = value;
+                    AppLogger().logButtonClick(
+                      'FeesFilterStatus',
+                      'Fees',
+                      metadata: {'value': value ?? 'All'},
+                    );
                   },
                 ),
               ),
@@ -144,6 +157,7 @@ class FeesScreen extends ConsumerWidget {
                     ref.read(feeFilterCustomer.notifier).state = null;
                     ref.read(feeFilterMonth.notifier).state = null;
                     ref.read(feeFilterStatus.notifier).state = null;
+                    AppLogger().logButtonClick('FeesClearFilter', 'Fees');
                   },
                   icon: const Icon(Icons.clear),
                   label: Text(l10n.clearFilter),
@@ -154,6 +168,7 @@ class FeesScreen extends ConsumerWidget {
               // Add record button
               FilledButton.icon(
                 onPressed: () async {
+                  AppLogger().logButtonClick('FeesAddRecord', 'Fees');
                   final created = await _FeeDialog.show(context);
                   if (created != null) {
                     ref.invalidate(feeListProvider);
@@ -340,6 +355,7 @@ class _MonthPickerFilter extends ConsumerWidget {
                 icon: const Icon(Icons.clear, size: 18),
                 onPressed: () {
                   ref.read(provider.notifier).state = null;
+                  AppLogger().logButtonClick('FeesFilterMonthClear', 'Fees');
                 },
               )
             : const Icon(Icons.calendar_today, size: 18),
@@ -349,6 +365,11 @@ class _MonthPickerFilter extends ConsumerWidget {
         final selected = await _showMonthYearPicker(context, value);
         if (selected != null) {
           ref.read(provider.notifier).state = selected;
+          AppLogger().logButtonClick(
+            'FeesFilterMonth',
+            'Fees',
+            metadata: {'value': selected},
+          );
         }
       },
     );
@@ -676,6 +697,12 @@ class _FeeDialogState extends ConsumerState<_FeeDialog> {
 
             try {
               await ref.read(feeRepositoryProvider).create(fee);
+              await AppLogger().logDataCreate('Fee', metadata: {
+                'customer': fee.customer,
+                'month': fee.month,
+                'amount': fee.amount,
+                'status': fee.status,
+              });
               if (context.mounted) Navigator.pop(context, fee);
             } catch (e) {
               if (context.mounted) {

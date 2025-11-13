@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskho/src/core/providers/providers.dart';
 import '../../../../l10n/app_localizations.dart';
 import 'task_detail_dialog.dart';
+import '../../../core/logging/app_logger.dart';
 
 class FiltersBar extends ConsumerWidget {
   const FiltersBar({super.key});
@@ -40,6 +41,11 @@ class FiltersBar extends ConsumerWidget {
                 onChanged: (v) {
                   ref.read(filterCustomerProvider.notifier).state = v;
                   ref.invalidate(taskListProvider);
+                  AppLogger().logButtonClick(
+                    'FilterCustomer',
+                    'Tasks',
+                    metadata: {'value': v ?? 'All'},
+                  );
                 },
                 decoration: InputDecoration(
                   labelText: l10n.filterCustomer,
@@ -70,6 +76,11 @@ class FiltersBar extends ConsumerWidget {
                 onChanged: (v) {
                   ref.read(filterTypeProvider.notifier).state = v;
                   ref.invalidate(taskListProvider);
+                  AppLogger().logButtonClick(
+                    'FilterTaskType',
+                    'Tasks',
+                    metadata: {'value': v ?? 'All'},
+                  );
                 },
                 decoration: InputDecoration(
                   labelText: l10n.filterTaskType,
@@ -85,6 +96,7 @@ class FiltersBar extends ConsumerWidget {
                   ref.read(filterCustomerProvider.notifier).state = null;
                   ref.read(filterTypeProvider.notifier).state = null;
                   ref.invalidate(taskListProvider);
+                  AppLogger().logButtonClick('ClearFilter', 'Tasks');
                 },
                 child: Text(l10n.clearFilter),
               ),
@@ -93,6 +105,7 @@ class FiltersBar extends ConsumerWidget {
             // Görev Ekle butonu
             FilledButton.icon(
               onPressed: () async {
+                AppLogger().logButtonClick('AddTask', 'Tasks');
                 await TaskDetailDialog.show(context);
                 ref.invalidate(taskListProvider);
               },

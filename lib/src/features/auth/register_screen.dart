@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../core/enums/router_enums.dart';
+import '../../core/logging/app_logger.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -68,6 +69,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
+
+    // Log screen view
+    AppLogger().logScreenView('Register');
 
     return Scaffold(
       appBar: AppBar(

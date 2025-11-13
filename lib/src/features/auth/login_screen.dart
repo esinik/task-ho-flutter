@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../core/providers/auth_provider.dart';
 import '../../core/enums/router_enums.dart';
+import '../../core/logging/app_logger.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -39,12 +40,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             _rememberMe,
           );
 
+      // Log successful login (without password)
+      await AppLogger().logLogin(_emailController.text.trim(), success: true);
+
       if (mounted) {
         context.go(AppRoutes.tasks);
       }
     } catch (e, stackTrace) {
       print('🔴 Login error: $e');
       print('🔴 Stack trace: $stackTrace');
+
+      // Log failed login
+      await AppLogger().logLogin(_emailController.text.trim(), success: false);
 
       if (mounted) {
         String errorMessage = AppLocalizations.of(context)!.loginFailed;
@@ -100,6 +107,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
+
+    // Log screen view
+    AppLogger().logScreenView('Login');
 
     return Stack(
       children: [
