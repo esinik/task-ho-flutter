@@ -343,4 +343,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmPasswordRequired => 'Password confirmation is required';
+
+  @override
+  String get addRecord => 'Add Record';
+
+  @override
+  String get feeRecord => 'Fee Record';
+
+  @override
+  String get autoCreateMonthly => 'Auto-create monthly';
+
+  @override
+  String get thisMonthOnly => 'This month only';
+
+  @override
+  String get columnMonth => 'Month';
+
+  @override
+  String get columnAmount => 'Amount (€)';
+
+  @override
+  String get columnStatus => 'Status';
+
+  @override
+  String get columnNote => 'Note';
+
+  @override
+  String get columnActions => 'Actions';
+
+  @override
+  String get statusOpen => 'Open';
+
+  @override
+  String get statusPaid => 'Paid';
+
+  @override
+  String get markAsPaid => 'Mark as Paid';
+
+  @override
+  String get undoPayment => 'Undo Payment';
+
+  @override
+  String get requiredFields => 'Please fill in required fields';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get monthYearPickerTitle => 'Select month and year';
+
+  @override
+  String get invalidNumber => 'Invalid number';
+
+  @override
+  String get noRecordsFound => 'No records found';
 }

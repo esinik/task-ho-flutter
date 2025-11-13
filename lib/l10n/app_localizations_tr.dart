@@ -342,4 +342,58 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get confirmPasswordRequired => 'Şifre tekrar gerekli';
+
+  @override
+  String get addRecord => 'Kayıt Ekle';
+
+  @override
+  String get feeRecord => 'Ücret Kaydı';
+
+  @override
+  String get autoCreateMonthly => 'Otomatik aylık oluştur';
+
+  @override
+  String get thisMonthOnly => 'Bu ay için oluştur';
+
+  @override
+  String get columnMonth => 'Ay';
+
+  @override
+  String get columnAmount => 'Ücret (€)';
+
+  @override
+  String get columnStatus => 'Durum';
+
+  @override
+  String get columnNote => 'Not';
+
+  @override
+  String get columnActions => 'İşlem';
+
+  @override
+  String get statusOpen => 'Açık';
+
+  @override
+  String get statusPaid => 'Ödendi';
+
+  @override
+  String get markAsPaid => 'Ödendi İşaretle';
+
+  @override
+  String get undoPayment => 'Geri Al';
+
+  @override
+  String get requiredFields => 'Zorunlu alanları doldurun';
+
+  @override
+  String get ok => 'Tamam';
+
+  @override
+  String get monthYearPickerTitle => 'Ay ve Yıl Seçin';
+
+  @override
+  String get invalidNumber => 'Geçersiz sayı';
+
+  @override
+  String get noRecordsFound => 'Kayıt bulunamadı';
 }

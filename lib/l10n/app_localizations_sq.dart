@@ -345,4 +345,58 @@ class AppLocalizationsSq extends AppLocalizations {
   @override
   String get confirmPasswordRequired =>
       'Konfirmimi i fjalëkalimit është i detyrueshëm';
+
+  @override
+  String get addRecord => 'Shto Regjistrim';
+
+  @override
+  String get feeRecord => 'Regjistrim Tarife';
+
+  @override
+  String get autoCreateMonthly => 'Krijo automatikisht mujor';
+
+  @override
+  String get thisMonthOnly => 'Vetëm për këtë muaj';
+
+  @override
+  String get columnMonth => 'Muaji';
+
+  @override
+  String get columnAmount => 'Tarifa (€)';
+
+  @override
+  String get columnStatus => 'Statusi';
+
+  @override
+  String get columnNote => 'Shënim';
+
+  @override
+  String get columnActions => 'Veprimet';
+
+  @override
+  String get statusOpen => 'Hapur';
+
+  @override
+  String get statusPaid => 'Paguar';
+
+  @override
+  String get markAsPaid => 'Shëno si të Paguar';
+
+  @override
+  String get undoPayment => 'Zhbëj Pagesën';
+
+  @override
+  String get requiredFields => 'Ju lutemi plotësoni fushat e detyrueshme';
+
+  @override
+  String get ok => 'Në rregull';
+
+  @override
+  String get monthYearPickerTitle => 'Zgjidhni muajin dhe vitin';
+
+  @override
+  String get invalidNumber => 'Numër i pavlefshëm';
+
+  @override
+  String get noRecordsFound => 'Nuk u gjetën të dhëna';
 }

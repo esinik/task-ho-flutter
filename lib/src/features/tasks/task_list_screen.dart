@@ -10,10 +10,9 @@ import 'package:taskho/src/features/tasks/widgets/filter_bar.dart';
 import 'package:taskho/src/features/tasks/widgets/task_table.dart';
 import 'package:taskho/src/features/tasks/widgets/title_and_logo.dart';
 import 'package:taskho/src/features/tasks/widgets/tools_button_list.dart';
-import 'package:taskho/src/features/tasks/widgets/task_detail_dialog.dart';
 import '../../core/models/task.dart';
-import 'package:taskho/src/core/repo/tasks.dart';
 import 'package:taskho/src/core/repo/customers.dart';
+import '../fees/fees_screen.dart';
 
 const _tabs = ['inbox', 'today', 'week', 'month', 'later', 'waiting', 'done'];
 
@@ -156,7 +155,7 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
     final screenType = ref.watch(screenTypeProvider);
 
     return screenType == ScreenType.fees
-        ? const SizedBox.shrink()
+        ? const Expanded(child: FeesScreen())
         : Expanded(
             child: Column(
               children: [
@@ -179,49 +178,6 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
               ],
             ),
           );
-  }
-
-  @override
-  Future<void> onAddTask(WidgetRef ref) async {
-    final result = await TaskDetailDialog.show(ref.context);
-    if (result == null) return;
-    // Task oluşturma: form verisinden backend modeline dönüştür.
-    String tab = 'inbox';
-    final dueDate = result.dueDate;
-    if (dueDate != null) {
-      final now = DateTime.now();
-      final today = DateTime(now.year, now.month, now.day);
-      final dueDay = DateTime(dueDate.year, dueDate.month, dueDate.day);
-      final diff = dueDay.difference(today).inDays;
-      if (diff == 0) {
-        tab = 'today';
-      } else if (diff >= 0 && diff <= 7) {
-        tab = 'week';
-      } else if (dueDate.month == now.month && dueDate.year == now.year) {
-        tab = 'month';
-      } else if (diff > 7) {
-        tab = 'later';
-      }
-    }
-
-    final isoDue = dueDate != null
-        ? '${dueDate.year.toString().padLeft(4, '0')}-${dueDate.month.toString().padLeft(2, '0')}-${dueDate.day.toString().padLeft(2, '0')}'
-        : DateTime.now().toIso8601String();
-
-    final task = Task(
-      tab: tab,
-      status: result.status.value,
-      customer: result.customer ?? '',
-      title: result.title,
-      type: 'Rapor',
-      due: isoDue,
-      priority: _priorityToString(result.priority),
-      notes: result.notes ?? '',
-    );
-
-    final repo = ref.read(taskRepositoryProvider);
-    await repo.create(task);
-    ref.invalidate(taskListProvider);
   }
 
   @override
@@ -262,19 +218,21 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
   }
 
   @override
-  void onShowAccountantFees(ref) {
-    ref.read(screenTypeProvider.notifier).state = ScreenType.fees;
+  void onShowTaskList(WidgetRef ref) {
+    final currentType = ref.read(screenTypeProvider);
+    // Sadece eğer tasks ekranı açık değilse değiştir
+    if (currentType != ScreenType.tasks) {
+      ref.read(screenTypeProvider.notifier).state = ScreenType.tasks;
+    }
   }
-}
 
-String _priorityToString(TaskPriority p) {
-  switch (p) {
-    case TaskPriority.low:
-      return 'Low';
-    case TaskPriority.medium:
-      return 'Medium';
-    case TaskPriority.high:
-      return 'High';
+  @override
+  void onShowAccountantFees(WidgetRef ref) {
+    final currentType = ref.read(screenTypeProvider);
+    // Sadece eğer fees ekranı açık değilse değiştir
+    if (currentType != ScreenType.fees) {
+      ref.read(screenTypeProvider.notifier).state = ScreenType.fees;
+    }
   }
 }
 

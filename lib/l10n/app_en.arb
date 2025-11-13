@@ -440,5 +440,77 @@
   "confirmPasswordRequired": "Password confirmation is required",
   "@confirmPasswordRequired": {
     "description": "Error message for required password confirmation"
+  },
+  "addRecord": "Add Record",
+  "@addRecord": {
+    "description": "Button label for adding a new record"
+  },
+  "feeRecord": "Fee Record",
+  "@feeRecord": {
+    "description": "Title for fee record dialog"
+  },
+  "autoCreateMonthly": "Auto-create monthly",
+  "@autoCreateMonthly": {
+    "description": "Checkbox label for auto-creating monthly fees"
+  },
+  "thisMonthOnly": "This month only",
+  "@thisMonthOnly": {
+    "description": "Checkbox label for creating fee for this month only"
+  },
+  "columnMonth": "Month",
+  "@columnMonth": {
+    "description": "Column header for month"
+  },
+  "columnAmount": "Amount (€)",
+  "@columnAmount": {
+    "description": "Column header for amount"
+  },
+  "columnStatus": "Status",
+  "@columnStatus": {
+    "description": "Column header for status"
+  },
+  "columnNote": "Note",
+  "@columnNote": {
+    "description": "Column header for note"
+  },
+  "columnActions": "Actions",
+  "@columnActions": {
+    "description": "Column header for actions"
+  },
+  "statusOpen": "Open",
+  "@statusOpen": {
+    "description": "Status label for open/unpaid"
+  },
+  "statusPaid": "Paid",
+  "@statusPaid": {
+    "description": "Status label for paid"
+  },
+  "markAsPaid": "Mark as Paid",
+  "@markAsPaid": {
+    "description": "Button label to mark as paid"
+  },
+  "undoPayment": "Undo Payment",
+  "@undoPayment": {
+    "description": "Button label to undo payment"
+  },
+  "requiredFields": "Please fill in required fields",
+  "@requiredFields": {
+    "description": "Error message for required fields"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Generic OK button"
+  },
+  "monthYearPickerTitle": "Select month and year",
+  "@monthYearPickerTitle": {
+    "description": "Title for month/year picker dialog"
+  },
+  "invalidNumber": "Invalid number",
+  "@invalidNumber": {
+    "description": "Error for invalid numeric input"
+  },
+  "noRecordsFound": "No records found",
+  "@noRecordsFound": {
+    "description": "Shown when there are no records"
   }
 }

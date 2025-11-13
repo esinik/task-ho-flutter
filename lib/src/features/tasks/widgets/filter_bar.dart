@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskho/src/core/providers/providers.dart';
 import '../../../../l10n/app_localizations.dart';
+import 'task_detail_dialog.dart';
 
 class FiltersBar extends ConsumerWidget {
   const FiltersBar({super.key});
@@ -18,6 +19,9 @@ class FiltersBar extends ConsumerWidget {
         );
 
     final l10n = AppLocalizations.of(context)!;
+
+    // Filtrelerin aktif olup olmadığını kontrol et
+    final hasActiveFilters = customer != null || typ != null;
 
     return Material(
       color: Theme.of(context).colorScheme.surface,
@@ -74,13 +78,26 @@ class FiltersBar extends ConsumerWidget {
               ),
             ),
             const Spacer(),
-            OutlinedButton(
-              onPressed: () {
-                ref.read(filterCustomerProvider.notifier).state = null;
-                ref.read(filterTypeProvider.notifier).state = null;
+            // Filtreyi Temizle butonu sadece aktif filtre varsa gösterilir
+            if (hasActiveFilters) ...[
+              OutlinedButton(
+                onPressed: () {
+                  ref.read(filterCustomerProvider.notifier).state = null;
+                  ref.read(filterTypeProvider.notifier).state = null;
+                  ref.invalidate(taskListProvider);
+                },
+                child: Text(l10n.clearFilter),
+              ),
+              const SizedBox(width: 8),
+            ],
+            // Görev Ekle butonu
+            FilledButton.icon(
+              onPressed: () async {
+                await TaskDetailDialog.show(context);
                 ref.invalidate(taskListProvider);
               },
-              child: Text(l10n.clearFilter),
+              icon: const Icon(Icons.add),
+              label: Text(l10n.addTask),
             ),
           ],
         ),

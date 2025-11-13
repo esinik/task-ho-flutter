@@ -219,7 +219,7 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
                       const Text('Notlar'),
                       const SizedBox(height: 4),
                       SizedBox(
-                        height: 160,
+                        height: 120,
                         child: TextFormField(
                           controller: _notesController,
                           maxLines: null,

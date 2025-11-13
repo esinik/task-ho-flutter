@@ -342,4 +342,58 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get confirmPasswordRequired => 'Потврда лозинке је обавезна';
+
+  @override
+  String get addRecord => 'Додај запис';
+
+  @override
+  String get feeRecord => 'Запис накнаде';
+
+  @override
+  String get autoCreateMonthly => 'Аутоматски креирај месечно';
+
+  @override
+  String get thisMonthOnly => 'Само за овај месец';
+
+  @override
+  String get columnMonth => 'Месец';
+
+  @override
+  String get columnAmount => 'Накнада (€)';
+
+  @override
+  String get columnStatus => 'Статус';
+
+  @override
+  String get columnNote => 'Белешка';
+
+  @override
+  String get columnActions => 'Радње';
+
+  @override
+  String get statusOpen => 'Отворено';
+
+  @override
+  String get statusPaid => 'Плаћено';
+
+  @override
+  String get markAsPaid => 'Означи као плаћено';
+
+  @override
+  String get undoPayment => 'Поништи плаћање';
+
+  @override
+  String get requiredFields => 'Молимо попуните обавезна поља';
+
+  @override
+  String get ok => 'У реду';
+
+  @override
+  String get monthYearPickerTitle => 'Изаберите месец и годину';
+
+  @override
+  String get invalidNumber => 'Неважећи број';
+
+  @override
+  String get noRecordsFound => 'Нема записа';
 }

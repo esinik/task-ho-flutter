@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../core/enums/enums.dart';
+import '../../../core/providers/providers.dart';
 
 /// Swift protocol benzeri bir delege yapısı.
 /// Bu interface'i implement eden sınıflar, buton aksiyonlarını zorunlu olarak sağlar.
 abstract class ToolsButtonsDelegate {
-  void onAddTask(WidgetRef ref);
-  //void onExportCsv(WidgetRef ref);
-  //void onExportPdf(WidgetRef ref);
-  void onAddOrEditCustomer(WidgetRef ref);
+  void onShowTaskList(WidgetRef ref);
   void onShowAccountantFees(WidgetRef ref);
+  void onAddOrEditCustomer(WidgetRef ref);
 }
 
 class ToolsButtonsWidget extends ConsumerWidget {
@@ -24,23 +24,33 @@ class ToolsButtonsWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final screenType = ref.watch(screenTypeProvider);
+    final isTaskListActive = screenType == ScreenType.tasks;
+    final isFeeScreenActive = screenType == ScreenType.fees;
+
     return Row(
       children: [
-        FilledButton.icon(
-          onPressed: () => delegate.onAddTask(ref),
-          icon: const Icon(Icons.add),
-          label: Text(l10n.addTask),
-        ),
-        const SizedBox(width: 8),
+        // Task List Button
         FilledButton.icon(
           style: FilledButton.styleFrom(
-            backgroundColor: Colors.orange,
+            backgroundColor: isTaskListActive ? Colors.blue : Colors.grey,
+          ),
+          onPressed: () => delegate.onShowTaskList(ref),
+          icon: const Icon(Icons.list),
+          label: Text(l10n.tasks),
+        ),
+        const SizedBox(width: 8),
+        // Accounting Fees Button
+        FilledButton.icon(
+          style: FilledButton.styleFrom(
+            backgroundColor: isFeeScreenActive ? Colors.orange : Colors.grey,
           ),
           onPressed: () => delegate.onShowAccountantFees(ref),
           icon: const Icon(Icons.account_balance),
           label: Text(l10n.fees),
         ),
         const SizedBox(width: 8),
+        // Add/Edit Customer Button
         TextButton.icon(
           onPressed: () => delegate.onAddOrEditCustomer(ref),
           icon: const Icon(Icons.person_add_alt_1_outlined),

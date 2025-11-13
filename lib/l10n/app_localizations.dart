@@ -755,6 +755,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password confirmation is required'**
   String get confirmPasswordRequired;
+
+  /// Button label for adding a new record
+  ///
+  /// In en, this message translates to:
+  /// **'Add Record'**
+  String get addRecord;
+
+  /// Title for fee record dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Fee Record'**
+  String get feeRecord;
+
+  /// Checkbox label for auto-creating monthly fees
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-create monthly'**
+  String get autoCreateMonthly;
+
+  /// Checkbox label for creating fee for this month only
+  ///
+  /// In en, this message translates to:
+  /// **'This month only'**
+  String get thisMonthOnly;
+
+  /// Column header for month
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get columnMonth;
+
+  /// Column header for amount
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (€)'**
+  String get columnAmount;
+
+  /// Column header for status
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get columnStatus;
+
+  /// Column header for note
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get columnNote;
+
+  /// Column header for actions
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get columnActions;
+
+  /// Status label for open/unpaid
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get statusOpen;
+
+  /// Status label for paid
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get statusPaid;
+
+  /// Button label to mark as paid
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Paid'**
+  String get markAsPaid;
+
+  /// Button label to undo payment
+  ///
+  /// In en, this message translates to:
+  /// **'Undo Payment'**
+  String get undoPayment;
+
+  /// Error message for required fields
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in required fields'**
+  String get requiredFields;
+
+  /// Generic OK button
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// Title for month/year picker dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Select month and year'**
+  String get monthYearPickerTitle;
+
+  /// Error for invalid numeric input
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid number'**
+  String get invalidNumber;
+
+  /// Shown when there are no records
+  ///
+  /// In en, this message translates to:
+  /// **'No records found'**
+  String get noRecordsFound;
 }
 
 class _AppLocalizationsDelegate
