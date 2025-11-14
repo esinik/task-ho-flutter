@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "taskho" "\0"
+            VALUE "CompanyName", "BerSoftware" "\0"
+            VALUE "FileDescription", "TaskHo" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "taskho" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "taskho.exe" "\0"
-            VALUE "ProductName", "taskho" "\0"
+            VALUE "InternalName", "TaskHo" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 BerSoftware. All rights reserved." "\0"
+            VALUE "OriginalFilename", "TaskHo.exe" "\0"
+            VALUE "ProductName", "TaskHo" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
