@@ -10,8 +10,9 @@ DEVELOPER_ID="Developer ID Application: Ertan Sinik (58ELYTZDWA)"
 APPLE_ID="e_sinik@hotmail.com"
 TEAM_ID="58ELYTZDWA"
 APP_SPECIFIC_PASSWORD="xqod-rehe-onfr-qacp"
-APP_PATH="build/macos/Build/Products/Release/taskho.app"
-ZIP_PATH="build/macos/Build/Products/Release/taskho.zip"
+# IMPORTANT: Match the actual app bundle name/casing
+APP_PATH="build/macos/Build/Products/Release/TaskHo.app"
+ZIP_PATH="build/macos/Build/Products/Release/TaskHo.zip"
 
 echo "🔨 Starting sign and notarization process..."
 

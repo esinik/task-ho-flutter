@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:taskho/src/core/enums/enums.dart';
 import 'package:taskho/src/core/models/task_form_result.dart';
+import 'package:taskho/src/core/providers/customer_provider.dart';
 
 class TaskDetailDialog extends ConsumerStatefulWidget {
   final TaskFormResult? initial;
@@ -29,10 +30,10 @@ class TaskDetailDialog extends ConsumerStatefulWidget {
 class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
   final _formKey = GlobalKey<FormState>();
 
-  late final TextEditingController _customerController;
   late final TextEditingController _titleController;
   late final TextEditingController _notesController;
 
+  String? _selectedCustomer;
   DateTime? _dueDate;
   TaskPriority _priority = TaskPriority.medium;
   TaskStatus _status = TaskStatus.idle;
@@ -41,7 +42,7 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
   void initState() {
     super.initState();
     final i = widget.initial;
-    _customerController = TextEditingController(text: i?.customer ?? '');
+    _selectedCustomer = i?.customer;
     _titleController = TextEditingController(text: i?.title ?? '');
     _notesController = TextEditingController(text: i?.notes ?? '');
     _dueDate = i?.dueDate;
@@ -51,7 +52,6 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
 
   @override
   void dispose() {
-    _customerController.dispose();
     _titleController.dispose();
     _notesController.dispose();
     super.dispose();
@@ -74,7 +74,7 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
     if (!_formKey.currentState!.validate()) return;
 
     final result = TaskFormResult(
-      customer: _customerController.text.trim().isEmpty ? null : _customerController.text.trim(),
+      customer: _selectedCustomer,
       title: _titleController.text.trim(),
       dueDate: _dueDate,
       priority: _priority,
@@ -115,11 +115,50 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
                       // Müşteri
                       const Text('Müşteri'),
                       const SizedBox(height: 4),
-                      TextFormField(
-                        controller: _customerController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final customersAsync = ref.watch(customerListProvider);
+                          return customersAsync.when(
+                            data: (customers) => DropdownButtonFormField<String>(
+                              initialValue: _selectedCustomer,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Müşteri seçin',
+                              ),
+                              items: [
+                                const DropdownMenuItem<String>(
+                                  value: null,
+                                  child: Text('Seçiniz'),
+                                ),
+                                ...customers.map((c) => DropdownMenuItem<String>(
+                                      value: c.name,
+                                      child: Text(c.name),
+                                    )),
+                              ],
+                              onChanged: (v) {
+                                setState(() => _selectedCustomer = v);
+                              },
+                            ),
+                            loading: () => const InputDecorator(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                              child: Center(
+                                child: SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                ),
+                              ),
+                            ),
+                            error: (e, _) => InputDecorator(
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                              ),
+                              child: Text('Müşteri yükleme hatası: $e'),
+                            ),
+                          );
+                        },
                       ),
                       const SizedBox(height: 16),
 
