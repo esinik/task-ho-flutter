@@ -396,4 +396,100 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get noRecordsFound => 'Нема записа';
+
+  @override
+  String get calendar => 'Календар';
+
+  @override
+  String get calendarView => 'Календар';
+
+  @override
+  String get listView => 'Листа';
+
+  @override
+  String get addNote => 'Додај белешку';
+
+  @override
+  String get customerAndDateRequired => 'Клијент и датум су обавезни';
+
+  @override
+  String get noteAdded => 'Белешка је додата';
+
+  @override
+  String get noteUpdated => 'Белешка је ажурирана';
+
+  @override
+  String get previousWeek => 'Прошла недеља';
+
+  @override
+  String get nextWeek => 'Следећа недеља';
+
+  @override
+  String get thisWeek => 'Ове недеље';
+
+  @override
+  String get selectDate => 'Изаберите датум';
+
+  @override
+  String get selectWeek => 'Изаберите недељу';
+
+  @override
+  String get noCustomersFound => 'Нема клијената';
+
+  @override
+  String get customersLoadFailed => 'Неуспело учитавање клијената';
+
+  @override
+  String get newNote => 'Нова белешка';
+
+  @override
+  String get editNote => 'Измени белешку';
+
+  @override
+  String get customerRequired => 'Клијент је обавезан';
+
+  @override
+  String get titleRequired => 'Наслов је обавезан';
+
+  @override
+  String get dateRequired => 'Датум је обавезан';
+
+  @override
+  String get selectCustomer => 'Изаберите клијента';
+
+  @override
+  String get noteTitle => 'Наслов белешке';
+
+  @override
+  String get date => 'Датум';
+
+  @override
+  String get selectDatePrompt => 'Изаберите датум';
+
+  @override
+  String get notesOptional => 'Белешке (опционо)';
+
+  @override
+  String get additionalNotes => 'Додатне белешке';
+
+  @override
+  String get completed => 'Завршено';
+
+  @override
+  String get close => 'Затвори';
+
+  @override
+  String get startDate => 'Почетни датум';
+
+  @override
+  String get endDate => 'Крајњи датум';
+
+  @override
+  String get filter => 'Филтрирај';
+
+  @override
+  String get clickToViewNotes => 'Кликните да видите белешке';
+
+  @override
+  String get noNotesInRange => 'Нема белешки у овом периоду';
 }

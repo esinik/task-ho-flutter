@@ -47,6 +47,21 @@ final doneCountProvider = StateProvider<int>((ref) => 0);
 
 final screenTypeProvider = StateProvider<ScreenType>((ref) => ScreenType.tasks);
 
+// Calendar sub-view mode: calendar table or list view
+enum CalendarViewMode { calendar, list }
+
+final calendarViewModeProvider = StateProvider<CalendarViewMode>((ref) => CalendarViewMode.calendar);
+
+// Date range for calendar list view
+final calendarStartDateProvider = StateProvider<DateTime?>((ref) {
+  final now = DateTime.now();
+  return DateTime(now.year, now.month, 1); // First day of current month
+});
+final calendarEndDateProvider = StateProvider<DateTime?>((ref) {
+  final now = DateTime.now();
+  return DateTime(now.year, now.month + 1, 0); // Last day of current month
+});
+
 // Provider that fetches all tab counts at once
 final allTabCountsProvider = FutureProvider.autoDispose<Map<String, int>>((ref) async {
   final repo = ref.read(taskRepositoryProvider);

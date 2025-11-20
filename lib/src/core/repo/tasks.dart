@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 import '../repo/common.dart';
 import '../../core/models/task.dart';
+import '../models/task_form_result.dart';
 
 final taskRepositoryProvider = Provider<TaskRepository>((ref) {
   final client = ref.watch(apiClientProvider).dio;
@@ -25,6 +26,22 @@ class TaskRepository {
 
   Future<Task> create(Task t) async {
     final res = await _dio.post('/tasks', data: t.toJson());
+    return Task.fromJson(res.data);
+  }
+
+  /// Create task from form result
+  Future<Task> createFromFormResult(TaskFormResult formData) async {
+    final payload = {
+      'customer': formData.customer ?? '',
+      'title': formData.title,
+      'due': formData.dueDate != null
+          ? '${formData.dueDate!.year}-${formData.dueDate!.month.toString().padLeft(2, '0')}-${formData.dueDate!.day.toString().padLeft(2, '0')}'
+          : DateTime.now().toIso8601String().substring(0, 10),
+      'priority': formData.priority.name.substring(0, 1).toUpperCase() + formData.priority.name.substring(1),
+      'status': formData.status.name,
+      'notes': formData.notes ?? '',
+    };
+    final res = await _dio.post('/tasks', data: payload);
     return Task.fromJson(res.data);
   }
 

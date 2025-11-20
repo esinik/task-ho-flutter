@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../core/repo/fees.dart';
+import '../../core/repo/calendar.dart';
 import '../../core/models/fee.dart';
 import '../../core/providers/providers.dart';
 import '../../core/logging/app_logger.dart';
@@ -249,11 +250,48 @@ class FeesScreen extends ConsumerWidget {
                                   // Mark as paid / Undo button
                                   TextButton(
                                     onPressed: () async {
+                                      final wasPaid = rows[i].status == 'Ödendi';
+                                      final newStatus = wasPaid ? 'Açık' : 'Ödendi';
+                                      // Update fee status
                                       await ref.read(feeRepositoryProvider).update(
                                         rows[i].id!,
-                                        {'status': rows[i].status == 'Ödendi' ? 'Açık' : 'Ödendi'},
+                                        {'status': newStatus},
                                       );
                                       ref.invalidate(feeListProvider);
+
+                                      // Sync with calendar notes
+                                      final calendarRepo = ref.read(calendarRepositoryProvider);
+                                      final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+                                      try {
+                                        if (!wasPaid && newStatus == 'Ödendi') {
+                                          // Create completed note titled 'Ödendi'
+                                          await calendarRepo.createNote(
+                                            customer: rows[i].customer,
+                                            title: 'Ödendi',
+                                            date: today,
+                                            isCompleted: true,
+                                          );
+                                        } else if (wasPaid && newStatus == 'Açık') {
+                                          // Delete existing 'Ödendi' note for today & customer
+                                          final notes =
+                                              await calendarRepo.getRawNotesInRange(startDate: today, endDate: today);
+                                          final matches = notes
+                                              .where((n) =>
+                                                  n['customer'] == rows[i].customer &&
+                                                  (n['title'] == 'Ödendi') &&
+                                                  n['date'] == today)
+                                              .toList();
+                                          if (matches.isNotEmpty) {
+                                            final note = matches.first;
+                                            final noteId = note['id'] ?? note['_id'];
+                                            if (noteId != null) {
+                                              await calendarRepo.deleteNote(noteId);
+                                            }
+                                          }
+                                        }
+                                      } catch (e) {
+                                        // Fail silently; calendar sync shouldn't block fee update
+                                      }
                                     },
                                     style: TextButton.styleFrom(
                                       foregroundColor: rows[i].status == 'Ödendi' ? Colors.orange : Colors.green,

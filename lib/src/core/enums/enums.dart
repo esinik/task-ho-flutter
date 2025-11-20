@@ -1,5 +1,6 @@
 enum ScreenType {
   tasks,
+  calendar,
   fees,
   other,
 }

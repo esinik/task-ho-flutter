@@ -14,8 +14,7 @@ import '../../core/models/task.dart';
 import 'package:taskho/src/core/repo/customers.dart';
 import '../fees/fees_screen.dart';
 import '../../core/logging/app_logger.dart';
-
-const _tabs = ['inbox', 'today', 'week', 'month', 'later', 'waiting', 'done'];
+import '../calendar/calendar_screen.dart';
 
 class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
   const TaskListScreen({super.key});
@@ -46,11 +45,6 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
     });
 
     final totalCount = ref.watch(lastCountProvider);
-    final todayCount = ref.watch(todayCountProvider);
-    final thisWeekCount = ref.watch(thisWeekCountProvider);
-    final laterCount = ref.watch(laterCountProvider);
-    final waitingCount = ref.watch(waitingCountProvider);
-    final doneCount = ref.watch(doneCountProvider);
 
     final l10n = AppLocalizations.of(context)!;
     final filteredTasks = tasks.when(
@@ -66,44 +60,7 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
           headerBar(context),
           const SizedBox(height: 10),
           Expanded(
-            child: Row(
-              children: [
-                NavigationRail(
-                  selectedIndex: _tabs.indexOf(tab),
-                  onDestinationSelected: (i) {
-                    ref.read(currentTabProvider.notifier).state = _tabs[i];
-                    ref.invalidate(taskListProvider);
-                    AppLogger().logButtonClick('NavRail', 'TaskList', metadata: {
-                      'tab': _tabs[i],
-                    });
-                  },
-                  minWidth: 120,
-                  labelType: NavigationRailLabelType.all,
-                  destinations: [
-                    NavigationRailDestination(
-                      icon: const Icon(Icons.inbox_outlined),
-                      label: Text('${l10n.tabInbox}: $totalCount'),
-                    ),
-                    NavigationRailDestination(
-                        icon: const Icon(Icons.today_outlined), label: Text('${l10n.tabToday}: $todayCount')),
-                    NavigationRailDestination(
-                        icon: const Icon(Icons.view_week_outlined), label: Text('${l10n.tabWeek}: $thisWeekCount')),
-                    NavigationRailDestination(
-                        icon: const Icon(Icons.calendar_month_outlined),
-                        label: Text('${l10n.tabMonth}: ${ref.watch(thisMonthCountProvider)}')),
-                    NavigationRailDestination(
-                        icon: const Icon(Icons.schedule_outlined), label: Text('${l10n.tabLater}: $laterCount')),
-                    NavigationRailDestination(
-                        icon: const Icon(Icons.hourglass_top_outlined),
-                        label: Text('${l10n.tabWaiting}: $waitingCount')),
-                    NavigationRailDestination(
-                        icon: const Icon(Icons.check_circle_outline), label: Text('${l10n.tabDone}: $doneCount')),
-                  ],
-                ),
-                const VerticalDivider(width: 1),
-                rightSide(totalCount, tab, filteredTasks, ref),
-              ],
-            ),
+            child: rightSide(totalCount, tab, filteredTasks, ref),
           ),
         ],
       ),
@@ -113,7 +70,7 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
   void initProviderListeners(WidgetRef ref) {
     ref.listen<AsyncValue<List<Task>>>(taskListProvider, (previous, next) {
       next.whenData((tasks) {
-        ref.read(screenTypeProvider.notifier).state = ScreenType.tasks;
+        ref.read(screenTypeProvider.notifier).state = ScreenType.calendar;
         final tab = ref.read(currentTabProvider);
         final count = tasks.length;
         switch (tab) {
@@ -163,30 +120,39 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
     final l10n = AppLocalizations.of(ref.context)!;
     final screenType = ref.watch(screenTypeProvider);
 
-    return screenType == ScreenType.fees
-        ? const Expanded(child: FeesScreen())
-        : Expanded(
-            child: Column(
-              children: [
-                Container(
-                  color: Colors.grey[200],
-                  height: 50,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(_localizedTabTitle(l10n, tab)),
-                        Text(l10n.recordsCount(totalCount)),
-                      ],
-                    ),
-                  ),
-                ),
-                const FiltersBar(),
-                Expanded(child: filteredTasks),
-              ],
+    // Show fees screen
+    if (screenType == ScreenType.fees) {
+      return const Expanded(child: FeesScreen());
+    }
+
+    // Show calendar screen
+    if (screenType == ScreenType.calendar) {
+      return const Expanded(child: CalendarScreen());
+    }
+
+    // Show tasks list view (default)
+    return Expanded(
+      child: Column(
+        children: [
+          Container(
+            color: Colors.grey[200],
+            height: 50,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(localizedTabTitle(l10n, tab)),
+                  Text(l10n.recordsCount(totalCount)),
+                ],
+              ),
             ),
-          );
+          ),
+          const FiltersBar(),
+          Expanded(child: filteredTasks),
+        ],
+      ),
+    );
   }
 
   @override
@@ -246,9 +212,19 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
       AppLogger().logButtonClick('ShowFees', 'TaskList');
     }
   }
+
+  @override
+  void onShowCalendar(WidgetRef ref) {
+    final currentType = ref.read(screenTypeProvider);
+    // Sadece eğer calendar ekranı açık değilse değiştir
+    if (currentType != ScreenType.calendar) {
+      ref.read(screenTypeProvider.notifier).state = ScreenType.calendar;
+      AppLogger().logButtonClick('ShowCalendar', 'TaskList');
+    }
+  }
 }
 
-String _localizedTabTitle(AppLocalizations l10n, String tab) {
+String localizedTabTitle(AppLocalizations l10n, String tab) {
   switch (tab) {
     case 'inbox':
       return l10n.tabInbox;

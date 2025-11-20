@@ -390,4 +390,101 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get noRecordsFound => 'Kayıt bulunamadı';
+
+  @override
+  String get calendar => 'Takvim';
+
+  @override
+  String get calendarView => 'Takvim';
+
+  @override
+  String get listView => 'Liste';
+
+  @override
+  String get addNote => 'Not Ekle';
+
+  @override
+  String get customerAndDateRequired => 'Müşteri ve tarih zorunludur';
+
+  @override
+  String get noteAdded => 'Not eklendi';
+
+  @override
+  String get noteUpdated => 'Not güncellendi';
+
+  @override
+  String get previousWeek => 'Önceki hafta';
+
+  @override
+  String get nextWeek => 'Sonraki hafta';
+
+  @override
+  String get thisWeek => 'Bu hafta';
+
+  @override
+  String get selectDate => 'Tarih seçmek için tıklayın';
+
+  @override
+  String get selectWeek => 'Hafta seçin';
+
+  @override
+  String get noCustomersFound => 'Müşteri bulunamadı';
+
+  @override
+  String get customersLoadFailed => 'Müşteriler yüklenemedi';
+
+  @override
+  String get newNote => 'Yeni Not';
+
+  @override
+  String get editNote => 'Not Düzenle';
+
+  @override
+  String get customerRequired => 'Müşteri seçmelisiniz';
+
+  @override
+  String get titleRequired => 'Başlık zorunludur';
+
+  @override
+  String get dateRequired => 'Tarih seçmelisiniz';
+
+  @override
+  String get selectCustomer => 'Müşteri seçin';
+
+  @override
+  String get noteTitle => 'Not başlığı';
+
+  @override
+  String get date => 'Tarih';
+
+  @override
+  String get selectDatePrompt => 'Tarih seçin';
+
+  @override
+  String get notesOptional => 'Notlar (Opsiyonel)';
+
+  @override
+  String get additionalNotes => 'Ek notlar...';
+
+  @override
+  String get completed => 'Tamamlandı';
+
+  @override
+  String get close => 'Kapat';
+
+  @override
+  String get startDate => 'Başlangıç Tarihi';
+
+  @override
+  String get endDate => 'Bitiş Tarihi';
+
+  @override
+  String get filter => 'Filtrele';
+
+  @override
+  String get clickToViewNotes =>
+      'Notları görüntülemek için tarih aralığı seçip filtreleyin';
+
+  @override
+  String get noNotesInRange => 'Seçilen tarih aralığında not bulunamadı';
 }
