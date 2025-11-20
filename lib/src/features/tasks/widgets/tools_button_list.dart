@@ -8,6 +8,7 @@ import '../../../core/providers/providers.dart';
 /// Bu interface'i implement eden sınıflar, buton aksiyonlarını zorunlu olarak sağlar.
 abstract class ToolsButtonsDelegate {
   void onShowTaskList(WidgetRef ref);
+  void onShowCalendar(WidgetRef ref);
   void onShowAccountantFees(WidgetRef ref);
   void onAddOrEditCustomer(WidgetRef ref);
 }
@@ -25,11 +26,22 @@ class ToolsButtonsWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final screenType = ref.watch(screenTypeProvider);
-    final isTaskListActive = screenType == ScreenType.tasks;
+    final isCalendarActive = screenType == ScreenType.calendar;
     final isFeeScreenActive = screenType == ScreenType.fees;
 
     return Row(
       children: [
+        // Calendar Button
+        FilledButton.icon(
+          style: FilledButton.styleFrom(
+            backgroundColor: isCalendarActive ? Colors.blue : Colors.grey,
+          ),
+          onPressed: () => delegate.onShowCalendar(ref),
+          icon: const Icon(Icons.calendar_month),
+          label: const Text("Calendar"),
+        ),
+        const SizedBox(width: 8),
+        /*
         // Task List Button
         FilledButton.icon(
           style: FilledButton.styleFrom(
@@ -40,6 +52,7 @@ class ToolsButtonsWidget extends ConsumerWidget {
           label: Text(l10n.tasks),
         ),
         const SizedBox(width: 8),
+        */
         // Accounting Fees Button
         FilledButton.icon(
           style: FilledButton.styleFrom(

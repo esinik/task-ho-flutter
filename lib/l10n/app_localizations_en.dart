@@ -397,4 +397,100 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noRecordsFound => 'No records found';
+
+  @override
+  String get calendar => 'Calendar';
+
+  @override
+  String get calendarView => 'Calendar';
+
+  @override
+  String get listView => 'List';
+
+  @override
+  String get addNote => 'Add Note';
+
+  @override
+  String get customerAndDateRequired => 'Customer and date are required';
+
+  @override
+  String get noteAdded => 'Note added';
+
+  @override
+  String get noteUpdated => 'Note updated';
+
+  @override
+  String get previousWeek => 'Previous week';
+
+  @override
+  String get nextWeek => 'Next week';
+
+  @override
+  String get thisWeek => 'This week';
+
+  @override
+  String get selectDate => 'Click to select date';
+
+  @override
+  String get selectWeek => 'Select week';
+
+  @override
+  String get noCustomersFound => 'No customers found';
+
+  @override
+  String get customersLoadFailed => 'Failed to load customers';
+
+  @override
+  String get newNote => 'New Note';
+
+  @override
+  String get editNote => 'Edit Note';
+
+  @override
+  String get customerRequired => 'You must select a customer';
+
+  @override
+  String get titleRequired => 'Title is required';
+
+  @override
+  String get dateRequired => 'You must select a date';
+
+  @override
+  String get selectCustomer => 'Select customer';
+
+  @override
+  String get noteTitle => 'Note title';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get selectDatePrompt => 'Select date';
+
+  @override
+  String get notesOptional => 'Notes (Optional)';
+
+  @override
+  String get additionalNotes => 'Additional notes...';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get startDate => 'Start Date';
+
+  @override
+  String get endDate => 'End Date';
+
+  @override
+  String get filter => 'Filter';
+
+  @override
+  String get clickToViewNotes => 'Select date range and filter to view notes';
+
+  @override
+  String get noNotesInRange => 'No notes found in selected date range';
 }

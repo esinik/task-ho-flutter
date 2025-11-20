@@ -399,4 +399,100 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get noRecordsFound => 'Nuk u gjetën të dhëna';
+
+  @override
+  String get calendar => 'Kalendari';
+
+  @override
+  String get calendarView => 'Kalendar';
+
+  @override
+  String get listView => 'Lista';
+
+  @override
+  String get addNote => 'Shto Shënim';
+
+  @override
+  String get customerAndDateRequired => 'Klienti dhe data janë të detyrueshme';
+
+  @override
+  String get noteAdded => 'Shënimi u shtua';
+
+  @override
+  String get noteUpdated => 'Shënimi u përditësua';
+
+  @override
+  String get previousWeek => 'Java e kaluar';
+
+  @override
+  String get nextWeek => 'Java e ardhshme';
+
+  @override
+  String get thisWeek => 'Këtë javë';
+
+  @override
+  String get selectDate => 'Zgjidhni datën';
+
+  @override
+  String get selectWeek => 'Zgjidhni javën';
+
+  @override
+  String get noCustomersFound => 'Nuk u gjetën klientë';
+
+  @override
+  String get customersLoadFailed => 'Dështoi ngarkimi i klientëve';
+
+  @override
+  String get newNote => 'Shënim i ri';
+
+  @override
+  String get editNote => 'Ndrysho shënimin';
+
+  @override
+  String get customerRequired => 'Klienti është i detyrueshëm';
+
+  @override
+  String get titleRequired => 'Titulli është i detyrueshëm';
+
+  @override
+  String get dateRequired => 'Data është e detyrueshme';
+
+  @override
+  String get selectCustomer => 'Zgjidhni klientin';
+
+  @override
+  String get noteTitle => 'Titulli i shënimit';
+
+  @override
+  String get date => 'Data';
+
+  @override
+  String get selectDatePrompt => 'Zgjidhni datën';
+
+  @override
+  String get notesOptional => 'Shënime (opsionale)';
+
+  @override
+  String get additionalNotes => 'Shënime shtesë';
+
+  @override
+  String get completed => 'Përfunduar';
+
+  @override
+  String get close => 'Mbyll';
+
+  @override
+  String get startDate => 'Data e fillimit';
+
+  @override
+  String get endDate => 'Data e mbarimit';
+
+  @override
+  String get filter => 'Filtro';
+
+  @override
+  String get clickToViewNotes => 'Klikoni për të parë shënimet';
+
+  @override
+  String get noNotesInRange => 'Nuk ka shënime në këtë periudhë';
 }
