@@ -28,4 +28,17 @@ class CustomerRepository {
     });
     return Customer.fromJson(res.data);
   }
+
+  Future<Customer> update(String id, String name, {bool isPaid = false, double fee = 0}) async {
+    final res = await _dio.put('/customers/$id', data: {
+      'name': name,
+      'isPaid': isPaid,
+      'fee': fee,
+    });
+    return Customer.fromJson(res.data);
+  }
+
+  Future<void> delete(String id) async {
+    await _dio.delete('/customers/$id');
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:taskho/l10n/app_localizations.dart';
 import 'package:taskho/src/core/providers/providers.dart';
 
 /// Değişiklikleri üst seviyeye taşımak için sade bir model.
@@ -70,6 +71,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     const brand = Color(0xFF2563EB);
 
     final customersAsync = ref.watch(customerListProvider);
@@ -95,7 +97,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                   child: Row(
                     children: [
                       Text(
-                        'Müşteri Güncelle',
+                        l10n.updateCustomer,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w700,
                           color: const Color(0xFF111827),
@@ -107,7 +109,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                         style: TextButton.styleFrom(
                           foregroundColor: brand,
                         ),
-                        child: const Text('Kapat'),
+                        child: Text(l10n.close),
                       ),
                     ],
                   ),
@@ -124,7 +126,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                           controller: _searchCtrl,
                           onChanged: (_) => setState(() {}),
                           decoration: InputDecoration(
-                            hintText: 'Ara (en az 1 harf)',
+                            hintText: l10n.searchHint,
                             prefixIcon: const Icon(Icons.search, size: 18),
                             isDense: true,
                             contentPadding: const EdgeInsets.symmetric(
@@ -143,7 +145,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                           _searchCtrl.clear();
                           setState(() {});
                         },
-                        child: const Text('Temizle'),
+                        child: Text(l10n.clear),
                       ),
                       const SizedBox(width: 8),
                       ElevatedButton(
@@ -156,7 +158,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                             borderRadius: BorderRadius.circular(999),
                           ),
                         ),
-                        child: const Text('+ Yeni'),
+                        child: Text('+ ${l10n.newBtn}'),
                       ),
                     ],
                   ),
@@ -170,7 +172,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                     ),
                     error: (e, st) => Center(
                       child: Text(
-                        'Müşteri listesi yüklenemedi\n$e',
+                        '${l10n.customerListLoadFailed}\n$e',
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodySmall?.copyWith(color: Colors.red[700]),
                       ),
@@ -224,7 +226,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                       if (visible.isEmpty) {
                         return Center(
                           child: Text(
-                            'Hiç müşteri bulunamadı.',
+                            query.isEmpty ? l10n.noCustomersFound : l10n.noCustomersInSearch,
                             style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                           ),
                         );
@@ -276,7 +278,9 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                                           ),
                                           const SizedBox(width: 4),
                                           Text(
-                                            item.isPaid ? 'Ücretli (₺${item.fee.toStringAsFixed(0)}/ay)' : 'Ücretsiz',
+                                            item.isPaid
+                                                ? '${l10n.isPaid} (€${item.fee.toStringAsFixed(0)}/ay)'
+                                                : l10n.isFree,
                                             style: theme.textTheme.bodySmall?.copyWith(
                                               color: Colors.grey[600],
                                             ),
@@ -290,11 +294,11 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
                                     child: _Tag(
-                                      label: item.isNew ? 'Yeni' : 'Düzenlendi',
+                                      label: item.isNew ? l10n.newBtn : l10n.update,
                                     ),
                                   ),
                                 IconButton(
-                                  tooltip: 'Düzenle',
+                                  tooltip: l10n.editCustomer,
                                   onPressed: () => _onRename(item),
                                   icon: const Icon(
                                     Icons.edit_outlined,
@@ -302,7 +306,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                                   ),
                                 ),
                                 IconButton(
-                                  tooltip: 'Sil',
+                                  tooltip: l10n.delete,
                                   onPressed: () => _onDelete(item),
                                   icon: const Icon(
                                     Icons.delete_outline,
@@ -330,7 +334,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                     children: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Vazgeç'),
+                        child: Text(l10n.cancel),
                       ),
                       const Spacer(),
                       ElevatedButton(
@@ -346,7 +350,7 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: const Text('Değişiklikleri Kaydet'),
+                        child: Text(l10n.saveChanges),
                       ),
                     ],
                   ),
@@ -386,8 +390,9 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
   }
 
   void _onAddNewCustomer() async {
+    final l10n = AppLocalizations.of(context)!;
     final result = await _openCustomerDialog(
-      title: 'Yeni Müşteri',
+      title: l10n.newCustomer,
     );
     if (result == null) return;
     setState(() {
@@ -396,8 +401,9 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
   }
 
   void _onRename(_UiCustomer item) async {
+    final l10n = AppLocalizations.of(context)!;
     final result = await _openCustomerDialog(
-      title: 'Müşteri Düzenle',
+      title: l10n.editCustomer,
       initialName: item.name,
       initialIsPaid: item.isPaid,
       initialFee: item.fee,
@@ -405,20 +411,23 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
     if (result == null) return;
 
     setState(() {
-      // Yeni eklenmişse direkt _created içinde güncelle
-      final createdIndex = _created.indexWhere(
-        (c) => (c.id ?? c.name) == item.id && !(_deletedIds.contains(item.id)),
-      );
-      if (createdIndex != -1) {
-        _created[createdIndex] = CustomerChange(
-          id: _created[createdIndex].id,
-          name: result.name,
-          isPaid: result.isPaid,
-          fee: result.fee,
+      // Yeni eklenmişse (henüz backend'e kaydedilmemiş) direkt _created içinde güncelle
+      if (item.isNew) {
+        final createdIndex = _created.indexWhere(
+          (c) => c.name == item.name,
         );
+        if (createdIndex != -1) {
+          _created[createdIndex] = CustomerChange(
+            id: null, // Yeni kayıt, henüz ID yok
+            name: result.name,
+            isPaid: result.isPaid,
+            fee: result.fee,
+          );
+        }
       } else {
+        // Backend'den gelen kayıt, ID'si var
         _updatedById[item.id] = CustomerChange(
-          id: item.id,
+          id: item.id, // ID'yi mutlaka set et
           name: result.name,
           isPaid: result.isPaid,
           fee: result.fee,
@@ -428,24 +437,25 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
   }
 
   void _onDelete(_UiCustomer item) async {
+    final l10n = AppLocalizations.of(context)!;
     final confirm = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (_) => AlertDialog(
-        title: const Text('Müşteri Sil'),
+        title: Text(l10n.deleteCustomer),
         content: Text(
-          '"${item.name}" müşterisini silmek istediğinize emin misiniz?',
+          l10n.deleteCustomerConfirm(item.name),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Vazgeç'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(
-              'Sil',
-              style: TextStyle(color: Colors.red),
+            child: Text(
+              l10n.delete,
+              style: const TextStyle(color: Colors.red),
             ),
           ),
         ],
@@ -455,12 +465,16 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
     if (confirm != true) return;
 
     setState(() {
-      // Yeni eklenmişse created listesinden at
-      _created.removeWhere((c) => (c.id ?? c.name) == item.id || c.name == item.name);
-      // Güncellenmiş kaydı da kaldır
-      _updatedById.remove(item.id);
-      // Var olan kaydı silinmek üzere işaretle
-      _deletedIds.add(item.id);
+      if (item.isNew) {
+        // Yeni eklenen kayıt henüz backend'de yok, sadece local listeden sil
+        _created.removeWhere((c) => c.name == item.name);
+      } else {
+        // Backend'den gelen kayıt
+        // Güncellenmiş kaydı da kaldır (eğer varsa)
+        _updatedById.remove(item.id);
+        // Var olan kaydı silinmek üzere işaretle
+        _deletedIds.add(item.id);
+      }
     });
   }
 
@@ -480,78 +494,81 @@ class _CustomerManageDialogState extends ConsumerState<CustomerManageDialog> {
       context: context,
       barrierDismissible: false,
       builder: (_) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
-          title: Text(title),
-          content: SizedBox(
-            width: 400,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Müşteri Adı'),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: nameController,
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    hintText: 'Örn. ACME LLC',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                CheckboxListTile(
-                  title: const Text('Ücretli Müşteri'),
-                  value: isPaid,
-                  onChanged: (value) {
-                    setState(() => isPaid = value ?? false);
-                  },
-                  contentPadding: EdgeInsets.zero,
-                  controlAffinity: ListTileControlAffinity.leading,
-                ),
-                if (isPaid) ...[
-                  const SizedBox(height: 8),
-                  const Text('Aylık Ücret (₺)'),
+        builder: (context, setState) {
+          final l10n = AppLocalizations.of(context)!;
+          return AlertDialog(
+            title: Text(title),
+            content: SizedBox(
+              width: 400,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l10n.customerName),
                   const SizedBox(height: 8),
                   TextField(
-                    controller: feeController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      hintText: '0',
-                      border: OutlineInputBorder(),
-                      prefixText: '₺ ',
+                    controller: nameController,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: l10n.customerNameHint,
+                      border: const OutlineInputBorder(),
                     ),
                   ),
-                ],
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(null),
-              child: const Text('İptal'),
-            ),
-            TextButton(
-              onPressed: () {
-                final name = nameController.text.trim();
-                if (name.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Müşteri adı boş olamaz')),
-                  );
-                  return;
-                }
-                final feeValue = isPaid ? (double.tryParse(feeController.text.trim()) ?? 0.0) : 0.0;
-                Navigator.of(context).pop(
-                  CustomerChange(
-                    name: name,
-                    isPaid: isPaid,
-                    fee: feeValue,
+                  const SizedBox(height: 16),
+                  CheckboxListTile(
+                    title: Text(l10n.paidCustomer),
+                    value: isPaid,
+                    onChanged: (value) {
+                      setState(() => isPaid = value ?? false);
+                    },
+                    contentPadding: EdgeInsets.zero,
+                    controlAffinity: ListTileControlAffinity.leading,
                   ),
-                );
-              },
-              child: const Text('Kaydet'),
+                  if (isPaid) ...[
+                    const SizedBox(height: 8),
+                    Text(l10n.monthlyFeeAmount),
+                    const SizedBox(height: 8),
+                    TextField(
+                      controller: feeController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        hintText: '0',
+                        border: OutlineInputBorder(),
+                        prefixText: '€ ',
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             ),
-          ],
-        ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(null),
+                child: Text(l10n.cancel),
+              ),
+              TextButton(
+                onPressed: () {
+                  final name = nameController.text.trim();
+                  if (name.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(l10n.customerNameRequired)),
+                    );
+                    return;
+                  }
+                  final feeValue = isPaid ? (double.tryParse(feeController.text.trim()) ?? 0.0) : 0.0;
+                  Navigator.of(context).pop(
+                    CustomerChange(
+                      name: name,
+                      isPaid: isPaid,
+                      fee: feeValue,
+                    ),
+                  );
+                },
+                child: Text(l10n.save),
+              ),
+            ],
+          );
+        },
       ),
     );
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:taskho/l10n/app_localizations.dart';
 import 'package:taskho/src/core/models/task.dart';
 import 'package:taskho/src/core/repo/tasks.dart';
 
@@ -28,36 +29,37 @@ class _EditTaskDialogState extends ConsumerState<EditTaskDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: const Text('Görev Düzenle'),
+      title: Text(l10n.editTask),
       content: SizedBox(
         width: 420,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: customer, decoration: const InputDecoration(labelText: 'Müşteri')),
-            TextField(controller: title, decoration: const InputDecoration(labelText: 'Görev')),
-            TextField(controller: due, decoration: const InputDecoration(labelText: 'Vade (YYYY-MM-DD)')),
+            TextField(controller: customer, decoration: InputDecoration(labelText: l10n.customer)),
+            TextField(controller: title, decoration: InputDecoration(labelText: l10n.task)),
+            TextField(controller: due, decoration: InputDecoration(labelText: l10n.due)),
             DropdownButtonFormField<String>(
               initialValue: priority,
-              items: const [
-                DropdownMenuItem(value: 'High', child: Text('High')),
-                DropdownMenuItem(value: 'Medium', child: Text('Medium')),
-                DropdownMenuItem(value: 'Low', child: Text('Low')),
+              items: [
+                DropdownMenuItem(value: 'High', child: Text(l10n.priorityHigh)),
+                DropdownMenuItem(value: 'Medium', child: Text(l10n.priorityMedium)),
+                DropdownMenuItem(value: 'Low', child: Text(l10n.priorityLow)),
               ],
               onChanged: (v) => setState(() => priority = v ?? 'Medium'),
-              decoration: const InputDecoration(labelText: 'Öncelik'),
+              decoration: InputDecoration(labelText: l10n.priority),
             ),
           ],
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('İptal')),
+        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
         FilledButton(
           onPressed: () async {
             // basic validation
             if (title.text.trim().isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Görev adı zorunlu')));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.errorTaskRequired)));
               return;
             }
             final repo = ref.read(taskRepositoryProvider);
@@ -69,7 +71,7 @@ class _EditTaskDialogState extends ConsumerState<EditTaskDialog> {
             });
             if (context.mounted) Navigator.pop(context);
           },
-          child: const Text('Kaydet'),
+          child: Text(l10n.save),
         ),
       ],
     );

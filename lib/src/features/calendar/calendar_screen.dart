@@ -367,13 +367,14 @@ class _CalendarTable extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final customersAsync = ref.watch(customerListProvider);
 
     return customersAsync.when(
       data: (customers) {
         final customerNames = customers.map((c) => c.name).toList();
-        if (customerNames.isEmpty) {
-          return const Center(child: Text('Müşteri bulunamadı'));
+        if (customers.isEmpty) {
+          return Center(child: Text(l10n.noCustomersFound));
         }
 
         // Generate 7 days starting from Monday
@@ -408,7 +409,7 @@ class _CalendarTable extends ConsumerWidget {
                         label: Container(
                           width: 120,
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                          child: const Text('Müşteriler', style: TextStyle(fontWeight: FontWeight.bold)),
+                          child: Text(l10n.customersColumn, style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                       ),
                       ...weekDays.map((day) {
@@ -489,7 +490,7 @@ class _CalendarTable extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, st) => Center(child: Text('Müşteriler yüklenemedi: $e')),
+      error: (e, st) => Center(child: Text('${l10n.customersLoadFailed}: $e')),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:taskho/l10n/app_localizations.dart';
 import 'package:taskho/src/core/enums/enums.dart';
 import 'package:taskho/src/core/models/task_form_result.dart';
 import 'package:taskho/src/core/providers/customer_provider.dart';
@@ -70,23 +71,10 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
     }
   }
 
-  void _submit() {
-    if (!_formKey.currentState!.validate()) return;
-
-    final result = TaskFormResult(
-      customer: _selectedCustomer,
-      title: _titleController.text.trim(),
-      dueDate: _dueDate,
-      priority: _priority,
-      notes: _notesController.text.trim().isEmpty ? null : _notesController.text.trim(),
-      status: _status,
-    );
-
-    Navigator.of(context).pop(result);
-  }
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Dialog(
       insetPadding: const EdgeInsets.all(24),
       child: ConstrainedBox(
@@ -299,12 +287,12 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('İptal'),
+                    child: Text(l10n.cancel),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 8),
                   ElevatedButton(
-                    onPressed: _submit,
-                    child: const Text('Kaydet'),
+                    onPressed: _onSave,
+                    child: Text(l10n.save),
                   ),
                 ],
               ),
@@ -313,5 +301,25 @@ class _TaskDetailDialogState extends ConsumerState<TaskDetailDialog> {
         ),
       ),
     );
+  }
+
+  void _onSave() {
+    if (!_formKey.currentState!.validate()) return;
+    if (_selectedCustomer == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.customerRequired)),
+      );
+      return;
+    }
+
+    final result = TaskFormResult(
+      customer: _selectedCustomer!,
+      title: _titleController.text.trim(),
+      notes: _notesController.text.trim().isNotEmpty ? _notesController.text.trim() : null,
+      dueDate: _dueDate,
+      priority: _priority,
+      status: _status,
+    );
+    Navigator.of(context).pop(result);
   }
 }

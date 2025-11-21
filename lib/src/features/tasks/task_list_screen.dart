@@ -172,21 +172,24 @@ class TaskListScreen extends ConsumerWidget implements ToolsButtonsDelegate {
       );
     }
 
-    // Güncellenmiş müşteriler için de create çağrılıyor (backend'de aynı name varsa update ediyor)
+    // Güncellenmiş müşterileri update et
     for (final customer in result.updated) {
-      await repo.create(
-        customer.name,
-        isPaid: customer.isPaid,
-        fee: customer.fee,
-      );
+      if (customer.id != null) {
+        await repo.update(
+          customer.id!,
+          customer.name,
+          isPaid: customer.isPaid,
+          fee: customer.fee,
+        );
+      }
     }
 
-    // Silme işlemleri için şu an backend endpoint yok, gerekirse eklenebilir
-    // for (final customer in result.deleted) {
-    //   if (customer.id != null) {
-    //     await repo.delete(customer.id!);
-    //   }
-    // }
+    // Silme işlemleri
+    for (final customer in result.deleted) {
+      if (customer.id != null) {
+        await repo.delete(customer.id!);
+      }
+    }
 
     // Müşteri listesini yenile
     ref.invalidate(customerListProvider);

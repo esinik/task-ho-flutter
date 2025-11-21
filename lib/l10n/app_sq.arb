@@ -166,5 +166,28 @@
   "endDate": "Data e mbarimit",
   "filter": "Filtro",
   "clickToViewNotes": "Klikoni për të parë shënimet",
-  "noNotesInRange": "Nuk ka shënime në këtë periudhë"
+  "noNotesInRange": "Nuk ka shënime në këtë periudhë",
+  "updateCustomer": "Përditëso Klientin",
+  "searchHint": "Kërko (të paktën 1 shkronjë)",
+  "clear": "Pastro",
+  "newBtn": "I ri",
+  "customerListLoadFailed": "Dështoi ngarkimi i listës së klientëve",
+  "noCustomersInSearch": "Nuk u gjetën rezultate",
+  "saveChanges": "Ruaj Ndryshimet",
+  "deleteCustomer": "Fshi Klientin",
+  "deleteCustomerConfirm": "Jeni i sigurt që dëshironi të fshini {name}?",
+  "@deleteCustomerConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "customerName": "Emri i Klientit",
+  "customerNameHint": "p.sh. ACME LLC",
+  "paidCustomer": "Klient me Pagesë",
+  "monthlyFeeAmount": "Tarifa Mujore (€)",
+  "customerNameRequired": "Emri i klientit nuk mund të jetë bosh",
+  "customerLoadError": "Gabim në ngarkimin e klientit",
+  "customersColumn": "Klientët"
 }

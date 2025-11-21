@@ -487,4 +487,54 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get noNotesInRange => 'Seçilen tarih aralığında not bulunamadı';
+
+  @override
+  String get updateCustomer => 'Müşteri Güncelle';
+
+  @override
+  String get searchHint => 'Ara (en az 1 harf)';
+
+  @override
+  String get clear => 'Temizle';
+
+  @override
+  String get newBtn => 'Yeni';
+
+  @override
+  String get customerListLoadFailed => 'Müşteri listesi yüklenemedi';
+
+  @override
+  String get noCustomersInSearch => 'Arama sonucu bulunamadı';
+
+  @override
+  String get saveChanges => 'Değişiklikleri Kaydet';
+
+  @override
+  String get deleteCustomer => 'Müşteri Sil';
+
+  @override
+  String deleteCustomerConfirm(String name) {
+    return '$name müşterisini silmek istediğinize emin misiniz?';
+  }
+
+  @override
+  String get customerName => 'Müşteri Adı';
+
+  @override
+  String get customerNameHint => 'Örn. ACME LLC';
+
+  @override
+  String get paidCustomer => 'Ücretli Müşteri';
+
+  @override
+  String get monthlyFeeAmount => 'Aylık Ücret (€)';
+
+  @override
+  String get customerNameRequired => 'Müşteri adı boş olamaz';
+
+  @override
+  String get customerLoadError => 'Müşteri yükleme hatası';
+
+  @override
+  String get customersColumn => 'Müşteriler';
 }

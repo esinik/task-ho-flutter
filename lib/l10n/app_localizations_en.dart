@@ -493,4 +493,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noNotesInRange => 'No notes found in selected date range';
+
+  @override
+  String get updateCustomer => 'Update Customer';
+
+  @override
+  String get searchHint => 'Search (at least 1 letter)';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get newBtn => 'New';
+
+  @override
+  String get customerListLoadFailed => 'Failed to load customer list';
+
+  @override
+  String get noCustomersInSearch => 'No results found';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get deleteCustomer => 'Delete Customer';
+
+  @override
+  String deleteCustomerConfirm(String name) {
+    return 'Are you sure you want to delete $name?';
+  }
+
+  @override
+  String get customerName => 'Customer Name';
+
+  @override
+  String get customerNameHint => 'e.g. ACME LLC';
+
+  @override
+  String get paidCustomer => 'Paid Customer';
+
+  @override
+  String get monthlyFeeAmount => 'Monthly Fee (€)';
+
+  @override
+  String get customerNameRequired => 'Customer name cannot be empty';
+
+  @override
+  String get customerLoadError => 'Customer loading error';
+
+  @override
+  String get customersColumn => 'Customers';
 }

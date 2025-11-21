@@ -492,4 +492,54 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get noNotesInRange => 'Нема белешки у овом периоду';
+
+  @override
+  String get updateCustomer => 'Ажурирај Клијента';
+
+  @override
+  String get searchHint => 'Претражи (најмање 1 слово)';
+
+  @override
+  String get clear => 'Очисти';
+
+  @override
+  String get newBtn => 'Ново';
+
+  @override
+  String get customerListLoadFailed => 'Неуспело учитавање листе клијената';
+
+  @override
+  String get noCustomersInSearch => 'Нема резултата';
+
+  @override
+  String get saveChanges => 'Сачувај Измене';
+
+  @override
+  String get deleteCustomer => 'Обриши Клијента';
+
+  @override
+  String deleteCustomerConfirm(String name) {
+    return 'Да ли сте сигурни да желите да обришете $name?';
+  }
+
+  @override
+  String get customerName => 'Име Клијента';
+
+  @override
+  String get customerNameHint => 'нпр. ACME LLC';
+
+  @override
+  String get paidCustomer => 'Плаћени Клијент';
+
+  @override
+  String get monthlyFeeAmount => 'Месечна Такса (€)';
+
+  @override
+  String get customerNameRequired => 'Име клијента не може бити празно';
+
+  @override
+  String get customerLoadError => 'Грешка при учитавању клијента';
+
+  @override
+  String get customersColumn => 'Клијенти';
 }

@@ -1055,6 +1055,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No notes found in selected date range'**
   String get noNotesInRange;
+
+  /// No description provided for @updateCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Customer'**
+  String get updateCustomer;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search (at least 1 letter)'**
+  String get searchHint;
+
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// No description provided for @newBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get newBtn;
+
+  /// No description provided for @customerListLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load customer list'**
+  String get customerListLoadFailed;
+
+  /// No description provided for @noCustomersInSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found'**
+  String get noCustomersInSearch;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
+  /// No description provided for @deleteCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Customer'**
+  String get deleteCustomer;
+
+  /// No description provided for @deleteCustomerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete {name}?'**
+  String deleteCustomerConfirm(String name);
+
+  /// No description provided for @customerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Name'**
+  String get customerName;
+
+  /// No description provided for @customerNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. ACME LLC'**
+  String get customerNameHint;
+
+  /// No description provided for @paidCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid Customer'**
+  String get paidCustomer;
+
+  /// No description provided for @monthlyFeeAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Fee (€)'**
+  String get monthlyFeeAmount;
+
+  /// No description provided for @customerNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer name cannot be empty'**
+  String get customerNameRequired;
+
+  /// No description provided for @customerLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer loading error'**
+  String get customerLoadError;
+
+  /// No description provided for @customersColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get customersColumn;
 }
 
 class _AppLocalizationsDelegate

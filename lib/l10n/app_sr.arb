@@ -166,5 +166,28 @@
   "endDate": "Крајњи датум",
   "filter": "Филтрирај",
   "clickToViewNotes": "Кликните да видите белешке",
-  "noNotesInRange": "Нема белешки у овом периоду"
+  "noNotesInRange": "Нема белешки у овом периоду",
+  "updateCustomer": "Ажурирај Клијента",
+  "searchHint": "Претражи (најмање 1 слово)",
+  "clear": "Очисти",
+  "newBtn": "Ново",
+  "customerListLoadFailed": "Неуспело учитавање листе клијената",
+  "noCustomersInSearch": "Нема резултата",
+  "saveChanges": "Сачувај Измене",
+  "deleteCustomer": "Обриши Клијента",
+  "deleteCustomerConfirm": "Да ли сте сигурни да желите да обришете {name}?",
+  "@deleteCustomerConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "customerName": "Име Клијента",
+  "customerNameHint": "нпр. ACME LLC",
+  "paidCustomer": "Плаћени Клијент",
+  "monthlyFeeAmount": "Месечна Такса (€)",
+  "customerNameRequired": "Име клијента не може бити празно",
+  "customerLoadError": "Грешка при учитавању клијента",
+  "customersColumn": "Клијенти"
 }

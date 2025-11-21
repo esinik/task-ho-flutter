@@ -495,4 +495,54 @@ class AppLocalizationsSq extends AppLocalizations {
 
   @override
   String get noNotesInRange => 'Nuk ka shënime në këtë periudhë';
+
+  @override
+  String get updateCustomer => 'Përditëso Klientin';
+
+  @override
+  String get searchHint => 'Kërko (të paktën 1 shkronjë)';
+
+  @override
+  String get clear => 'Pastro';
+
+  @override
+  String get newBtn => 'I ri';
+
+  @override
+  String get customerListLoadFailed => 'Dështoi ngarkimi i listës së klientëve';
+
+  @override
+  String get noCustomersInSearch => 'Nuk u gjetën rezultate';
+
+  @override
+  String get saveChanges => 'Ruaj Ndryshimet';
+
+  @override
+  String get deleteCustomer => 'Fshi Klientin';
+
+  @override
+  String deleteCustomerConfirm(String name) {
+    return 'Jeni i sigurt që dëshironi të fshini $name?';
+  }
+
+  @override
+  String get customerName => 'Emri i Klientit';
+
+  @override
+  String get customerNameHint => 'p.sh. ACME LLC';
+
+  @override
+  String get paidCustomer => 'Klient me Pagesë';
+
+  @override
+  String get monthlyFeeAmount => 'Tarifa Mujore (€)';
+
+  @override
+  String get customerNameRequired => 'Emri i klientit nuk mund të jetë bosh';
+
+  @override
+  String get customerLoadError => 'Gabim në ngarkimin e klientit';
+
+  @override
+  String get customersColumn => 'Klientët';
 }

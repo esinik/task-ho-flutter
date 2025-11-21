@@ -544,5 +544,28 @@
   "endDate": "End Date",
   "filter": "Filter",
   "clickToViewNotes": "Select date range and filter to view notes",
-  "noNotesInRange": "No notes found in selected date range"
+  "noNotesInRange": "No notes found in selected date range",
+  "updateCustomer": "Update Customer",
+  "searchHint": "Search (at least 1 letter)",
+  "clear": "Clear",
+  "newBtn": "New",
+  "customerListLoadFailed": "Failed to load customer list",
+  "noCustomersInSearch": "No results found",
+  "saveChanges": "Save Changes",
+  "deleteCustomer": "Delete Customer",
+  "deleteCustomerConfirm": "Are you sure you want to delete {name}?",
+  "@deleteCustomerConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "customerName": "Customer Name",
+  "customerNameHint": "e.g. ACME LLC",
+  "paidCustomer": "Paid Customer",
+  "monthlyFeeAmount": "Monthly Fee (€)",
+  "customerNameRequired": "Customer name cannot be empty",
+  "customerLoadError": "Customer loading error",
+  "customersColumn": "Customers"
 }

@@ -19,8 +19,7 @@ echo ""
 
 # Step 1: Build with production URL
 echo "📱 Step 2/4: Building macOS app (universal arm64+x86_64)..."
-flutter build macos --release --darwin-archs=arm64,x86_64 \
-	--dart-define=TASKHO_BASE_URL="$PRODUCTION_URL"
+flutter build macos --release --dart-define=TASKHO_BASE_URL="$PRODUCTION_URL"
 echo "✅ Build complete!"
 echo ""
 

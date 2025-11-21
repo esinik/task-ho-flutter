@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import '../../../core/providers/customer_provider.dart';
+import 'package:taskho/l10n/app_localizations.dart';
+import 'package:taskho/src/core/providers/providers.dart';
 
 class NoteFormResult {
   final String? customer;
@@ -100,7 +101,8 @@ class _NoteDetailDialogState extends ConsumerState<NoteDetailDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final customersAsync = ref.watch(customerListProvider);
+    final l10n = AppLocalizations.of(context)!;
+    final customersAsync = ref.watch(customerOptionsProvider);
 
     return Dialog(
       insetPadding: const EdgeInsets.all(24),
@@ -121,14 +123,14 @@ class _NoteDetailDialogState extends ConsumerState<NoteDetailDialog> {
                   const Icon(Icons.note_add, size: 28, color: Colors.blue),
                   const SizedBox(width: 12),
                   Text(
-                    widget.initial == null ? 'Yeni Not' : 'Not Düzenle',
+                    widget.initial == null ? l10n.newNote : l10n.editNote,
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                   ),
                   const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () => Navigator.of(context).pop(),
-                    tooltip: 'Kapat',
+                    tooltip: l10n.close,
                   ),
                 ],
               ),
@@ -142,54 +144,56 @@ class _NoteDetailDialogState extends ConsumerState<NoteDetailDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Customer dropdown
-                        const Text(
-                          'Müşteri',
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                        Text(
+                          l10n.customer,
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
                         ),
                         const SizedBox(height: 8),
                         customersAsync.when(
                           data: (customers) {
-                            final customerNames = customers.map((c) => c.name).toList();
                             return DropdownButtonFormField<String>(
                               initialValue: _selectedCustomer,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'Müşteri seçin',
-                                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(),
+                                hintText: l10n.selectCustomer,
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                               ),
-                              items: customerNames.map((name) {
-                                return DropdownMenuItem(value: name, child: Text(name));
+                              items: customers.map((name) {
+                                return DropdownMenuItem<String>(
+                                  value: name,
+                                  child: Text(name),
+                                );
                               }).toList(),
                               onChanged: (val) => setState(() => _selectedCustomer = val),
-                              validator: (v) => v == null || v.isEmpty ? 'Müşteri seçmelisiniz' : null,
+                              validator: (v) => v == null || v.isEmpty ? l10n.customerRequired : null,
                             );
                           },
                           loading: () => const LinearProgressIndicator(),
-                          error: (e, st) => Text('Müşteriler yüklenemedi: $e'),
+                          error: (e, st) => Text('${l10n.customersLoadFailed}: $e'),
                         ),
                         const SizedBox(height: 16),
 
                         // Title
-                        const Text(
-                          'Başlık',
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                        Text(
+                          l10n.title,
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
                         ),
                         const SizedBox(height: 8),
                         TextFormField(
                           controller: _titleController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Not başlığı',
-                            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            hintText: l10n.noteTitle,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                           ),
-                          validator: (v) => v == null || v.trim().isEmpty ? 'Başlık zorunludur' : null,
+                          validator: (v) => v == null || v.trim().isEmpty ? l10n.titleRequired : null,
                         ),
                         const SizedBox(height: 16),
 
                         // Date
-                        const Text(
-                          'Tarih',
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                        Text(
+                          l10n.date,
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
                         ),
                         const SizedBox(height: 8),
                         InkWell(
@@ -205,14 +209,14 @@ class _NoteDetailDialogState extends ConsumerState<NoteDetailDialog> {
                                       onPressed: () => setState(() => _date = null),
                                     )
                                   : null,
-                              errorText: _date == null ? 'Tarih seçmelisiniz' : null,
+                              errorText: _date == null ? l10n.dateRequired : null,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   _date == null
-                                      ? 'Tarih seçin'
+                                      ? l10n.selectDatePrompt
                                       : DateFormat('d MMMM yyyy, EEEE', 'tr_TR').format(_date!),
                                   style: TextStyle(
                                     color: _date == null ? Colors.grey[600] : Colors.black87,
@@ -226,17 +230,17 @@ class _NoteDetailDialogState extends ConsumerState<NoteDetailDialog> {
                         const SizedBox(height: 16),
 
                         // Notes
-                        const Text(
-                          'Notlar (Opsiyonel)',
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                        Text(
+                          l10n.notesOptional,
+                          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
                         ),
                         const SizedBox(height: 8),
                         TextFormField(
                           controller: _notesController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Ek notlar...',
-                            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            hintText: l10n.additionalNotes,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                           ),
                           maxLines: 3,
                         ),
@@ -246,9 +250,9 @@ class _NoteDetailDialogState extends ConsumerState<NoteDetailDialog> {
                         SwitchListTile(
                           value: _isCompleted,
                           onChanged: (val) => setState(() => _isCompleted = val),
-                          title: const Text(
-                            'Tamamlandı',
-                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                          title: Text(
+                            l10n.completed,
+                            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
                           ),
                           contentPadding: EdgeInsets.zero,
                           activeThumbColor: Colors.green,
@@ -265,13 +269,13 @@ class _NoteDetailDialogState extends ConsumerState<NoteDetailDialog> {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('İptal'),
+                    child: Text(l10n.cancel),
                   ),
                   const SizedBox(width: 12),
                   ElevatedButton.icon(
                     onPressed: _submit,
                     icon: const Icon(Icons.save, size: 18),
-                    label: const Text('Kaydet'),
+                    label: Text(l10n.save),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     ),

@@ -166,5 +166,28 @@
   "endDate": "Bitiş Tarihi",
   "filter": "Filtrele",
   "clickToViewNotes": "Notları görüntülemek için tarih aralığı seçip filtreleyin",
-  "noNotesInRange": "Seçilen tarih aralığında not bulunamadı"
+  "noNotesInRange": "Seçilen tarih aralığında not bulunamadı",
+  "updateCustomer": "Müşteri Güncelle",
+  "searchHint": "Ara (en az 1 harf)",
+  "clear": "Temizle",
+  "newBtn": "Yeni",
+  "customerListLoadFailed": "Müşteri listesi yüklenemedi",
+  "noCustomersInSearch": "Arama sonucu bulunamadı",
+  "saveChanges": "Değişiklikleri Kaydet",
+  "deleteCustomer": "Müşteri Sil",
+  "deleteCustomerConfirm": "{name} müşterisini silmek istediğinize emin misiniz?",
+  "@deleteCustomerConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "customerName": "Müşteri Adı",
+  "customerNameHint": "Örn. ACME LLC",
+  "paidCustomer": "Ücretli Müşteri",
+  "monthlyFeeAmount": "Aylık Ücret (€)",
+  "customerNameRequired": "Müşteri adı boş olamaz",
+  "customerLoadError": "Müşteri yükleme hatası",
+  "customersColumn": "Müşteriler"
 }
