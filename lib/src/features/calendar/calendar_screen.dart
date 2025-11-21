@@ -384,109 +384,135 @@ class _CalendarTable extends ConsumerWidget {
         final todayStr =
             '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
 
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: constraints.maxWidth,
-                    minHeight: constraints.maxHeight,
-                  ),
-                  child: DataTable(
-                    headingRowColor: WidgetStateProperty.all(const Color(0xFFE3F2FD)),
-                    columnSpacing: 0,
-                    horizontalMargin: 0,
-                    dataRowMinHeight: 80,
-                    dataRowMaxHeight: double.infinity,
-                    border: TableBorder.all(
-                      color: Colors.grey[300]!,
-                      width: 1,
-                    ),
-                    columns: [
-                      DataColumn(
-                        label: Container(
-                          width: 120,
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                          child: Text(l10n.customersColumn, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      ...weekDays.map((day) {
-                        final dayStr =
-                            '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
-                        final isToday = dayStr == todayStr;
-                        final dayName = DateFormat('EEEE', 'tr_TR').format(day);
-                        final dayDate = DateFormat('d MMM', 'tr_TR').format(day);
+        const headerHeight = 60.0;
 
-                        return DataColumn(
-                          label: Expanded(
-                            child: Container(
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              // Calculate column width to fill screen
+              const customerColumnWidth = 200.0;
+              final totalDaysWidth = constraints.maxWidth - customerColumnWidth;
+              final dayColumnWidth = totalDaysWidth / 7;
+
+              return Stack(
+                children: [
+                  // Scrollable content with padding for header
+                  Padding(
+                    padding: const EdgeInsets.only(top: headerHeight),
+                    child: SingleChildScrollView(
+                      child: Table(
+                        border: TableBorder.all(
+                          color: Colors.grey[300]!,
+                          width: 1,
+                        ),
+                        defaultColumnWidth: FixedColumnWidth(dayColumnWidth),
+                        columnWidths: const {
+                          0: FixedColumnWidth(customerColumnWidth),
+                        },
+                        children: customerNames.map((customer) {
+                          return TableRow(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                constraints: const BoxConstraints(minHeight: 80),
+                                child: Text(
+                                  customer,
+                                  style: const TextStyle(fontWeight: FontWeight.w500),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              ...weekDays.map((day) {
+                                final dayStr =
+                                    '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+                                final notesForDay = data.notes[customer]?[dayStr] ?? [];
+
+                                return _CalendarCell(
+                                  customer: customer,
+                                  date: dayStr,
+                                  notes: notesForDay,
+                                  width: dayColumnWidth,
+                                );
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                  // Fixed header
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: headerHeight,
+                      color: const Color(0xFFE3F2FD),
+                      child: Row(
+                        children: [
+                          // Customer column header
+                          Container(
+                            width: customerColumnWidth,
+                            height: headerHeight,
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey[300]!),
+                              color: const Color(0xFFE3F2FD),
+                            ),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              l10n.customersColumn,
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          // Day column headers
+                          ...weekDays.map((day) {
+                            final dayStr =
+                                '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+                            final isToday = dayStr == todayStr;
+                            final dayName = DateFormat('EEEE', 'tr_TR').format(day);
+                            final dayDate = DateFormat('d MMM', 'tr_TR').format(day);
+
+                            return Container(
+                              width: dayColumnWidth,
+                              height: headerHeight,
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                              decoration: isToday
-                                  ? BoxDecoration(
-                                      color: Colors.yellow[100],
-                                    )
-                                  : null,
+                              decoration: BoxDecoration(
+                                color: isToday ? Colors.yellow[100] : const Color(0xFFE3F2FD),
+                                border: Border.all(color: Colors.grey[300]!),
+                              ),
                               child: Column(
-                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     dayName,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 13,
                                       color: isToday ? Colors.orange[800] : null,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
+                                  const SizedBox(height: 2),
                                   Text(
                                     dayDate,
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 11,
                                       color: isToday ? Colors.orange[800] : Colors.grey[600],
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                          ),
-                        );
-                      }),
-                    ],
-                    rows: customerNames.map((customer) {
-                      return DataRow(
-                        cells: [
-                          DataCell(
-                            Container(
-                              width: 120,
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                              child: Text(
-                                customer,
-                                style: const TextStyle(fontWeight: FontWeight.w500),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                          ...weekDays.map((day) {
-                            final dayStr =
-                                '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
-                            final notesForDay = data.notes[customer]?[dayStr] ?? [];
-
-                            return DataCell(
-                              _CalendarCell(
-                                customer: customer,
-                                date: dayStr,
-                                notes: notesForDay,
-                              ),
                             );
                           }),
                         ],
-                      );
-                    }).toList(),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            );
-          },
+                ],
+              );
+            },
+          ),
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -499,17 +525,19 @@ class _CalendarCell extends StatelessWidget {
   final String customer;
   final String date;
   final List<WeeklyNote> notes;
+  final double width;
 
   const _CalendarCell({
     required this.customer,
     required this.date,
     required this.notes,
+    required this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 150,
+      width: width,
       constraints: const BoxConstraints(minHeight: 80),
       padding: const EdgeInsets.all(4),
       child: Column(

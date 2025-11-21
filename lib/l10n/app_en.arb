@@ -514,45 +514,165 @@
     "description": "Shown when there are no records"
   },
   "calendar": "Calendar",
+  "@calendar": {
+    "description": "Calendar navigation label"
+  },
   "calendarView": "Calendar",
+  "@calendarView": {
+    "description": "Calendar view tab label"
+  },
   "listView": "List",
+  "@listView": {
+    "description": "List view tab label"
+  },
   "addNote": "Add Note",
+  "@addNote": {
+    "description": "Button to add a new note"
+  },
   "customerAndDateRequired": "Customer and date are required",
+  "@customerAndDateRequired": {
+    "description": "Error when customer and date are not selected"
+  },
   "noteAdded": "Note added",
+  "@noteAdded": {
+    "description": "Success message for adding note"
+  },
   "noteUpdated": "Note updated",
+  "@noteUpdated": {
+    "description": "Success message for updating note"
+  },
   "previousWeek": "Previous week",
+  "@previousWeek": {
+    "description": "Button to navigate to previous week"
+  },
   "nextWeek": "Next week",
+  "@nextWeek": {
+    "description": "Button to navigate to next week"
+  },
   "thisWeek": "This week",
+  "@thisWeek": {
+    "description": "Button to navigate to current week"
+  },
   "selectDate": "Click to select date",
+  "@selectDate": {
+    "description": "Prompt to select a date"
+  },
   "selectWeek": "Select week",
+  "@selectWeek": {
+    "description": "Prompt to select a week"
+  },
   "noCustomersFound": "No customers found",
+  "@noCustomersFound": {
+    "description": "Message when no customers exist"
+  },
   "customersLoadFailed": "Failed to load customers",
+  "@customersLoadFailed": {
+    "description": "Error when customers fail to load"
+  },
   "newNote": "New Note",
+  "@newNote": {
+    "description": "Dialog title for creating new note"
+  },
   "editNote": "Edit Note",
+  "@editNote": {
+    "description": "Dialog title for editing note"
+  },
   "customerRequired": "You must select a customer",
+  "@customerRequired": {
+    "description": "Validation error for customer field"
+  },
   "titleRequired": "Title is required",
+  "@titleRequired": {
+    "description": "Validation error for title field"
+  },
   "dateRequired": "You must select a date",
+  "@dateRequired": {
+    "description": "Validation error for date field"
+  },
   "selectCustomer": "Select customer",
+  "@selectCustomer": {
+    "description": "Hint for customer dropdown"
+  },
   "noteTitle": "Note title",
+  "@noteTitle": {
+    "description": "Hint for note title field"
+  },
   "date": "Date",
+  "@date": {
+    "description": "Label for date field"
+  },
   "selectDatePrompt": "Select date",
+  "@selectDatePrompt": {
+    "description": "Prompt in date picker field"
+  },
   "notesOptional": "Notes (Optional)",
+  "@notesOptional": {
+    "description": "Label for optional notes field"
+  },
   "additionalNotes": "Additional notes...",
+  "@additionalNotes": {
+    "description": "Hint for notes text field"
+  },
   "completed": "Completed",
+  "@completed": {
+    "description": "Label for completed status"
+  },
   "close": "Close",
+  "@close": {
+    "description": "Button to close dialog"
+  },
   "startDate": "Start Date",
+  "@startDate": {
+    "description": "Label for start date field"
+  },
   "endDate": "End Date",
+  "@endDate": {
+    "description": "Label for end date field"
+  },
   "filter": "Filter",
+  "@filter": {
+    "description": "Button to apply filter"
+  },
   "clickToViewNotes": "Select date range and filter to view notes",
+  "@clickToViewNotes": {
+    "description": "Instruction message in notes list view"
+  },
   "noNotesInRange": "No notes found in selected date range",
+  "@noNotesInRange": {
+    "description": "Message when no notes found in date range"
+  },
   "updateCustomer": "Update Customer",
+  "@updateCustomer": {
+    "description": "Dialog title for updating customer"
+  },
   "searchHint": "Search (at least 1 letter)",
+  "@searchHint": {
+    "description": "Hint for search field"
+  },
   "clear": "Clear",
+  "@clear": {
+    "description": "Button to clear search or filter"
+  },
   "newBtn": "New",
+  "@newBtn": {
+    "description": "Button to create new item"
+  },
   "customerListLoadFailed": "Failed to load customer list",
+  "@customerListLoadFailed": {
+    "description": "Error when customer list fails to load"
+  },
   "noCustomersInSearch": "No results found",
+  "@noCustomersInSearch": {
+    "description": "Message when search returns no results"
+  },
   "saveChanges": "Save Changes",
+  "@saveChanges": {
+    "description": "Button to save changes"
+  },
   "deleteCustomer": "Delete Customer",
+  "@deleteCustomer": {
+    "description": "Button to delete customer"
+  },
   "deleteCustomerConfirm": "Are you sure you want to delete {name}?",
   "@deleteCustomerConfirm": {
     "placeholders": {
@@ -562,10 +682,31 @@
     }
   },
   "customerName": "Customer Name",
+  "@customerName": {
+    "description": "Label for customer name field"
+  },
   "customerNameHint": "e.g. ACME LLC",
+  "@customerNameHint": {
+    "description": "Hint for customer name field"
+  },
   "paidCustomer": "Paid Customer",
+  "@paidCustomer": {
+    "description": "Label for paid customer checkbox"
+  },
   "monthlyFeeAmount": "Monthly Fee (€)",
+  "@monthlyFeeAmount": {
+    "description": "Label for monthly fee amount field"
+  },
   "customerNameRequired": "Customer name cannot be empty",
+  "@customerNameRequired": {
+    "description": "Validation error for empty customer name"
+  },
   "customerLoadError": "Customer loading error",
-  "customersColumn": "Customers"
+  "@customerLoadError": {
+    "description": "Error when customer fails to load"
+  },
+  "customersColumn": "Customers",
+  "@customersColumn": {
+    "description": "Column header for customers"
+  }
 }

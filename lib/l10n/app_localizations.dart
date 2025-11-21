@@ -864,241 +864,241 @@ abstract class AppLocalizations {
   /// **'No records found'**
   String get noRecordsFound;
 
-  /// No description provided for @calendar.
+  /// Calendar navigation label
   ///
   /// In en, this message translates to:
   /// **'Calendar'**
   String get calendar;
 
-  /// No description provided for @calendarView.
+  /// Calendar view tab label
   ///
   /// In en, this message translates to:
   /// **'Calendar'**
   String get calendarView;
 
-  /// No description provided for @listView.
+  /// List view tab label
   ///
   /// In en, this message translates to:
   /// **'List'**
   String get listView;
 
-  /// No description provided for @addNote.
+  /// Button to add a new note
   ///
   /// In en, this message translates to:
   /// **'Add Note'**
   String get addNote;
 
-  /// No description provided for @customerAndDateRequired.
+  /// Error when customer and date are not selected
   ///
   /// In en, this message translates to:
   /// **'Customer and date are required'**
   String get customerAndDateRequired;
 
-  /// No description provided for @noteAdded.
+  /// Success message for adding note
   ///
   /// In en, this message translates to:
   /// **'Note added'**
   String get noteAdded;
 
-  /// No description provided for @noteUpdated.
+  /// Success message for updating note
   ///
   /// In en, this message translates to:
   /// **'Note updated'**
   String get noteUpdated;
 
-  /// No description provided for @previousWeek.
+  /// Button to navigate to previous week
   ///
   /// In en, this message translates to:
   /// **'Previous week'**
   String get previousWeek;
 
-  /// No description provided for @nextWeek.
+  /// Button to navigate to next week
   ///
   /// In en, this message translates to:
   /// **'Next week'**
   String get nextWeek;
 
-  /// No description provided for @thisWeek.
+  /// Button to navigate to current week
   ///
   /// In en, this message translates to:
   /// **'This week'**
   String get thisWeek;
 
-  /// No description provided for @selectDate.
+  /// Prompt to select a date
   ///
   /// In en, this message translates to:
   /// **'Click to select date'**
   String get selectDate;
 
-  /// No description provided for @selectWeek.
+  /// Prompt to select a week
   ///
   /// In en, this message translates to:
   /// **'Select week'**
   String get selectWeek;
 
-  /// No description provided for @noCustomersFound.
+  /// Message when no customers exist
   ///
   /// In en, this message translates to:
   /// **'No customers found'**
   String get noCustomersFound;
 
-  /// No description provided for @customersLoadFailed.
+  /// Error when customers fail to load
   ///
   /// In en, this message translates to:
   /// **'Failed to load customers'**
   String get customersLoadFailed;
 
-  /// No description provided for @newNote.
+  /// Dialog title for creating new note
   ///
   /// In en, this message translates to:
   /// **'New Note'**
   String get newNote;
 
-  /// No description provided for @editNote.
+  /// Dialog title for editing note
   ///
   /// In en, this message translates to:
   /// **'Edit Note'**
   String get editNote;
 
-  /// No description provided for @customerRequired.
+  /// Validation error for customer field
   ///
   /// In en, this message translates to:
   /// **'You must select a customer'**
   String get customerRequired;
 
-  /// No description provided for @titleRequired.
+  /// Validation error for title field
   ///
   /// In en, this message translates to:
   /// **'Title is required'**
   String get titleRequired;
 
-  /// No description provided for @dateRequired.
+  /// Validation error for date field
   ///
   /// In en, this message translates to:
   /// **'You must select a date'**
   String get dateRequired;
 
-  /// No description provided for @selectCustomer.
+  /// Hint for customer dropdown
   ///
   /// In en, this message translates to:
   /// **'Select customer'**
   String get selectCustomer;
 
-  /// No description provided for @noteTitle.
+  /// Hint for note title field
   ///
   /// In en, this message translates to:
   /// **'Note title'**
   String get noteTitle;
 
-  /// No description provided for @date.
+  /// Label for date field
   ///
   /// In en, this message translates to:
   /// **'Date'**
   String get date;
 
-  /// No description provided for @selectDatePrompt.
+  /// Prompt in date picker field
   ///
   /// In en, this message translates to:
   /// **'Select date'**
   String get selectDatePrompt;
 
-  /// No description provided for @notesOptional.
+  /// Label for optional notes field
   ///
   /// In en, this message translates to:
   /// **'Notes (Optional)'**
   String get notesOptional;
 
-  /// No description provided for @additionalNotes.
+  /// Hint for notes text field
   ///
   /// In en, this message translates to:
   /// **'Additional notes...'**
   String get additionalNotes;
 
-  /// No description provided for @completed.
+  /// Label for completed status
   ///
   /// In en, this message translates to:
   /// **'Completed'**
   String get completed;
 
-  /// No description provided for @close.
+  /// Button to close dialog
   ///
   /// In en, this message translates to:
   /// **'Close'**
   String get close;
 
-  /// No description provided for @startDate.
+  /// Label for start date field
   ///
   /// In en, this message translates to:
   /// **'Start Date'**
   String get startDate;
 
-  /// No description provided for @endDate.
+  /// Label for end date field
   ///
   /// In en, this message translates to:
   /// **'End Date'**
   String get endDate;
 
-  /// No description provided for @filter.
+  /// Button to apply filter
   ///
   /// In en, this message translates to:
   /// **'Filter'**
   String get filter;
 
-  /// No description provided for @clickToViewNotes.
+  /// Instruction message in notes list view
   ///
   /// In en, this message translates to:
   /// **'Select date range and filter to view notes'**
   String get clickToViewNotes;
 
-  /// No description provided for @noNotesInRange.
+  /// Message when no notes found in date range
   ///
   /// In en, this message translates to:
   /// **'No notes found in selected date range'**
   String get noNotesInRange;
 
-  /// No description provided for @updateCustomer.
+  /// Dialog title for updating customer
   ///
   /// In en, this message translates to:
   /// **'Update Customer'**
   String get updateCustomer;
 
-  /// No description provided for @searchHint.
+  /// Hint for search field
   ///
   /// In en, this message translates to:
   /// **'Search (at least 1 letter)'**
   String get searchHint;
 
-  /// No description provided for @clear.
+  /// Button to clear search or filter
   ///
   /// In en, this message translates to:
   /// **'Clear'**
   String get clear;
 
-  /// No description provided for @newBtn.
+  /// Button to create new item
   ///
   /// In en, this message translates to:
   /// **'New'**
   String get newBtn;
 
-  /// No description provided for @customerListLoadFailed.
+  /// Error when customer list fails to load
   ///
   /// In en, this message translates to:
   /// **'Failed to load customer list'**
   String get customerListLoadFailed;
 
-  /// No description provided for @noCustomersInSearch.
+  /// Message when search returns no results
   ///
   /// In en, this message translates to:
   /// **'No results found'**
   String get noCustomersInSearch;
 
-  /// No description provided for @saveChanges.
+  /// Button to save changes
   ///
   /// In en, this message translates to:
   /// **'Save Changes'**
   String get saveChanges;
 
-  /// No description provided for @deleteCustomer.
+  /// Button to delete customer
   ///
   /// In en, this message translates to:
   /// **'Delete Customer'**
@@ -1110,43 +1110,43 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to delete {name}?'**
   String deleteCustomerConfirm(String name);
 
-  /// No description provided for @customerName.
+  /// Label for customer name field
   ///
   /// In en, this message translates to:
   /// **'Customer Name'**
   String get customerName;
 
-  /// No description provided for @customerNameHint.
+  /// Hint for customer name field
   ///
   /// In en, this message translates to:
   /// **'e.g. ACME LLC'**
   String get customerNameHint;
 
-  /// No description provided for @paidCustomer.
+  /// Label for paid customer checkbox
   ///
   /// In en, this message translates to:
   /// **'Paid Customer'**
   String get paidCustomer;
 
-  /// No description provided for @monthlyFeeAmount.
+  /// Label for monthly fee amount field
   ///
   /// In en, this message translates to:
   /// **'Monthly Fee (€)'**
   String get monthlyFeeAmount;
 
-  /// No description provided for @customerNameRequired.
+  /// Validation error for empty customer name
   ///
   /// In en, this message translates to:
   /// **'Customer name cannot be empty'**
   String get customerNameRequired;
 
-  /// No description provided for @customerLoadError.
+  /// Error when customer fails to load
   ///
   /// In en, this message translates to:
   /// **'Customer loading error'**
   String get customerLoadError;
 
-  /// No description provided for @customersColumn.
+  /// Column header for customers
   ///
   /// In en, this message translates to:
   /// **'Customers'**
