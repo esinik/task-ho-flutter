@@ -203,145 +203,202 @@ class FeesScreen extends ConsumerWidget {
                 );
               }
 
-              return SizedBox(
-                width: double.infinity,
-                child: SingleChildScrollView(
-                  child: DataTable(
-                    headingRowColor: WidgetStateProperty.all(Colors.grey[100]),
-                    columns: [
-                      DataColumn(label: Text(l10n.columnNumber, style: const TextStyle(fontWeight: FontWeight.bold))),
-                      DataColumn(label: Text(l10n.columnCustomer, style: const TextStyle(fontWeight: FontWeight.bold))),
-                      DataColumn(label: Text(l10n.columnMonth, style: const TextStyle(fontWeight: FontWeight.bold))),
-                      DataColumn(label: Text(l10n.columnAmount, style: const TextStyle(fontWeight: FontWeight.bold))),
-                      DataColumn(label: Text(l10n.columnStatus, style: const TextStyle(fontWeight: FontWeight.bold))),
-                      DataColumn(label: Text(l10n.columnNote, style: const TextStyle(fontWeight: FontWeight.bold))),
-                      DataColumn(label: Text(l10n.columnActions, style: const TextStyle(fontWeight: FontWeight.bold))),
-                    ],
-                    rows: [
-                      for (int i = 0; i < rows.length; i++)
-                        DataRow(
-                          cells: [
-                            DataCell(Text('${i + 1}')),
-                            DataCell(Text(rows[i].customer)),
-                            DataCell(Text(rows[i].month)),
-                            DataCell(Text(rows[i].amount.toStringAsFixed(2))),
-                            DataCell(
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: rows[i].status == 'Ödendi' ? Colors.green[100] : Colors.orange[100],
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  rows[i].status == 'Ödendi' ? l10n.statusPaid : l10n.statusOpen,
-                                  style: TextStyle(
-                                    color: rows[i].status == 'Ödendi' ? Colors.green[900] : Colors.orange[900],
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            DataCell(Text(rows[i].note)),
-                            DataCell(
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // Mark as paid / Undo button
-                                  TextButton(
-                                    onPressed: () async {
-                                      final wasPaid = rows[i].status == 'Ödendi';
-                                      final newStatus = wasPaid ? 'Açık' : 'Ödendi';
-                                      // Update fee status
-                                      await ref.read(feeRepositoryProvider).update(
-                                        rows[i].id!,
-                                        {'status': newStatus},
-                                      );
-                                      ref.invalidate(feeListProvider);
+              // Calculate total of open fees
+              final openTotal =
+                  rows.where((fee) => fee.status == 'Açık').fold<double>(0, (sum, fee) => sum + fee.amount);
 
-                                      // Sync with calendar notes
-                                      final calendarRepo = ref.read(calendarRepositoryProvider);
-                                      final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
-                                      try {
-                                        if (!wasPaid && newStatus == 'Ödendi') {
-                                          // Create completed note titled 'Ödendi'
-                                          await calendarRepo.createNote(
-                                            customer: rows[i].customer,
-                                            title: 'Ödendi',
-                                            date: today,
-                                            isCompleted: true,
-                                          );
-                                        } else if (wasPaid && newStatus == 'Açık') {
-                                          // Delete existing 'Ödendi' note for today & customer
-                                          final notes =
-                                              await calendarRepo.getRawNotesInRange(startDate: today, endDate: today);
-                                          final matches = notes
-                                              .where((n) =>
-                                                  n['customer'] == rows[i].customer &&
-                                                  (n['title'] == 'Ödendi') &&
-                                                  n['date'] == today)
-                                              .toList();
-                                          if (matches.isNotEmpty) {
-                                            final note = matches.first;
-                                            final noteId = note['id'] ?? note['_id'];
-                                            if (noteId != null) {
-                                              await calendarRepo.deleteNote(noteId);
-                                            }
-                                          }
-                                        }
-                                      } catch (e) {
-                                        // Fail silently; calendar sync shouldn't block fee update
-                                      }
-                                    },
-                                    style: TextButton.styleFrom(
-                                      foregroundColor: rows[i].status == 'Ödendi' ? Colors.orange : Colors.green,
-                                    ),
-                                    child: Text(
-                                      rows[i].status == 'Ödendi' ? l10n.undoPayment : l10n.markAsPaid,
-                                      style: const TextStyle(fontSize: 12),
+              return Column(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: SingleChildScrollView(
+                        child: DataTable(
+                          headingRowColor: WidgetStateProperty.all(Colors.grey[100]),
+                          columns: [
+                            DataColumn(
+                                label: Text(l10n.columnNumber, style: const TextStyle(fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text(l10n.columnCustomer, style: const TextStyle(fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text(l10n.columnMonth, style: const TextStyle(fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text(l10n.columnAmount, style: const TextStyle(fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text(l10n.columnStatus, style: const TextStyle(fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text(l10n.columnNote, style: const TextStyle(fontWeight: FontWeight.bold))),
+                            DataColumn(
+                                label: Text(l10n.columnActions, style: const TextStyle(fontWeight: FontWeight.bold))),
+                          ],
+                          rows: [
+                            for (int i = 0; i < rows.length; i++)
+                              DataRow(
+                                cells: [
+                                  DataCell(Text('${i + 1}')),
+                                  DataCell(Text(rows[i].customer)),
+                                  DataCell(Text(rows[i].month)),
+                                  DataCell(Text(rows[i].amount.toStringAsFixed(2))),
+                                  DataCell(
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: rows[i].status == 'Ödendi' ? Colors.green[100] : Colors.orange[100],
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        rows[i].status == 'Ödendi' ? l10n.statusPaid : l10n.statusOpen,
+                                        style: TextStyle(
+                                          color: rows[i].status == 'Ödendi' ? Colors.green[900] : Colors.orange[900],
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  // Delete button
-                                  TextButton(
-                                    onPressed: () async {
-                                      final confirm = await showDialog<bool>(
-                                        context: context,
-                                        builder: (ctx) => AlertDialog(
-                                          title: Text(l10n.delete),
-                                          content: Text('${l10n.delete}?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () => Navigator.pop(ctx, false),
-                                              child: Text(l10n.cancel),
-                                            ),
-                                            FilledButton(
-                                              onPressed: () => Navigator.pop(ctx, true),
-                                              style: FilledButton.styleFrom(
-                                                backgroundColor: Colors.red,
-                                              ),
-                                              child: Text(l10n.delete),
-                                            ),
-                                          ],
+                                  DataCell(Text(rows[i].note)),
+                                  DataCell(
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // Mark as paid / Undo button
+                                        TextButton(
+                                          onPressed: () async {
+                                            final wasPaid = rows[i].status == 'Ödendi';
+                                            final newStatus = wasPaid ? 'Açık' : 'Ödendi';
+                                            // Update fee status
+                                            await ref.read(feeRepositoryProvider).update(
+                                              rows[i].id!,
+                                              {'status': newStatus},
+                                            );
+                                            ref.invalidate(feeListProvider);
+
+                                            // Sync with calendar notes
+                                            final calendarRepo = ref.read(calendarRepositoryProvider);
+                                            final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+                                            try {
+                                              if (!wasPaid && newStatus == 'Ödendi') {
+                                                // Create completed note titled 'Ödendi'
+                                                await calendarRepo.createNote(
+                                                  customer: rows[i].customer,
+                                                  title: 'Ödendi',
+                                                  date: today,
+                                                  isCompleted: true,
+                                                );
+                                              } else if (wasPaid && newStatus == 'Açık') {
+                                                // Delete existing 'Ödendi' note for today & customer
+                                                final notes = await calendarRepo.getRawNotesInRange(
+                                                    startDate: today, endDate: today);
+                                                final matches = notes
+                                                    .where((n) =>
+                                                        n['customer'] == rows[i].customer &&
+                                                        (n['title'] == 'Ödendi') &&
+                                                        n['date'] == today)
+                                                    .toList();
+                                                if (matches.isNotEmpty) {
+                                                  final note = matches.first;
+                                                  final noteId = note['id'] ?? note['_id'];
+                                                  if (noteId != null) {
+                                                    await calendarRepo.deleteNote(noteId);
+                                                  }
+                                                }
+                                              }
+                                            } catch (e) {
+                                              // Fail silently; calendar sync shouldn't block fee update
+                                            }
+                                          },
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: rows[i].status == 'Ödendi' ? Colors.orange : Colors.green,
+                                          ),
+                                          child: Text(
+                                            rows[i].status == 'Ödendi' ? l10n.undoPayment : l10n.markAsPaid,
+                                            style: const TextStyle(fontSize: 12),
+                                          ),
                                         ),
-                                      );
-                                      if (confirm == true) {
-                                        await ref.read(feeRepositoryProvider).remove(rows[i].id!);
-                                        ref.invalidate(feeListProvider);
-                                      }
-                                    },
-                                    style: TextButton.styleFrom(
-                                      foregroundColor: Colors.red,
+                                        // Delete button
+                                        TextButton(
+                                          onPressed: () async {
+                                            final confirm = await showDialog<bool>(
+                                              context: context,
+                                              builder: (ctx) => AlertDialog(
+                                                title: Text(l10n.delete),
+                                                content: Text('${l10n.delete}?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () => Navigator.pop(ctx, false),
+                                                    child: Text(l10n.cancel),
+                                                  ),
+                                                  FilledButton(
+                                                    onPressed: () => Navigator.pop(ctx, true),
+                                                    style: FilledButton.styleFrom(
+                                                      backgroundColor: Colors.red,
+                                                    ),
+                                                    child: Text(l10n.delete),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                            if (confirm == true) {
+                                              await ref.read(feeRepositoryProvider).remove(rows[i].id!);
+                                              ref.invalidate(feeListProvider);
+                                            }
+                                          },
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.red,
+                                          ),
+                                          child: Text(l10n.delete, style: const TextStyle(fontSize: 12)),
+                                        ),
+                                      ],
                                     ),
-                                    child: Text(l10n.delete, style: const TextStyle(fontSize: 12)),
                                   ),
                                 ],
                               ),
-                            ),
                           ],
                         ),
-                    ],
+                      ),
+                    ),
                   ),
-                ),
+                  // Footer with open fees total
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.orange[50],
+                      border: Border(
+                        top: BorderSide(color: Colors.orange[200]!, width: 2),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.info_outline, color: Colors.orange[800], size: 20),
+                              const SizedBox(width: 8),
+                              Text(
+                                l10n.statusOpen,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: Colors.orange[900],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            '${openTotal.toStringAsFixed(2)} €',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.orange[900],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               );
             },
             loading: () => const Center(child: CircularProgressIndicator()),
