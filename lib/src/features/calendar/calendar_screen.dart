@@ -411,15 +411,56 @@ class _CalendarTable extends ConsumerWidget {
                           0: FixedColumnWidth(customerColumnWidth),
                         },
                         children: customerNames.map((customer) {
+                          // Calculate total and completed notes for this customer
+                          var totalNotes = 0;
+                          var completedNotes = 0;
+
+                          final customerNotes = data.notes[customer];
+                          if (customerNotes != null) {
+                            for (final dayEntry in customerNotes.values) {
+                              totalNotes += dayEntry.length;
+                              completedNotes += dayEntry.where((note) => note.isCompleted).length;
+                            }
+                          }
+
                           return TableRow(
                             children: [
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                                 constraints: const BoxConstraints(minHeight: 80),
-                                child: Text(
-                                  customer,
-                                  style: const TextStyle(fontWeight: FontWeight.w500),
-                                  overflow: TextOverflow.ellipsis,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        customer,
+                                        style: const TextStyle(fontWeight: FontWeight.w500),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    if (totalNotes > 0) ...[
+                                      const SizedBox(width: 4),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: completedNotes == totalNotes ? Colors.green[100] : Colors.blue[100],
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(
+                                            color:
+                                                completedNotes == totalNotes ? Colors.green[300]! : Colors.blue[300]!,
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '$totalNotes/$completedNotes',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            color: completedNotes == totalNotes ? Colors.green[800] : Colors.blue[800],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ],
                                 ),
                               ),
                               ...weekDays.map((day) {
