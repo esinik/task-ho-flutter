@@ -12,6 +12,9 @@ import 'widgets/note_detail_dialog.dart';
 // Customer filter for ListView
 final calendarListCustomerFilterProvider = StateProvider<String?>((_) => null);
 
+// Show completed notes filter for ListView
+final showCompletedNotesProvider = StateProvider<bool>((_) => true);
+
 /// Main calendar screen with Takvim/Liste tabs
 class CalendarScreen extends ConsumerWidget {
   const CalendarScreen({super.key});
@@ -767,6 +770,7 @@ class _CalendarListViewState extends ConsumerState<_CalendarListView> {
     final l10n = AppLocalizations.of(context)!;
     final startDate = ref.watch(calendarStartDateProvider);
     final endDate = ref.watch(calendarEndDateProvider);
+    final showCompleted = ref.watch(showCompletedNotesProvider);
 
     return Column(
       children: [
@@ -853,6 +857,28 @@ class _CalendarListViewState extends ConsumerState<_CalendarListView> {
                     label: Text(l10n.filter),
                   ),
                 ),
+                const SizedBox(width: 16, height: 16),
+                Flexible(
+                  flex: 1,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.visibility, size: 18, color: Colors.grey[700]),
+                      const SizedBox(width: 8),
+                      Text(
+                        l10n.completed,
+                        style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                      ),
+                      const SizedBox(width: 4),
+                      Switch(
+                        value: showCompleted,
+                        onChanged: (value) {
+                          ref.read(showCompletedNotesProvider.notifier).state = value;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ];
               return isNarrow
                   ? Wrap(
@@ -901,96 +927,128 @@ class _CalendarListViewState extends ConsumerState<_CalendarListView> {
                             ],
                           ),
                         )
-                      : ListView.builder(
-                          padding: const EdgeInsets.all(16),
-                          itemCount: _notesWithMetadata!.length,
-                          itemBuilder: (context, index) {
-                            final noteData = _notesWithMetadata![index];
-                            final isCompleted = noteData['isCompleted'] as bool? ?? false;
-                            final title = noteData['title'] as String;
-                            final notes = noteData['notes'] as String? ?? '';
-                            final customer = noteData['customer'] as String;
-                            final dateStr = noteData['date'] as String;
-                            return Card(
-                              margin: const EdgeInsets.only(bottom: 12),
-                              child: ListTile(
-                                leading: Icon(
-                                  isCompleted ? Icons.check_circle : Icons.radio_button_unchecked,
-                                  color: isCompleted ? Colors.green : Colors.grey,
-                                ),
-                                title: Text(
-                                  '$customer - $title',
-                                  style: TextStyle(
-                                    decoration: isCompleted ? TextDecoration.lineThrough : null,
-                                    fontWeight: FontWeight.w500,
+                      : () {
+                          // Sort notes: incomplete first, then completed
+                          final sortedNotes = List<Map<String, dynamic>>.from(_notesWithMetadata!);
+                          sortedNotes.sort((a, b) {
+                            final aCompleted = a['isCompleted'] as bool? ?? false;
+                            final bCompleted = b['isCompleted'] as bool? ?? false;
+                            if (aCompleted == bCompleted) return 0;
+                            return aCompleted ? 1 : -1;
+                          });
+
+                          // Filter out completed notes if showCompleted is false
+                          final filteredNotes = showCompleted
+                              ? sortedNotes
+                              : sortedNotes.where((note) => !(note['isCompleted'] as bool? ?? false)).toList();
+
+                          if (filteredNotes.isEmpty) {
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.event_busy, size: 64, color: Colors.grey[400]),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    l10n.noNotesInRange,
+                                    style: TextStyle(color: Colors.grey[600]),
                                   ),
-                                ),
-                                subtitle: notes.isNotEmpty
-                                    ? Text(
-                                        notes,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    : null,
-                                trailing: const Icon(Icons.chevron_right),
-                                onTap: () async {
-                                  // Parse date from dateStr (YYYY-MM-DD)
-                                  final dateMatch = RegExp(r'(\d{4})-(\d{2})-(\d{2})').firstMatch(dateStr);
-                                  DateTime? noteDate;
-                                  if (dateMatch != null) {
-                                    noteDate = DateTime(
-                                      int.parse(dateMatch.group(1)!),
-                                      int.parse(dateMatch.group(2)!),
-                                      int.parse(dateMatch.group(3)!),
-                                    );
-                                  }
-
-                                  final result = await NoteDetailDialog.show(
-                                    context,
-                                    initial: NoteFormResult(
-                                      customer: customer,
-                                      title: title,
-                                      date: noteDate,
-                                      notes: notes.isEmpty ? null : notes,
-                                      isCompleted: isCompleted,
-                                    ),
-                                  );
-
-                                  if (result != null && result.customer != null && result.date != null) {
-                                    try {
-                                      final repo = ref.read(calendarRepositoryProvider);
-                                      final dateStr =
-                                          '${result.date!.year}-${result.date!.month.toString().padLeft(2, '0')}-${result.date!.day.toString().padLeft(2, '0')}';
-
-                                      await repo.updateNote(
-                                        id: noteData['_id'] as String,
-                                        customer: result.customer!,
-                                        title: result.title,
-                                        date: dateStr,
-                                        notes: result.notes,
-                                        isCompleted: result.isCompleted,
-                                      );
-
-                                      _fetchNotes(); // Refresh list
-
-                                      if (context.mounted) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('Not güncellendi')),
-                                        );
-                                      }
-                                    } catch (e) {
-                                      if (context.mounted) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('Hata: $e')),
-                                        );
-                                      }
-                                    }
-                                  }
-                                },
+                                ],
                               ),
                             );
-                          },
-                        ),
+                          }
+
+                          return ListView.builder(
+                            padding: const EdgeInsets.all(16),
+                            itemCount: filteredNotes.length,
+                            itemBuilder: (context, index) {
+                              final noteData = filteredNotes[index];
+                              final isCompleted = noteData['isCompleted'] as bool? ?? false;
+                              final title = noteData['title'] as String;
+                              final notes = noteData['notes'] as String? ?? '';
+                              final customer = noteData['customer'] as String;
+                              final dateStr = noteData['date'] as String;
+                              return Card(
+                                margin: const EdgeInsets.only(bottom: 12),
+                                child: ListTile(
+                                  leading: Icon(
+                                    isCompleted ? Icons.check_circle : Icons.radio_button_unchecked,
+                                    color: isCompleted ? Colors.green : Colors.grey,
+                                  ),
+                                  title: Text(
+                                    '$customer - $title',
+                                    style: TextStyle(
+                                      decoration: isCompleted ? TextDecoration.lineThrough : null,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  subtitle: notes.isNotEmpty
+                                      ? Text(
+                                          notes,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        )
+                                      : null,
+                                  trailing: const Icon(Icons.chevron_right),
+                                  onTap: () async {
+                                    // Parse date from dateStr (YYYY-MM-DD)
+                                    final dateMatch = RegExp(r'(\d{4})-(\d{2})-(\d{2})').firstMatch(dateStr);
+                                    DateTime? noteDate;
+                                    if (dateMatch != null) {
+                                      noteDate = DateTime(
+                                        int.parse(dateMatch.group(1)!),
+                                        int.parse(dateMatch.group(2)!),
+                                        int.parse(dateMatch.group(3)!),
+                                      );
+                                    }
+
+                                    final result = await NoteDetailDialog.show(
+                                      context,
+                                      initial: NoteFormResult(
+                                        customer: customer,
+                                        title: title,
+                                        date: noteDate,
+                                        notes: notes.isEmpty ? null : notes,
+                                        isCompleted: isCompleted,
+                                      ),
+                                    );
+
+                                    if (result != null && result.customer != null && result.date != null) {
+                                      try {
+                                        final repo = ref.read(calendarRepositoryProvider);
+                                        final dateStr =
+                                            '${result.date!.year}-${result.date!.month.toString().padLeft(2, '0')}-${result.date!.day.toString().padLeft(2, '0')}';
+
+                                        await repo.updateNote(
+                                          id: noteData['_id'] as String,
+                                          customer: result.customer!,
+                                          title: result.title,
+                                          date: dateStr,
+                                          notes: result.notes,
+                                          isCompleted: result.isCompleted,
+                                        );
+
+                                        _fetchNotes(); // Refresh list
+
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(content: Text('Not güncellendi')),
+                                          );
+                                        }
+                                      } catch (e) {
+                                        if (context.mounted) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Hata: $e')),
+                                          );
+                                        }
+                                      }
+                                    }
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        }(),
         ),
       ],
     );

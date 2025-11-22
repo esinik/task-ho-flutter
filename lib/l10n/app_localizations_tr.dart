@@ -467,7 +467,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get additionalNotes => 'Ek notlar...';
 
   @override
-  String get completed => 'Tamamlandı';
+  String get completed => 'Bitti';
 
   @override
   String get close => 'Kapat';
